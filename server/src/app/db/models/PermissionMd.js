@@ -21,27 +21,31 @@ PermissionMd.init('Permission', {
   description: { type: String },
   status: { type: Number, enum: [0, 1], default: 1 },
   users: [{ type: String, required: true }],
-  tools: [{ type: Object, required: true, description: '{ route, actions }' }],
+  tools: [{ route: { type: String, required: true }, actions: { type: Array, required: true } }],
   deletedAt: { type: Date }
 });
 
-export const getListPermissionMd = (where, page, limit, populates, sort, attr) => {
-  return PermissionMd.find({ where, page, limit, sort, attr, populates });
+export const listPermissionMd = (where, page, limit, populates, attr, sort) => {
+  return PermissionMd.find({ where, page, limit, populates, attr, sort });
 };
 
-export const countListPermissionMd = (where) => {
+export const countPermissionMd = (where) => {
   return PermissionMd.count({ where });
 };
 
-export const getDetailPermissionMd = (where, populates, attr) => {
-  return PermissionMd.findOne({ where, attr, populates });
+export const detailPermissionMd = (where, populates, attr) => {
+  return PermissionMd.findOne({ where, populates, attr });
 };
 
-export const addPermissionMd = (attr) => {
+export const createPermissionMd = (attr) => {
   return PermissionMd.create({ attr });
 };
 
 export const updatePermissionMd = (where, attr) => {
+  return PermissionMd.update({ where, attr });
+};
+
+export const updateManyPermissionMd = (where, attr) => {
   return PermissionMd.update({ where, attr });
 };
 

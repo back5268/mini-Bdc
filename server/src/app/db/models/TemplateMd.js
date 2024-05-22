@@ -7,8 +7,8 @@ class TemplateMd extends ModelBase {
   by;
   updateBy;
   type;
-  subject;
   code;
+  subject;
   content;
   description;
   status;
@@ -18,7 +18,12 @@ class TemplateMd extends ModelBase {
 TemplateMd.init('Template', {
   by: { type: ObjectId, ref: 'User', required: true },
   updateBy: { type: ObjectId, ref: 'User' },
-  type: { type: Number, required: true, enum: [1, 2, 3], description: '1: mẫu xác nhận đăng ký, 2: mẫu quên mật kkhẩu' },
+  type: {
+    type: Number,
+    enum: [1, 2, 3, 4, 5, 6],
+    required: true,
+    description: '1: Quên mật khẩu, 2: Thêm mới người dùng, 3: Thông báo, 4: Bảng kê, 5: Phiếu thu, 6: Phiếu chi'
+  },
   code: { type: String, required: true },
   subject: { type: String, required: true },
   content: { type: String, required: true },
@@ -27,23 +32,27 @@ TemplateMd.init('Template', {
   deletedAt: { type: Date }
 });
 
-export const getListTemplateMd = (where, page, limit, populates, sort, attr) => {
-  return TemplateMd.find({ where, page, limit, sort, attr, populates });
+export const listTemplateMd = (where, page, limit, populates, attr, sort) => {
+  return TemplateMd.find({ where, page, limit, populates, attr, sort });
 };
 
-export const countListTemplateMd = (where) => {
+export const countTemplateMd = (where) => {
   return TemplateMd.count({ where });
 };
 
-export const getDetailTemplateMd = (where, populates, attr) => {
-  return TemplateMd.findOne({ where, attr, populates });
+export const detailTemplateMd = (where, populates, attr) => {
+  return TemplateMd.findOne({ where, populates, attr });
 };
 
-export const addTemplateMd = (attr) => {
+export const createTemplateMd = (attr) => {
   return TemplateMd.create({ attr });
 };
 
 export const updateTemplateMd = (where, attr) => {
+  return TemplateMd.update({ where, attr });
+};
+
+export const updateManyTemplateMd = (where, attr) => {
   return TemplateMd.update({ where, attr });
 };
 
