@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply box-border list-none p-0 m-0 scroll-smooth;
+  }
+
+  body {
+    @apply text-color bg-background font-sans;
+  }
+}
+
+@layer components {
+  .card {
+    @apply border-blue-gray-200 rounded-md p-4 border-[1px];
+  }
+}
+
+.tox-tinymce {
+  border: none !important;
+}
+
+.tox .tox-statusbar {
+  border-top: 1px solid rgb(176 190 197 / 1) !important;
+}
+
+::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a3a3a3;
+}
