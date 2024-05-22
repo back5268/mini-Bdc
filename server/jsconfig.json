@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@utils": ["src/lib/utils"],
+      "@utils/*": ["src/lib/utils/*"],
+      "@lib": ["src/lib"],
+      "@lib/*": ["src/lib/*"],
+      "@middleware": ["src/middleware"],
+      "@middleware/*": ["src/middleware/*"],
+      "@controller": ["src/app/controller"],
+      "@controller/*": ["src/app/controller/*"],
+      "@models": ["src/app/db/models"],
+      "@models/*": ["src/app/db/models/*"],
+      "@repository": ["src/app/repository"],
+      "@repository/*": ["src/app/repository/*"],
+      "@constant": ["src/constant"],
+      "@constant/*": ["src/constant/*"],
+      "@config": ["src/app/db/config"],
+      "@config/*": ["src/app/db/config/*"],
+    }
+  }
+}
