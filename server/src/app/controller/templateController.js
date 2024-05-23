@@ -1,5 +1,5 @@
 import { addTemplateValid, detailTemplateValid, listTemplateValid, updateTemplateValid } from '@lib/validation';
-import { addTemplateMd, countListTemplateMd, deleteTemplateMd, getDetailTemplateMd, getListTemplateMd, updateTemplateMd } from '@models';
+import { createTemplateMd, countTemplateMd, deleteTemplateMd, detailTemplateMd, listTemplateMd, updateTemplateMd } from '@models';
 import { validateData } from '@utils';
 
 export const getListTemplate = async (req, res) => {
@@ -11,8 +11,8 @@ export const getListTemplate = async (req, res) => {
     if (keySearch) where.$or = [{ subject: { $regex: keySearch, $options: 'i' } }, { code: { $regex: keySearch, $options: 'i' } }];
     if (status || status === 0) where.status = status;
     if (type) where.type = type;
-    const documents = await getListTemplateMd(where, page, limit);
-    const total = await countListTemplateMd(where);
+    const documents = await listTemplateMd(where, page, limit);
+    const total = await countTemplateMd(where);
     res.json({ status: true, data: { documents, total } });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
@@ -24,7 +24,7 @@ export const detailTemplate = async (req, res) => {
     const { error, value } = validateData(detailTemplateValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id } = value;
-    const data = await getDetailTemplateMd({ _id });
+    const data = await detailTemplateMd({ _id });
     if (!data) return res.status(400).json({ status: false, mess: 'Mẫu thông báo không tồn tại!' });
     res.json({ status: true, data });
   } catch (error) {
@@ -51,13 +51,13 @@ export const addTemplate = async (req, res) => {
     if (error) return res.status(400).json({ status: false, mess: error });
     let { subject, code, content, description, status, type } = value;
 
-    const checkSubject = await getDetailTemplateMd({ subject });
+    const checkSubject = await detailTemplateMd({ subject });
     if (checkSubject) return res.status(400).json({ status: false, mess: 'Tiêu đề đã tồn tại!' });
 
-    const checkCode = await getDetailTemplateMd({ code });
+    const checkCode = await detailTemplateMd({ code });
     if (checkCode) return res.status(400).json({ status: false, mess: 'Mã mẫu thông báo đã tồn tại!' });
 
-    const data = await addTemplateMd({ by: req.userInfo._id, subject, code, content, description, status, type });
+    const data = await createTemplateMd({ by: req.userInfo._id, subject, code, content, description, status, type });
     res.status(201).json({ status: true, data });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
@@ -70,16 +70,16 @@ export const updateTemplate = async (req, res) => {
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id, subject, code, content, description, status, type } = value;
 
-    const template = await getDetailTemplateMd({ _id });
+    const template = await detailTemplateMd({ _id });
     if (!template) return res.status(400).json({ status: false, mess: 'Mẫu thông báo không tồn tại!' });
 
     if (subject) {
-      const checkSubject = await getDetailTemplateMd({ subject });
+      const checkSubject = await detailTemplateMd({ subject });
       if (checkSubject) return res.status(400).json({ status: false, mess: 'Tiêu đề đã tồn tại!' });
     }
 
     if (code) {
-      const checkCode = await getDetailTemplateMd({ code });
+      const checkCode = await detailTemplateMd({ code });
       if (checkCode) return res.status(400).json({ status: false, mess: 'Mã mẫu thông báo đã tồn tại!' });
     }
 

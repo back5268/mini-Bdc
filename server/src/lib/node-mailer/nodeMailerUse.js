@@ -1,4 +1,4 @@
-import { getDetailTemplateMd } from '@models';
+import { detailTemplateMd } from '@models';
 import { sendMail } from './config';
 
 export const replaceFistText = (inputString = '', prefix = '\\$') => {
@@ -14,7 +14,7 @@ export const convertParams = (params, html) => {
 };
 
 export const sendMailUse = async ({ type, params, to }) => {
-  const template = await getDetailTemplateMd({ type, status: 1 });
+  const template = await detailTemplateMd({ type, status: 1 });
   if (template) {
     const subject = convertParams(params, template.subject);
     const html = convertParams(params, template.content);

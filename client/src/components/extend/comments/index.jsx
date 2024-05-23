@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import { SendMessage } from './SendMessage';
 import { Comment } from './Comment';
-import { useAuthContext } from '@context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { useConfirmState } from '@store';
+import { useConfirmState, useUserState } from '@store';
 
 const Comments = ({ title, maxHeight, comments = [], type = 1, setRender, objectId }) => {
   const navigate = useNavigate();
   const { showConfirm } = useConfirmState();
-  const { userInfo } = useAuthContext();
+  const { userInfo } = useUserState();
   const [focused, setFocused] = useState(null);
 
   useEffect(() => {

@@ -4,29 +4,26 @@ import * as yup from 'yup';
 export const UserValidation = yup.object({
   email: yup.string().email('Email không đúng định dạng!').required('Email không được bỏ trống!'),
   username: yup.string().required('Tài khoản không được bỏ trống!'),
-  name: yup.string().required('Họ tên không được bỏ trống!'),
-  code: yup.string().required('Mã nhân viên không được bỏ trống!')
+  fullName: yup.string().required('Họ tên không được bỏ trống!'),
+  code: yup.string().required('Mã nhân viên không được bỏ trống!'),
+  department: yup.string().required('Phòng ban không được bỏ trống!')
 });
 
 export const PermissionValidation = yup.object({
   name: yup.string().required('Tên nhóm quyền không được bỏ trống!')
 });
 
-export const LessonValidation = yup.object({
-  courseId: yup.string().required('Khóa học không được bỏ trống!'),
-  title: yup.string().required('Tiêu đề không được bỏ trống!'),
-  code: yup.string().required('Tiêu đề không được bỏ trống!'),
-  author: yup.string().required('Tác giả không được bỏ trống!')
+export const DepartmentValidation = yup.object({
+  name: yup.string().required('Tên phòng ban không được bỏ trống!'),
+  code: yup.string().required('Mã phòng ban không được bỏ trống!')
 });
 
-export const QuestionValidation = yup.object({
-  lessonId: yup.string().required('Bài giảng không được bỏ trống!'),
-  content: yup.string().required('Câu hỏi không được bỏ trống!'),
-  answer: yup.string().required('Câu trả lời không được bỏ trống!')
-});
-
-export const PostValidation = yup.object({
-  title: yup.string().required('Tiêu đề không được bỏ trống!')
+export const ProjectValidation = yup.object({
+  name: yup.string().required('Tên dự án không được bỏ trống!'),
+  code: yup.string().required('Mã dự án không được bỏ trống!'),
+  address: yup.string().required('Mã dự án không được bỏ trống!'),
+  email: yup.string().email('Email không đúng định dạng!').required('Email không được bỏ trống!'),
+  phone: yup.string().matches(REGEX.C_PHONE, 'Số điện thoại không đúng định dạng!').required('Mật khẩu không được bỏ trống!')
 });
 
 export const UserInfoValidation = yup.object({
@@ -82,11 +79,11 @@ export const PaymentValidation = yup.object({
   phone: yup.string().matches(REGEX.C_PHONE, 'Số điện thoại không đúng định dạng!').required('Số điện thoại không được bỏ trống!'),
   city: yup.string().required('Tỉnh / Thành phố không được bỏ trống!'),
   district: yup.string().required('Quận / Huyện không được bỏ trống!'),
-  ward: yup.string().required('Phường / Xã không được bỏ trống!'),
+  ward: yup.string().required('Phường / Xã không được bỏ trống!')
 });
 
 export const NewsValidation = yup.object({
   title: yup.string().required('Tiêu đề không được bỏ trống!'),
   content: yup.string().required('Nội dung không được bỏ trống!'),
-  time: yup.number().required('Thời gian đọc không được bỏ trống!'),
+  time: yup.number().required('Thời gian đọc không được bỏ trống!')
 });

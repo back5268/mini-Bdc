@@ -35,7 +35,7 @@ const SignIn = () => {
 
   return (
     <FormAuth title="Quên mật khẩu">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-1">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         <InputForm id="email" label="Email (*)" type="email" register={register} errors={errors} className="!w-full" />
         <InputForm id="username" label="Tài khoản (*)" register={register} errors={errors} className="!w-full" />
         <InputOtp

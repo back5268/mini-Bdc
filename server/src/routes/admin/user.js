@@ -6,7 +6,7 @@ export const userRouter = express.Router();
 
 userRouter.get('/getListUser', getListUser);
 userRouter.get('/detailUser', detailUser);
-userRouter.post('/deleteUser', deleteUser);
-userRouter.post('/resetPassword', resetPassword);
+userRouter.delete('/deleteUser', deleteUser);
 userRouter.post('/addUser', upload.single('avatar'), addUser);
-userRouter.post('/updateUser', upload.single('avatar'), updateUser);
+userRouter.put('/resetPassword', resetPassword);
+userRouter.put('/updateUser', upload.single('avatar'), updateUser);

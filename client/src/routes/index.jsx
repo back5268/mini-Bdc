@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import routes from './routes';
-import { useAuthContext } from '@context/AuthContext';
 import { AccessDenied, ErrorPage } from '@view/auth';
 import AdminLayout from '@layout';
+import { useUserState } from '@store';
 
 const Router = () => {
-  const { userInfo } = useAuthContext();
+  const { userInfo } = useUserState();
 
   return (
     <Routes>

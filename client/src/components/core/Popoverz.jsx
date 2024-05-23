@@ -20,7 +20,7 @@ const Popoverz = (props) => {
       {...prop}
     >
       <PopoverHandler>
-        <Button className={className}>{header}</Button>
+        <Button color="white" className={className}>{header}</Button>
       </PopoverHandler>
       <PopoverContent>{children}</PopoverContent>
     </Popover>

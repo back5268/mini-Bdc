@@ -9,8 +9,6 @@
       "@components/*": ["src/components/*"],
       "@constant": ["src/constant"],
       "@constant/*": ["src/constant/*"],
-      "@context": ["src/context"],
-      "@context/*": ["src/context/*"],
       "@hook": ["src/hook"],
       "@hook/*": ["src/hook/*"],
       "@layout": ["src/layout"],

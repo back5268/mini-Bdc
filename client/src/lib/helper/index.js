@@ -21,8 +21,6 @@ export const refreshObject = (object) => {
 };
 
 export const checkEqualProp = (object1, object2) => {
-  console.log(object1);
-  console.log(object2);
   const newObject = {};
   for (const key in object1) {
     if (JSON.stringify(object1[key]) !== JSON.stringify(object2[key])) {

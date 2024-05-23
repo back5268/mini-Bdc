@@ -1,6 +1,7 @@
 import { CheckBoxz } from '@components/core';
 import { List, ListItem, ListItemPrefix } from '@material-tailwind/react';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 
 const MultiCheckBox = (props) => {
   const {
@@ -15,6 +16,14 @@ const MultiCheckBox = (props) => {
     ...prop
   } = props;
   const [selectAll, setSelectAll] = useState(false);
+
+  useEffect(() => {
+    if (value?.length > 0) {
+      const checkValue = value.filter((v) => v?.startsWith(id + '---'));
+      if (checkValue.length === options.length) setSelectAll(true);
+      else setSelectAll(false);
+    }
+  }, [value]);
 
   return (
     <List className={`flex-row w-full text-sm flex justify-between ${className}`}>
@@ -42,7 +51,6 @@ const MultiCheckBox = (props) => {
                     });
                     setValue(newValue);
                   }
-                  setSelectAll(!selectAll);
                 }}
                 className="hover:before:opacity-0"
                 containerProps={{
@@ -82,7 +90,7 @@ const MultiCheckBox = (props) => {
                       });
                       if (arrCheck?.length === options.length) setSelectAll(true);
                       else setSelectAll(false);
-                      setValue(newValue)
+                      setValue(newValue);
                     }}
                     className="hover:before:opacity-0"
                     containerProps={{

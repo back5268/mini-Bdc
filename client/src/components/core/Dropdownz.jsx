@@ -1,5 +1,5 @@
 import { Option, Select } from '@material-tailwind/react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 export const Dropdownz = (props) => {
   const {

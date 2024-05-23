@@ -4,3 +4,6 @@ export * from './user';
 export * from './template';
 export * from './log';
 export * from './permission';
+export * from './tool';
+export * from './department';
+export * from './project';

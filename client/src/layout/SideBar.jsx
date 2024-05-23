@@ -1,26 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Logo } from '@components/base';
-import { Buttonz, Inputz } from '@components/core';
-import { items } from './items';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Buttonz, Dropdownz, Hrz, Inputz } from '@components/core';
+import { useLocation } from 'react-router-dom';
 import { NavGroup, NavItem } from '@layout/shared';
+import { useToastState, useUserState } from '@store';
+import {
+  Squares2X2Icon,
+  ChartBarIcon,
+  BuildingOffice2Icon,
+  ServerIcon,
+  UsersIcon,
+  Cog6ToothIcon,
+  CalculatorIcon,
+  ComputerDesktopIcon
+} from '@heroicons/react/24/outline';
+
+const icons = {
+  Squares2X2Icon,
+  ChartBarIcon,
+  BuildingOffice2Icon,
+  ServerIcon,
+  UsersIcon,
+  Cog6ToothIcon,
+  CalculatorIcon,
+  ComputerDesktopIcon
+};
 
 const Sidebar = (props) => {
   const { showSidebar, onSignOut } = props;
-  const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { tools, projects, project, setProject } = useUserState();
+  const { showToast } = useToastState();
   const [open, setOpen] = useState(0);
 
   useEffect(() => {
     let title;
-    const currentIndex = items.findIndex((item) => {
+    const currentIndex = tools.findIndex((item) => {
       if (item.type === 'item') {
-        if ('/admin' + item.route === pathname) title = item.label;
+        if (item.route === pathname) title = item.label;
       } else {
-        const childIndex = item.items?.findIndex((child) => pathname.includes('/admin' + child.route));
+        const childIndex = item.children?.findIndex((child) => (child.route === '/' ? pathname === '/' : pathname.startsWith(child.route)));
         if (childIndex >= 0) {
-          title = item.items[childIndex].label;
+          title = item.children[childIndex].label;
           return true;
         }
       }
@@ -29,34 +51,46 @@ const Sidebar = (props) => {
     if (title) document.title = title;
   }, [pathname]);
 
+  const onSelectProject = (e) => {
+    setProject(e);
+    localStorage.setItem('project', e)
+    showToast({ title: 'Đổi dự án thành công', severity: 'success' });
+  };
+
   return (
     <div
-      className={`fixed left-0 inset-y-0 h-screen z-40 w-full max-w-[16rem] p-2 shadow-xl shadow-blue-gray-900/5 
+      className={`fixed left-0 inset-y-0 h-screen z-40 w-full max-w-[18rem] shadow-xl shadow-blue-gray-900/5 
       bg-sidebar text-on-sidebar transition-all duration-500 ease-in-out ${showSidebar ? '' : '-translate-x-full'}`}
     >
-      <div className="mb-2 flex items-center gap-4 p-4">
-        <Logo />
+      <div className="p-4">
+        <div className="mb-2 flex items-center gap-4 p-4">
+          <Logo />
+        </div>
+        <Dropdownz
+          value={project}
+          onChange={onSelectProject}
+          className="!w-full !text-white"
+          label="Chọn dự án"
+          options={projects}
+          optionLabel="name"
+          optionValue="_id"
+        />
       </div>
-      <Inputz
-        size="md"
-        className="px-0 !w-full"
-        icon={<MagnifyingGlassIcon className="h-5 w-5 text-on-sidebar cursor-pointer" />}
-        label="Tìm kiếm"
-      />
-      <nav className="flex flex-col gap-1 text-base font-normal mt-4 h-body-sidebar">
-        {items?.map((item, index) => {
-          if (item.type === 'item') return <NavItem key={index} item={item} pathname={pathname} />;
-          else return <NavGroup key={index} item={item} value={index + 1} open={open} setOpen={setOpen} pathname={pathname} />;
+      <nav className="flex flex-col gap-1 text-base font-normal mt-4 h-body-sidebar overflow-scroll px-4">
+        {tools?.map((item, index) => {
+          const type = item.children?.length === 1 ? 'item' : 'group';
+          const Icon = icons[item.icon];
+          if (type === 'item') return <NavItem key={index} item={item.children[0]} pathname={pathname} Icon={Icon} />;
+          else return <NavGroup key={index} item={item} value={index + 1} open={open} setOpen={setOpen} pathname={pathname} Icon={Icon} />;
         })}
       </nav>
-      <hr className="my-3 border-on-sidebar" />
-      <div className="flex flex-col gap-2">
-        <Buttonz className="w-full" onClick={() => navigate('/')}>
-          Chuyển đến trang chủ
-        </Buttonz>
-        <Buttonz onClick={onSignOut} variant="outlined" className="w-full">
-          Đăng xuất
-        </Buttonz>
+      <div className="p-4">
+        <Hrz className="my-3 border-on-sidebar" />
+        <div className="flex flex-col gap-2">
+          <Buttonz onClick={onSignOut} variant="outlined" className="w-full">
+            Đăng xuất
+          </Buttonz>
+        </div>
       </div>
     </div>
   );

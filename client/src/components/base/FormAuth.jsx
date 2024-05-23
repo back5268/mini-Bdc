@@ -1,12 +1,12 @@
-import { useAuthContext } from '@context/AuthContext';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { Logo } from '.';
 import { Cardz } from '@components/core';
+import { useUserState } from '@store';
 
 const FormAuth = (props) => {
   const { title, children } = props;
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated } = useUserState();
 
   if (isAuthenticated) return <Navigate to="/" />;
   return (
@@ -23,7 +23,7 @@ const FormAuth = (props) => {
             <Logo className="m-4" />
             <p className="mb-8 text-md">{title}</p>
           </div>
-          {children}
+          <div className="p-4">{children}</div>
         </Cardz>
       </div>
     </div>

@@ -4,15 +4,14 @@ import { DataTable, FormList, TimeBody } from '@components/base';
 import DataFilter from '@components/base/DataFilter';
 import { Buttonz, Dialogz, Dropdownz, Hrz, Inputz } from '@components/core';
 import { statuses } from '@constant';
-import { useAuthContext } from '@context/AuthContext';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
 import React, { useState } from 'react';
 import DetailUser from './Detail';
-import { useConfirmState, useToastState } from '@store';
+import { useConfirmState, useToastState, useUserState } from '@store';
 
-const Personnel = () => {
-  const { userInfo, setUserInfo } = useAuthContext();
+const Users = () => {
+  const { userInfo, setUserInfo } = useUserState();
   const { showConfirm } = useConfirmState();
   const { showToast } = useToastState();
   const initParams = useGetParams();
@@ -20,10 +19,10 @@ const Personnel = () => {
   const [filter, setFilter] = useState({});
   const [open, setOpen] = useState(false);
   const [password, setPassword] = useState(null);
-  const { isLoading, data } = useGetApi(getListUserApi, { ...params, type: 'user' }, 'personel');
+  const { isLoading, data } = useGetApi(getListUserApi, { ...params, type: 'user' }, 'users');
 
   const columns = [
-    { label: 'Họ tên', field: 'name' },
+    { label: 'Họ tên', field: 'fullName' },
     { label: 'Mã nhân viên', field: 'code' },
     { label: 'Tài khoản', field: 'username' },
     { label: 'Email', field: 'email' },
@@ -106,4 +105,4 @@ const Personnel = () => {
   );
 };
 
-export default Personnel;
+export default Users;

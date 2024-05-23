@@ -2,9 +2,9 @@ import { create } from 'zustand';
 
 const useDataState = create((set, get) => ({
   users: [],
-  products: [],
+  departments: [],
   setUsers: (users) => set({ users }),
-  setProducts: (products) => set({ products }),
+  setDepartments: (departments) => set({ departments }),
 }));
 
 const getDataState = () => useDataState.getState();

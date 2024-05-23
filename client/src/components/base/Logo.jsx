@@ -8,7 +8,7 @@ const Logo = (props) => {
       <div className={classNameImg}>
         <img src="/images/logo.png" alt="Logo" className={classNameImg} />
       </div>
-      <span>Decor Start</span>
+      <span>Mini BDC</span>
     </div>
   );
 };

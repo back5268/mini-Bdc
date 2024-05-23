@@ -6,7 +6,7 @@ export const routes = (app) => {
   app.use('/admin', adminRouter);
   app.use('/auth', authRouter);
   app.use('/info', infoRouter);
-  app.get('/', (req, res) => {
-    res.json('Welcome to Decor Shop!');
+  app.get('/', async (req, res) => {
+    res.json('Welcome to mini-Bdc!');
   });
 };

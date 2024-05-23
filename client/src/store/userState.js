@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-const initState = {
+export const INITIAL_USER_INFO = {
   username: '',
   name: '',
   email: '',
@@ -12,11 +12,15 @@ const initState = {
 };
 
 const useUserState = create((set, get) => ({
-  userInfo: initState,
+  userInfo: INITIAL_USER_INFO,
   isAuthenticated: false,
   type: false,
-  setUserInfo: (userInfo) => set({ userInfo, isAuthenticated: true, type: userInfo?.type }),
-  clearUserInfo: () => set({ userInfo: initState, isAuthenticated: false, type: false })
+  projects: [],
+  tools: [],
+  project: localStorage.getItem('project'),
+  setUserInfo: (data) => set({ ...data, isAuthenticated: true, type: data.userInfo?.type }),
+  clearUserInfo: () => set({ userInfo: INITIAL_USER_INFO, isAuthenticated: false, type: false, projects: [], tools: [] }),
+  setProject: (project) => set({ project })
 }));
 
 const getUserState = () => useUserState.getState();

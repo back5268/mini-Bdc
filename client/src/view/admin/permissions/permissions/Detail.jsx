@@ -32,7 +32,7 @@ const Permissions = (props) => {
 const Users = (props) => {
   const { userData = [], users = [], setUsers = [] } = props;
   const columns = [
-    { label: 'Tên nhân sự', field: 'name' },
+    { label: 'Tên nhân sự', field: 'fullName' },
     { label: 'Mã nhân sự', field: 'code' },
     { label: 'Tài khoản', field: 'username' },
     { label: 'Email', field: 'email' }
@@ -44,7 +44,7 @@ const Users = (props) => {
         label="Chọn nhân sự (*)"
         value={users}
         setValue={setUsers}
-        options={userData.map((u) => ({ key: u._id, label: `${u.name} - ${u.code}` }))}
+        options={userData.map((u) => ({ key: u._id, label: `${u.fullName} - ${u.code}` }))}
         className="my-2 lg:w-6/12 mt-2"
       />
       <DataTable
@@ -67,7 +67,7 @@ const DetailPermission = () => {
   const { _id } = useParams();
   const isUpdate = Boolean(_id);
   const { data: item } = useGetApi(detailPermissionApi, { _id }, 'permission', isUpdate);
-  const { data: toolData } = useGetApi(getListToolApi, { _id }, 'tools');
+  const { data: toolData } = useGetApi(getListToolApi, { status: 1 }, 'tools');
   const { users: userData } = useDataState();
   const [activeTab, setActiveTab] = useState('permissions');
   const [tools, setTools] = useState([]);

@@ -5,6 +5,6 @@ export const permissionRouter = express.Router();
 
 permissionRouter.get('/getListPermission', getListPermission);
 permissionRouter.get('/detailPermission', detailPermission);
-permissionRouter.post('/deletePermission', deletePermission);
+permissionRouter.delete('/deletePermission', deletePermission);
 permissionRouter.post('/addPermission', addPermission);
-permissionRouter.post('/updatePermission', updatePermission);
+permissionRouter.put('/updatePermission', updatePermission);

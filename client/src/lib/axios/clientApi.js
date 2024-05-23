@@ -1,4 +1,4 @@
-import { getToastState } from '@store';
+import { getToastState, getUserState } from '@store';
 import axios from 'axios';
 
 export const clientApi = axios.create({
@@ -10,7 +10,11 @@ const { showToast } = getToastState();
 clientApi.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
+    const project = getUserState()?.project;
     config.headers['Bearer'] = token;
+    config.headers['info'] = JSON.stringify({
+      project
+    });
     return config;
   },
   (error) => {

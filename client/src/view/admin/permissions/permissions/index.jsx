@@ -26,7 +26,7 @@ const Permissions = () => {
         return (
           <div className="flex flex-wrap gap-2 w-full">
             {item.users?.map((user, index) => {
-              const label = users.find(u => u._id === user)?.name
+              const label = users.find(u => u._id === user)?.fullName
               return <Chipz key={index} value={label} className="text-center" />
             })}
           </div>
@@ -59,9 +59,9 @@ const Permissions = () => {
         params={params}
         setParams={setParams}
         baseActions={['create', 'detail', 'delete']}
-        actionsInfo={{ onViewDetail: (item) => navigate(`/admin/permissions/detail/${item._id}`), deleteApi: deletePermissionApi }}
+        actionsInfo={{ onViewDetail: (item) => navigate(`/permissions/detail/${item._id}`), deleteApi: deletePermissionApi }}
         statusInfo={{ changeStatusApi: updatePermissionApi }}
-        headerInfo={{ onCreate: () => navigate('/admin/permissions/create') }}
+        headerInfo={{ onCreate: () => navigate('/permissions/create') }}
       />
     </FormList>
   );

@@ -1,7 +1,7 @@
 import express from 'express';
-import { getListTool, getListUserInfo } from '@controller';
+import { getListDepartmentInfo, getListUserInfo } from '@controller';
 
 export const infoRouter = express.Router();
 
 infoRouter.get('/getListUserInfo', getListUserInfo);
-infoRouter.get('/getListTool', getListTool);
+infoRouter.get('/getListDepartmentInfo', getListDepartmentInfo);

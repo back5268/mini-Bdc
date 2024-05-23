@@ -7,4 +7,5 @@ export { default as DataTable } from './DataTable';
 export { default as ConfirmDialog } from './ConfirmDialog';
 export { default as LazyLoading } from './LazyLoading';
 export { default as Logo } from './Logo';
+export { default as AuthProvider } from './AuthProvider';
 export * from './BodyTable';
