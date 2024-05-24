@@ -5,3 +5,4 @@ export * from './templateController';
 export * from './toolController';
 export * from './departmentController';
 export * from './projectController';
+export * from './priceController';
