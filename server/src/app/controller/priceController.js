@@ -6,11 +6,12 @@ export const getListPrice = async (req, res) => {
   try {
     const { error, value } = validateData(listPriceValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { page, limit, keySearch, recipe, serviceType } = value;
+    const { page, limit, keySearch, recipe, serviceType, status } = value;
     const where = {};
     if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }, { code: { $regex: keySearch, $options: 'i' } }];
     if (recipe) where.recipe = recipe;
     if (serviceType) where.serviceType = serviceType;
+    if (status || status === 0) where.status = status;
     const documents = await listPriceMd(where, page, limit);
     const total = await countPriceMd(where);
     res.json({ status: true, data: { documents, total } });

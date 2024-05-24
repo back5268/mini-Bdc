@@ -3,7 +3,8 @@ export const listPriceValid = {
   limit: 'number',
   keySearch: { type: 'string', allowNull: true },
   recipe: { type: 'number', allowNull: true },
-  serviceType: { type: 'number', allowNull: true }
+  serviceType: { type: 'number', allowNull: true },
+  status: { type: 'number', allowNull: true },
 };
 
 export const detailPriceValid = {

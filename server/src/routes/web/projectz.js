@@ -2,12 +2,12 @@ import { addProject, deleteProject, detailProject, getListProject, updateProject
 import { upload } from '@lib/multer';
 import express from 'express';
 
-export const projectRouter = express.Router();
+export const projectzRouter = express.Router();
 
-projectRouter.get('/getListProject', getListProject);
-projectRouter.get('/detailProject', detailProject);
-projectRouter.delete('/deleteProject', deleteProject);
-projectRouter.post(
+projectzRouter.get('/getListProject', getListProject);
+projectzRouter.get('/detailProject', detailProject);
+projectzRouter.delete('/deleteProject', deleteProject);
+projectzRouter.post(
   '/addProject',
   upload.fields([
     { name: 'avatar', maxCount: 1 },
@@ -15,7 +15,7 @@ projectRouter.post(
   ]),
   addProject
 );
-projectRouter.put(
+projectzRouter.put(
   '/updateProject',
   upload.fields([
     { name: 'avatar', maxCount: 1 },

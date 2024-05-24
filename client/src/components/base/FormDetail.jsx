@@ -45,6 +45,10 @@ const FormDetail = (props) => {
 
   const onSubmit = async (e) => {
     const data = handleData(e);
+    if (typeof data === 'string') {
+      showToast({ title: data, severity: 'error' });
+      return;
+    }
     const response = await mutateAsync(data);
     if (response) {
       onSuccess();

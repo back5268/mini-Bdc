@@ -21,9 +21,16 @@ export const DepartmentValidation = yup.object({
 export const ProjectValidation = yup.object({
   name: yup.string().required('Tên dự án không được bỏ trống!'),
   code: yup.string().required('Mã dự án không được bỏ trống!'),
-  address: yup.string().required('Mã dự án không được bỏ trống!'),
+  address: yup.string().required('Địa chỉ không được bỏ trống!'),
   email: yup.string().email('Email không đúng định dạng!').required('Email không được bỏ trống!'),
   phone: yup.string().matches(REGEX.C_PHONE, 'Số điện thoại không đúng định dạng!').required('Mật khẩu không được bỏ trống!')
+});
+
+export const PriceValidation = yup.object({
+  name: yup.string().required('Tên bảng giá không được bỏ trống!'),
+  code: yup.string().required('Mã bảng giá không được bỏ trống!'),
+  recipe: yup.string().required('Loại bảng giá không được bỏ trống!'),
+  serviceType: yup.string().required('Loại dịch vụ không được bỏ trống!'),
 });
 
 export const UserInfoValidation = yup.object({

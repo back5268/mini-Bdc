@@ -7,3 +7,4 @@ export * from './permission';
 export * from './tool';
 export * from './department';
 export * from './project';
+export * from './price';

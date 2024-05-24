@@ -33,8 +33,8 @@ const Projects = () => {
           label="Tìm kiếm theo tên, mã dự án"
         />
         <Inputz
-          value={filter.keySearch}
-          onChange={(e) => setFilter({ ...filter, keySearch: e.target.value })}
+          value={filter.email}
+          onChange={(e) => setFilter({ ...filter, email: e.target.value })}
           label="Tìm kiếm theo email, số điện thoại"
         />
         <Dropdownz value={filter.status} onChange={(e) => setFilter({ ...filter, status: e })} options={statuses} label="Trạng thái" />
