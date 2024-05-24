@@ -4,7 +4,7 @@ export const listPriceValid = {
   keySearch: { type: 'string', allowNull: true },
   recipe: { type: 'number', allowNull: true },
   serviceType: { type: 'number', allowNull: true },
-  status: { type: 'number', allowNull: true },
+  status: { type: 'number', allowNull: true }
 };
 
 export const detailPriceValid = {

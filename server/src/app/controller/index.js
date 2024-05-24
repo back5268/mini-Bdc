@@ -6,3 +6,4 @@ export * from './toolController';
 export * from './departmentController';
 export * from './projectController';
 export * from './priceController';
+export * from './serviceController';

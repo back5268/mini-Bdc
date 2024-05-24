@@ -6,3 +6,4 @@ export * from './departmentValidation';
 export * from './projectValidation';
 export * from './projectValidation';
 export * from './priceValidation';
+export * from './serviceValidation';

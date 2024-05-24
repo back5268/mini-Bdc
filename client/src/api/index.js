@@ -8,3 +8,4 @@ export * from './tool';
 export * from './department';
 export * from './project';
 export * from './price';
+export * from './service';
