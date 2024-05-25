@@ -9,3 +9,4 @@ export * from './department';
 export * from './project';
 export * from './price';
 export * from './service';
+export * from './vehicle';

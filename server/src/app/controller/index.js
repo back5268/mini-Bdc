@@ -7,3 +7,4 @@ export * from './departmentController';
 export * from './projectController';
 export * from './priceController';
 export * from './serviceController';
+export * from './vehicleController';

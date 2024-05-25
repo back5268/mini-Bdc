@@ -35,6 +35,18 @@ export const getListService = async (req, res) => {
   }
 };
 
+export const getListServiceInfo = async (req, res) => {
+  try {
+    const { type, status } = req.query;
+    const where = { project: req.project?._id };
+    if (type) where.type = type;
+    if (status || status === 0) where.status = status;
+    res.json({ status: true, data: await listServiceMd(where) });
+  } catch (error) {
+    res.status(500).json({ status: false, mess: error.toString() });
+  }
+};
+
 export const detailService = async (req, res) => {
   try {
     const { error, value } = validateData(detailServiceValid, req.query);
