@@ -33,6 +33,13 @@ export const PriceValidation = yup.object({
   serviceType: yup.string().required('Loại dịch vụ không được bỏ trống!'),
 });
 
+export const ServiceValidation = yup.object({
+  name: yup.string().required('Tên dịch vụ không được bỏ trống!'),
+  code: yup.string().required('Mã dịch vụ không được bỏ trống!'),
+  price: yup.string().required('Bảng giá không được bỏ trống!'),
+  type: yup.string().required('Loại dịch vụ không được bỏ trống!'),
+});
+
 export const UserInfoValidation = yup.object({
   email: yup.string().email('Email không đúng định dạng!').required('Email không được bỏ trống!'),
   username: yup.string().required('Tài khoản không được bỏ trống!'),

@@ -7,7 +7,7 @@ export const getListPrice = async (req, res) => {
     const { error, value } = validateData(listPriceValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { page, limit, keySearch, recipe, serviceType, status } = value;
-    const where = {};
+    const where = { project: req.project?._id };
     if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }, { code: { $regex: keySearch, $options: 'i' } }];
     if (recipe) where.recipe = recipe;
     if (serviceType) where.serviceType = serviceType;
@@ -15,6 +15,18 @@ export const getListPrice = async (req, res) => {
     const documents = await listPriceMd(where, page, limit);
     const total = await countPriceMd(where);
     res.json({ status: true, data: { documents, total } });
+  } catch (error) {
+    res.status(500).json({ status: false, mess: error.toString() });
+  }
+};
+
+export const getListPriceInfo = async (req, res) => {
+  try {
+    const { status, serviceType } = req.query;
+    const where = { project: req.project?._id };
+    if (status || status === 0) where.status = status;
+    if (serviceType) where.serviceType = serviceType;
+    res.json({ status: true, data: await listPriceMd(where) });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }

@@ -53,7 +53,7 @@ const Sidebar = (props) => {
 
   const onSelectProject = (e) => {
     setProject(e);
-    localStorage.setItem('project', e)
+    localStorage.setItem('project', e);
     showToast({ title: 'Đổi dự án thành công', severity: 'success' });
   };
 
@@ -76,6 +76,7 @@ const Sidebar = (props) => {
           optionValue="_id"
         />
       </div>
+      <Hrz className="mx-4" />
       <nav className="flex flex-col gap-1 text-base font-normal mt-4 h-body-sidebar overflow-scroll px-4">
         {tools?.map((item, index) => {
           const type = item.children?.length === 1 ? 'item' : 'group';

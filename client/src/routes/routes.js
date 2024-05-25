@@ -2,7 +2,7 @@ import { Dashboard } from '@view/admin';
 import { DetailPermission, Permissions, Tools } from '@view/admin/permissions';
 import { Departments, DetailProject, Projects, Users } from '@view/admin/companies';
 import { ForgotPassword, SignIn } from '@view/auth';
-import { DetailPrice, Prices } from '@view/admin/accountants';
+import { DetailPrice, DetailService, Prices, Services } from '@view/admin/accountants';
 
 const routes = [
   { path: '/auth/signin', element: SignIn, public: true },
@@ -26,7 +26,11 @@ const routes = [
   // ==================== Kế toán ====================
   { path: '/prices', element: Prices, layout: true },
   { path: '/prices/create', element: DetailPrice, layout: true },
-  { path: '/prices/detail/:_id', element: DetailPrice, layout: true }
+  { path: '/prices/detail/:_id', element: DetailPrice, layout: true },
+
+  { path: '/services', element: Services, layout: true },
+  { path: '/services/create', element: DetailService, layout: true },
+  { path: '/services/detail/:_id', element: DetailService, layout: true }
 ];
 
 export default routes;

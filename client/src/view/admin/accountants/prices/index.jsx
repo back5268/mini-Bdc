@@ -25,7 +25,7 @@ const Prices = () => {
   ];
 
   return (
-    <FormList title="Danh sách Bảng giá">
+    <FormList title="Danh sách bảng giá">
       <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="!w-full">
         <Inputz
           value={filter.keySearch}
