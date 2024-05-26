@@ -7,14 +7,14 @@ import {
   updateStatusServiceValid
 } from '@lib/validation';
 import {
-  createServiceMd,
   countServiceMd,
+  createServiceMd,
   deleteServiceMd,
+  detailPriceMd,
   detailServiceMd,
-  listServiceMd,
-  updateServiceMd,
   listApartmentMd,
-  detailPriceMd
+  listServiceMd,
+  updateServiceMd
 } from '@models';
 import { validateData } from '@utils';
 
