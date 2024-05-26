@@ -14,5 +14,5 @@ projectRouter.use('/prices', priceRouter);
 projectRouter.use('/services', serviceRouter);
 projectRouter.use('/vehicles', vehicleRouter);
 projectRouter.use('/apartment-groups', apartmentGroupRouter);
-projectRouter.use('/apartment', apartmentRouter);
+projectRouter.use('/apartments', apartmentRouter);
 projectRouter.use('/electric-waters', electricWaterRouter);

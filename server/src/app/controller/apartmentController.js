@@ -5,6 +5,7 @@ import { validateData } from "@utils";
 export const getListApartment = async (req, res) => {
     try {
         const { error, value } = validateData(listApartmentValid, req.query);
+        console.log(value);
         if (error) return res.status(400).json({ status: false, mess: error });
         const { page, limit, keySearch, project, status } = value;
         const where = {};
@@ -82,9 +83,7 @@ export const addApartment = async (req, res) => {
     try {
         const { error, value } = validateData(addApartmentValid, req.body);
         if (error) return res.status(400).json({ status: false, mess: error });
-        const { name, description, code, area, owner } = value;
-        const apartment = await detailApartmentMd({ _id });
-        if (!apartment) return res.status(400).json({ status: false, mess: 'Căn hộ không tồn tại!' });
+        const { name, description, code, area, owner, floor } = value;
         if (name) {
             const checkName = await detailApartmentMd({ name });
             if (checkName) return res.status(400).json({ status: false, mess: 'Căn hộ đã tồn tại!' });
