@@ -22,20 +22,20 @@ const Permissions = () => {
     {
       label: 'Nhân sự',
       className: 'max-w-96',
-      body: (item) => {
+      body: (e) => {
         return (
           <div className="flex flex-wrap gap-2 w-full">
-            {item.users?.map((user, index) => {
-              const label = users.find(u => u._id === user)?.fullName
-              return <Chipz key={index} value={label} className="text-center" />
+            {e.users?.map((user, index) => {
+              const label = users.find((u) => u._id === user)?.fullName;
+              return <Chipz key={index} value={label} className="text-center" />;
             })}
           </div>
         );
       }
     },
     { label: 'Mô tả', field: 'description' },
-    { label: 'Thời gian tạo', body: (item) => TimeBody(item.createdAt) },
-    { label: 'Thời gian cập nhật', body: (item) => TimeBody(item.updatedAt) }
+    { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
+    { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
   ];
 
   return (

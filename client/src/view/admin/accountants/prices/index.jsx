@@ -18,10 +18,10 @@ const Prices = () => {
   const columns = [
     { label: 'Tên bảng giá', field: 'name' },
     { label: 'Mã bảng giá', field: 'code' },
-    { label: 'Loại bảng giá', body: e => Body(priceType, e.recipe) },
-    { label: 'Loại dịch vụ', body: e => Body(serviceType, e.serviceType) },
-    { label: 'Thời gian tạo', body: (item) => TimeBody(item.createdAt) },
-    { label: 'Thời gian cập nhật', body: (item) => TimeBody(item.updatedAt) }
+    { label: 'Loại bảng giá', body: (e) => Body(priceType, e.recipe) },
+    { label: 'Loại dịch vụ', body: (e) => Body(serviceType, e.serviceType) },
+    { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
+    { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
   ];
 
   return (

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { addVehicleApi, detailVehicleApi, getListServiceInfoApi, updateVehicleApi } from '@api';
 import { FormDetail } from '@components/base';
 import { checkEqualProp } from '@lib/helper';
-import { InputForm, TextAreaz } from '@components/core';
+import { DropdownForm, InputForm, TextAreaz } from '@components/core';
 import { useParams } from 'react-router-dom';
 import { useGetApi } from '@lib/react-query';
 import { UploadFiles } from '@components/shared';

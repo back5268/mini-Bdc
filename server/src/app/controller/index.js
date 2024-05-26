@@ -9,3 +9,5 @@ export * from './templateController';
 export * from './toolController';
 export * from './userController';
 export * from './vehicleController';
+export * from './electricWaterController';
+export * from './infoController';
