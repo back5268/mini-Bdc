@@ -23,8 +23,8 @@ const Vehicles = () => {
     { label: 'Căn hộ', body: (e) => e.apartment?.name },
     { label: 'Loại phương tiện', body: (e) => Body(vehicleType, e.type) },
     { label: 'Dịch vụ', body: (e) => e.service?.name },
-    { label: 'Thời gian tạo', body: (item) => TimeBody(item.createdAt) },
-    { label: 'Thời gian cập nhật', body: (item) => TimeBody(item.updatedAt) }
+    { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
+    { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
   ];
 
   return (

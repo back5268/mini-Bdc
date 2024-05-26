@@ -37,3 +37,8 @@ export const vehicleType = [
   { label: 'Xe máy điện', key: 3 },
   { label: 'Xe đạp', key: 4 },
 ];
+
+export const electricWaterType = [
+  { label: 'Điện', key: 1 },
+  { label: 'Nước', key: 2 },
+];

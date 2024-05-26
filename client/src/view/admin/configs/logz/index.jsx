@@ -18,9 +18,9 @@ const Logs = () => {
   const columns = [
     { label: 'Địa chỉ nhận', field: 'to' },
     { label: 'Tiêu đề', field: 'subject' },
-    { label: 'Loại thông báo', body: (item) => logType.find((c) => c.key === item.type)?.label },
-    { label: 'Thời gian gửi', body: (item) => TimeBody(item.createdAt) },
-    { label: 'Trạng thái', body: (item) => Body(logStatus, item.status) }
+    { label: 'Loại thông báo', body: (e) => logType.find((c) => c.key === e.type)?.label },
+    { label: 'Thời gian gửi', body: (e) => TimeBody(e.createdAt) },
+    { label: 'Trạng thái', body: (e) => Body(logStatus, e.status) }
   ];
 
   return (
