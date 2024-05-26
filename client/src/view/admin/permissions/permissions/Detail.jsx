@@ -30,7 +30,7 @@ const Permissions = (props) => {
 };
 
 const Users = (props) => {
-  const { userData = [], users = [], setUsers = [] } = props;
+  const { userData = [], users = [], setUsers = () => {} } = props;
   const columns = [
     { label: 'Tên nhân sự', field: 'fullName' },
     { label: 'Mã nhân sự', field: 'code' },

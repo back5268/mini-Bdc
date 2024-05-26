@@ -30,3 +30,10 @@ export const serviceType = [
   { label: 'Phí phương tiện', key: 4 },
   { label: 'Phí khác', key: 5 },
 ];
+
+export const vehicleType = [
+  { label: 'Ô tô', key: 1 },
+  { label: 'Xe máy', key: 2 },
+  { label: 'Xe máy điện', key: 3 },
+  { label: 'Xe đạp', key: 4 },
+];

@@ -8,3 +8,4 @@ export * from './serviceController';
 export * from './templateController';
 export * from './toolController';
 export * from './userController';
+export * from './vehicleController';

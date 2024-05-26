@@ -7,4 +7,4 @@ export * from './projectValidation';
 export * from './serviceValidation';
 export * from './templateValidation';
 export * from './userValidation';
-
+export * from './vehicleValidation';

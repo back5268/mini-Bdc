@@ -23,13 +23,25 @@ export const getListService = async (req, res) => {
     const { error, value } = validateData(listServiceValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { page, limit, keySearch, type, status } = value;
-    const where = {};
+    const where = { project: req.project?._id };
     if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }, { code: { $regex: keySearch, $options: 'i' } }];
     if (type) where.type = type;
     if (status || status === 0) where.status = status;
     const documents = await listServiceMd(where, page, limit);
     const total = await countServiceMd(where);
     res.json({ status: true, data: { documents, total } });
+  } catch (error) {
+    res.status(500).json({ status: false, mess: error.toString() });
+  }
+};
+
+export const getListServiceInfo = async (req, res) => {
+  try {
+    const { type, status } = req.query;
+    const where = { project: req.project?._id };
+    if (type) where.type = type;
+    if (status || status === 0) where.status = status;
+    res.json({ status: true, data: await listServiceMd(where) });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }
