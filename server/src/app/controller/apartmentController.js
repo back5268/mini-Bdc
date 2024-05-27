@@ -5,7 +5,6 @@ import { validateData } from "@utils";
 export const getListApartment = async (req, res) => {
     try {
         const { error, value } = validateData(listApartmentValid, req.query);
-        console.log(value);
         if (error) return res.status(400).json({ status: false, mess: error });
         const { page, limit, keySearch, project, status } = value;
         const where = {};

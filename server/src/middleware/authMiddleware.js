@@ -4,6 +4,7 @@ import { detailUserMd } from '@models';
 dotenv.config();
 
 export const authMiddleware = async (req, res, next) => {
+  console.log(req.query, 7);
   const token = req.header('Bearer');
   if (!token) return res.status(401).json({ status: false, mess: 'Token không hợp lệ!' });
   try {
