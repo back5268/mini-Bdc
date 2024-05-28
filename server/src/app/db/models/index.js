@@ -23,5 +23,3 @@ export * from './TemplateMd'
 export * from './ToolMd'
 export * from './UserMd'
 export * from './VehicleMd'
-
-export { default as ElectricWaterMd } from './ElectricWaterMd'
