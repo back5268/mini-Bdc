@@ -6,7 +6,7 @@ const ObjectId = Schema.Types.ObjectId;
 class DebtLogMd extends ModelBase {
   project;
   by;
-  name;
+  title;
   month;
   deadline;
   success;
@@ -19,7 +19,7 @@ class DebtLogMd extends ModelBase {
 export const DebtLog = DebtLogMd.init('DebtLog', {
   project: { type: String, required: true },
   by: { type: ObjectId, ref: 'User', required: true },
-  name: { type: String, required: true },
+  title: { type: String, required: true },
   month: { type: Number, required: true },
   deadline: { type: Date, required: true },
   success: { type: Number, required: true },

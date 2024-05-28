@@ -2,7 +2,7 @@ import { Dashboard } from '@view/admin';
 import { DetailPermission, Permissions, Tools } from '@view/admin/permissions';
 import { Departments, DetailProject, Projects, Users } from '@view/admin/companies';
 import { ForgotPassword, SignIn } from '@view/auth';
-import { DetailPrice, DetailService, DetailVehicle, ElectricWater, Prices, Services, Vehicles } from '@view/admin/accountants';
+import { Debts, DetailPrice, DetailService, DetailVehicle, ElectricWater, Prices, Services, Vehicles } from '@view/admin/accountants';
 
 const routes = [
   { path: '/auth/signin', element: SignIn, public: true },
@@ -37,6 +37,7 @@ const routes = [
   { path: '/vehicles/detail/:_id', element: DetailVehicle, layout: true },
 
   { path: '/electric-waters', element: ElectricWater, layout: true },
+  { path: '/debts', element: Debts, layout: true }
 ];
 
 export default routes;

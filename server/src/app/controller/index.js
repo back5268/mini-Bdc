@@ -11,3 +11,4 @@ export * from './userController';
 export * from './vehicleController';
 export * from './electricWaterController';
 export * from './infoController';
+export * from './debtController';

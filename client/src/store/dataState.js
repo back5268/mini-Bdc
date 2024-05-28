@@ -3,7 +3,7 @@ import { create } from 'zustand';
 const useDataState = create((set, get) => ({
   users: [],
   departments: [],
-  spartments: [],
+  apartments: [],
   services: [],
   setUsers: (users) => set({ users }),
   setDepartments: (departments) => set({ departments }),

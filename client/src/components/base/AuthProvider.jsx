@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const { setUsers, setDepartments } = useDataState();
-  const { setUserInfo } = useUserState();
+  const { setUserInfo, loadingz } = useUserState();
   const [isLoading, setIsLoading] = useState(false);
 
   const checkAuth = async () => {
@@ -32,6 +32,7 @@ const AuthProvider = ({ children }) => {
       const departements = await getListDepartmentInfoApi();
       if (departements) setDepartments(departements);
     } catch (error) {
+      navigate('/auth/signin');
       return false;
     } finally {
       setTimeout(() => {
@@ -50,7 +51,9 @@ const AuthProvider = ({ children }) => {
       setIsLoading(false);
       navigate('/auth/signin');
     }
-  }, []);
+  }, [loadingz]);
+
+  console.log(loadingz);
 
   return <Fragment>{isLoading ? <Loading className="h-8 w-8 border-4" /> : children}</Fragment>;
 };
