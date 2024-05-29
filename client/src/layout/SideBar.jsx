@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Logo } from '@components/base';
 import { Buttonz, Dropdownz, Hrz, Inputz } from '@components/core';
 import { useLocation } from 'react-router-dom';
@@ -30,7 +29,7 @@ const icons = {
 const Sidebar = (props) => {
   const { showSidebar, onSignOut } = props;
   const { pathname } = useLocation();
-  const { tools, projects, project, setProject } = useUserState();
+  const { tools, projects, project, setProject, setLoadingz } = useUserState();
   const { showToast } = useToastState();
   const [open, setOpen] = useState(0);
 
@@ -55,6 +54,7 @@ const Sidebar = (props) => {
     setProject(e);
     localStorage.setItem('project', e);
     showToast({ title: 'Đổi dự án thành công', severity: 'success' });
+    setLoadingz()
   };
 
   return (
