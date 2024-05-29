@@ -42,3 +42,8 @@ export const electricWaterType = [
   { label: 'Điện', key: 1 },
   { label: 'Nước', key: 2 },
 ];
+export const statusApartment = [
+  { id: 1, name: 'Trống' },
+  { id: 2, name: 'Đang cho thuê' },
+  { id: 3, name: 'Đang cải tạo' }
+];

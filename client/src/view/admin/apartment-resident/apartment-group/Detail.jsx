@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 
 const defaultValues = {
   name: '',
-  apartments: '',
+  apartments: [],
   description: ''
 };
 
@@ -43,11 +43,7 @@ const DetailApartmentGroup = () => {
 
   const handleData = (data) => {
     let newData = { ...data };
-    // if (Number(newData.recipe) === 1) {
-    //   if (!newData.prices) return 'Vui lòng nhập giá tiền';
-    //   else newData.prices = [{ from: 0, to: 0, amount: newData.prices }];
-    // } else newData.prices = prices.map((p) => ({ ...p, key: undefined }));
-    // if (isUpdate) newData = { ...checkEqualProp(newData, item), _id };
+    if(!newData.name) return 'Vui lòng nhập tên nhóm căn hộ!'
     return newData;
   };
 

@@ -2,7 +2,7 @@ import { deleteApartmentApi, getListApartmentApi } from '@api';
 import { DataTable, FormList, TimeBody } from '@components/base';
 import DataFilter from '@components/base/DataFilter';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
-import { statuses } from '@constant';
+import { statusApartment, statuses } from '@constant';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
 import { useState } from 'react';
@@ -13,15 +13,24 @@ const Apartment = () => {
   const [filter, setFilter] = useState({});
   const { isLoading, data } = useGetApi(getListApartmentApi, params, 'apartments');
   const navigate = useNavigate();
-
+  const floorBody = (rowData) => {
+    return <div>Tầng {rowData.floor}</div>;
+  };
+  const areaBody = (rowData) => {
+    return <div>{rowData.area} m2</div>;
+  };
+  const statusBody = (rowData) => {
+    return <div>{statusApartment.find((s) => s.id === rowData.status)?.name}</div>;
+  };
   const columns = [
     { label: 'Tên căn hộ ', field: 'name' },
     { label: 'Mã căn hộ', field: 'code' },
-    { label: 'Diện tích', field: 'area' },
-    { label: 'Tầng', field: 'floor' },
+    { label: 'Diện tích', field: 'area', body: (e) => areaBody(e) },
+    { label: 'Tầng', field: 'floor', body: (e) => floorBody(e) },
     { label: 'Chủ sở hữu', body: (e) => e.owner?.fullName || '' },
     { label: 'Người tạo', body: (e) => e.by?.fullName || '' },
     { label: 'Người cập nhật', body: (e) => e.updateBy?.fullName || '' },
+    { label: 'Trạng thái căn hộ', body: (e) => statusBody(e) },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
     { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
   ];

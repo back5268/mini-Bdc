@@ -1,6 +1,7 @@
 import { addApartmentApi, detailApartmentApi, getListUserApi, updateApartmentApi } from '@api';
 import { FormDetail } from '@components/base';
 import { DropdownForm, InputForm, TextAreaz } from '@components/core';
+import { statusApartment } from '@constant';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useGetApi } from '@lib/react-query';
 import { ApartmentValidation } from '@lib/validation';
@@ -68,6 +69,16 @@ const DetailApartment = () => {
           label="Chủ hộ (*)"
           errors={errors}
           id="owner"
+          watch={watch}
+          setValue={setValue}
+        />
+        <DropdownForm
+          options={statusApartment}
+          optionLabel="name"
+          optionValue="id"
+          label="Trạng thái căn hộ (*)"
+          errors={errors}
+          id="status"
           watch={watch}
           setValue={setValue}
         />

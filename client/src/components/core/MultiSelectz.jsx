@@ -12,7 +12,7 @@ const MultiSelectz = (props) => {
     className = '',
     ...prop
   } = props;
-
+  console.log(props);
   return (
     <div className={`w-full p-2 ${className}`}>
       <Select
@@ -40,6 +40,7 @@ const MultiSelectz = (props) => {
               else setValue([...newValue]);
             }
           }
+          console.log(value);
         }}
         size={size}
         color="cyan"

@@ -39,6 +39,7 @@ export const ApartmentValidation = yup.object({
   name: yup.string().required('Tên căn hộ không được bỏ trống!'),
   code: yup.string().required('Mã căn hộ không được bỏ trống!'),
   area: yup.number().required('Diện tích căn hộ không được bỏ trống!'),
+  status: yup.number().required('Trạng thái căn hộ không được bỏ trống!'),
   floor: yup.number().required('Tầng không được bỏ trống!'),
   owner: yup.string().required('Chủ hộ không được bỏ trống!'),
 });
