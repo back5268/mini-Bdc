@@ -1,4 +1,4 @@
-import { getListApartmentApi, updateApartmentApi } from '@api';
+import { getListApartmentApi } from '@api';
 import { DataTable, FormList, TimeBody } from '@components/base';
 import DataFilter from '@components/base/DataFilter';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
@@ -46,7 +46,7 @@ const Apartment = () => {
           setParams={setParams}
           baseActions={['create', 'detail', 'delete']}
           //   actionsInfo={{ onViewDetail: (item) => navigate(`/prices/detail/${item._id}`), deleteApi: deletePriceApi }}
-          statusInfo={{ changeStatusApi: updateApartmentApi }}
+          // statusInfo={{ changeStatusApi: updateApartmentApi }}
           headerInfo={{
             onCreate: () => {
               navigate('/apartments/create');

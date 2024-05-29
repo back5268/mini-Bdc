@@ -93,7 +93,7 @@ export const addApartment = async (req, res) => {
             if (checkCode) return res.status(400).json({ status: false, mess: 'Mã căn hộ đã tồn tại!' });
         }
         value.project = req.project?._id;
-        const data = await createApartmentMd({ by: req.userInfo._id, ...value });
+        const data = await createApartmentMd({ by: req.userInfo._id, status: 1, ...value });
         res.status(201).json({ status: true, data });
     } catch (error) {
         res.status(500).json({ status: false, mess: error.toString() });
