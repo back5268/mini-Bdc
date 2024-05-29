@@ -11,12 +11,22 @@ export const Dropdownz = (props) => {
     optionLabel = 'label',
     options = [],
     className = '',
+    selectClassName = '',
     ...prop
   } = props;
 
   return (
     <div className={`w-full md:w-6/12 lg:w-3/12 p-2 ${className}`}>
-      <Select id={id} value={value ? String(value) : ''} onChange={onChange} size={size} color="cyan" className="rounded-md px-0" {...prop}>
+      <Select
+        menuProps={{ className: 'p-0' }}
+        id={id}
+        value={value ? String(value) : ''}
+        onChange={onChange}
+        size={size}
+        color="cyan"
+        className={`rounded-md px-0 ${selectClassName}`}
+        {...prop}
+      >
         {options?.length > 0 ? (
           options.map((item, index) => {
             let key, label;
@@ -25,7 +35,7 @@ export const Dropdownz = (props) => {
               label = String(item[optionLabel]);
             } else key = label = String(item);
             return (
-              <Option key={index} value={key}>
+              <Option key={index} value={key} className="my-1 py-3">
                 {label}
               </Option>
             );

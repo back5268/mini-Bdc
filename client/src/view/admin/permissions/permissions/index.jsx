@@ -45,7 +45,7 @@ const Permissions = () => {
         <Dropdownz
           value={filter.user}
           onChange={(e) => setFilter({ ...filter, user: e })}
-          options={users.map((u) => ({ key: u._id, label: `${u.name} - ${u.code}` }))}
+          options={users.map((u) => ({ key: u._id, label: `${u.fullName} - ${u.code}` }))}
           label="Nhân sự"
         />
         <Dropdownz value={filter.status} onChange={(e) => setFilter({ ...filter, status: e })} options={statuses} label="Trạng thái" />

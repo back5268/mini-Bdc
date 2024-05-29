@@ -43,7 +43,7 @@ const Users = (props) => {
       <MultiSelectz
         label="Chọn nhân sự (*)"
         value={users}
-        setValue={setUsers}
+        onChange={setUsers}
         options={userData.map((u) => ({ key: u._id, label: `${u.fullName} - ${u.code}` }))}
         className="my-2 lg:w-6/12 mt-2"
       />
