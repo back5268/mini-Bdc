@@ -2,6 +2,7 @@ import { addApartmentGroupApi, detailApartmentGroupApi, getListApartmentApi, upd
 import { FormDetail } from '@components/base';
 import { InputForm, MultiSelectz, TextAreaz } from '@components/core';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { checkEqualProp } from '@lib/helper';
 import { useGetApi } from '@lib/react-query';
 import { ApartmentGroupValidation } from '@lib/validation';
 import { useEffect, useState } from 'react';
@@ -35,15 +36,16 @@ const DetailApartmentGroup = () => {
     if (isUpdate && item) {
       //   if (item.recipe === 1) item.prices = Number(item.prices?.[0]?.amount);
       //   else setPrices(item.prices);
-      //   for (const key in defaultValues) {
-      //     setValue(key, item[key]);
-      //   }
+      for (const key in defaultValues) {
+        setValue(key, item[key]);
+      }
     }
   }, [item]);
 
   const handleData = (data) => {
     let newData = { ...data };
-    if(!newData.name) return 'Vui lòng nhập tên nhóm căn hộ!'
+    if (!newData.name) return 'Vui lòng nhập tên nhóm căn hộ!';
+    if (isUpdate) newData = { ...checkEqualProp(newData, item), _id };
     return newData;
   };
 

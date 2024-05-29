@@ -1,4 +1,4 @@
-import { getListApartmentGroupApi, updateApartmentGroupApi } from '@api';
+import { deleteApartmentGroupApi, getListApartmentGroupApi, updateApartmentGroupApi } from '@api';
 import { DataTable, FormList, TimeBody } from '@components/base';
 import DataFilter from '@components/base/DataFilter';
 import { Chipz, Dropdownz, Hrz, Inputz } from '@components/core';
@@ -57,12 +57,12 @@ const ApartmentGroup = () => {
           params={params}
           setParams={setParams}
           baseActions={['create', 'detail', 'delete', 'update']}
-          //   actionsInfo={{ onViewDetail: (item) => navigate(`/prices/detail/${item._id}`), deleteApi: deletePriceApi }}
+          actionsInfo={{ onViewDetail: (item) => navigate(`/apartment-groups/detail/${item._id}`), deleteApi: deleteApartmentGroupApi }}
           statusInfo={{ changeStatusApi: updateApartmentGroupApi }}
           headerInfo={{
-            onCreate: () =>{
-                navigate('/apartment-groups/create')
-            } 
+            onCreate: () => {
+              navigate('/apartment-groups/create');
+            }
           }}
         />
       </FormList>
