@@ -1,6 +1,6 @@
-import { addApartmentApi, detailApartmentApi, updateApartmentApi } from '@api';
+import { addApartmentApi, detailApartmentApi, getListUserApi, updateApartmentApi } from '@api';
 import { FormDetail } from '@components/base';
-import { InputForm, TextAreaz } from '@components/core';
+import { DropdownForm, InputForm, TextAreaz } from '@components/core';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useGetApi } from '@lib/react-query';
 import { ApartmentValidation } from '@lib/validation';
@@ -20,7 +20,8 @@ const DetailApartment = () => {
   const { _id } = useParams();
   const isUpdate = Boolean(_id);
   const { data: item } = useGetApi(detailApartmentApi, { _id }, 'apartment', isUpdate);
-
+  const { isLoading, data } = useGetApi(getListUserApi, null, 'user');
+  console.log(data);
   const {
     register,
     handleSubmit,
@@ -60,6 +61,16 @@ const DetailApartment = () => {
         <InputForm id="code" label="Mã căn hộ (*)" errors={errors} register={register} />
         <InputForm id="area" label="Diện tích căn hộ (*)" errors={errors} register={register} />
         <InputForm id="floor" label="Tầng (*)" errors={errors} register={register} />
+        <DropdownForm
+          options={data?.documents}
+          optionLabel="fullName"
+          optionValue="_id"
+          label="Chủ hộ (*)"
+          errors={errors}
+          id="owner"
+          watch={watch}
+          setValue={setValue}
+        />
         <TextAreaz id="description" label="Mô tả" value={watch('description')} setValue={(e) => setValue('description', e)} />
       </div>
     </FormDetail>

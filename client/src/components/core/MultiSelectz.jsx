@@ -1,5 +1,4 @@
 import { Option, Select } from '@material-tailwind/react';
-import React from 'react';
 
 const MultiSelectz = (props) => {
   const {
@@ -15,7 +14,7 @@ const MultiSelectz = (props) => {
   } = props;
 
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`w-full p-2 ${className}`}>
       <Select
         id={id}
         value={String(value)}

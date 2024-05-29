@@ -3,6 +3,7 @@ import { convertData, createFormData } from './handleData';
 
 export const getData = (url, params, blob = false, timeout = 600000) => {
   params = convertData(params);
+  console.log(params);
   if (blob)
     return clientApi.get(url, {
       params,

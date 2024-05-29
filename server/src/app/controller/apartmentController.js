@@ -11,7 +11,7 @@ export const getListApartment = async (req, res) => {
         if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }, { description: { $regex: keySearch, $options: 'i' } }];
         if (project) where.project = project;
         if (status || status === 0) where.status = status;
-        const documents = await listApartmentMd(where, page, limit);
+        const documents = await listApartmentMd(where, page, limit, [{ path: 'by', select: 'fullName' }, { path: 'owner', select: 'fullName' }, { path: 'updateBy', select: 'fullName' }]);
         const total = await countApartmentMd(where);
         res.json({ status: true, data: { documents, total } });
     } catch (error) {

@@ -1,6 +1,6 @@
 export const listApartmentValid = {
-    page: 'number',
-    limit: 'number',
+    page: { type: 'number', allowNull: true },
+    limit: { type: 'number', allowNull: true },
     keySearch: { type: 'string', allowNull: true },
     project: { type: 'string', allowNull: true },
     status: { type: 'number', allowNull: true }

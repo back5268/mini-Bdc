@@ -1,4 +1,4 @@
-import { getListApartmentApi } from '@api';
+import { deleteApartmentApi, getListApartmentApi } from '@api';
 import { DataTable, FormList, TimeBody } from '@components/base';
 import DataFilter from '@components/base/DataFilter';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
@@ -19,9 +19,9 @@ const Apartment = () => {
     { label: 'Mã căn hộ', field: 'code' },
     { label: 'Diện tích', field: 'area' },
     { label: 'Tầng', field: 'floor' },
-    { label: 'Chủ sở hữu', field: 'owner' },
-    { label: 'Người tạo', field: 'by' },
-    { label: 'Người cập nhật', field: 'updateBy' },
+    { label: 'Chủ sở hữu', body: (e) => e.owner?.fullName || '' },
+    { label: 'Người tạo', body: (e) => e.by?.fullName || '' },
+    { label: 'Người cập nhật', body: (e) => e.updateBy?.fullName || '' },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
     { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
   ];
@@ -44,8 +44,8 @@ const Apartment = () => {
           columns={columns}
           params={params}
           setParams={setParams}
-          baseActions={['create', 'detail', 'delete']}
-          //   actionsInfo={{ onViewDetail: (item) => navigate(`/prices/detail/${item._id}`), deleteApi: deletePriceApi }}
+          baseActions={['create', 'detail', 'update', 'delete']}
+          actionsInfo={{ deleteApi: deleteApartmentApi }}
           // statusInfo={{ changeStatusApi: updateApartmentApi }}
           headerInfo={{
             onCreate: () => {
