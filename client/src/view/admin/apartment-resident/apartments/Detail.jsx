@@ -3,6 +3,7 @@ import { FormDetail } from '@components/base';
 import { DropdownForm, InputForm, TextAreaz } from '@components/core';
 import { statusApartment } from '@constant';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { checkEqualProp } from '@lib/helper';
 import { useGetApi } from '@lib/react-query';
 import { ApartmentValidation } from '@lib/validation';
 import { useEffect } from 'react';
@@ -14,7 +15,9 @@ const defaultValues = {
   code: '',
   area: 0,
   floor: 0,
-  description: ''
+  description: '',
+  status: 0,
+  owner: ''
 };
 
 const DetailApartment = () => {
@@ -22,7 +25,6 @@ const DetailApartment = () => {
   const isUpdate = Boolean(_id);
   const { data: item } = useGetApi(detailApartmentApi, { _id }, 'apartment', isUpdate);
   const { isLoading, data } = useGetApi(getListUserApi, null, 'user');
-  console.log(data);
   const {
     register,
     handleSubmit,
@@ -37,14 +39,15 @@ const DetailApartment = () => {
   useEffect(() => {
     if (isUpdate && item) {
       for (const key in defaultValues) {
+        console.log(key, item[key]);
         setValue(key, item[key]);
       }
     }
   }, [item]);
 
   const handleData = (data) => {
-    console.log(data);
     let newData = { ...data };
+    if (isUpdate) newData = { ...checkEqualProp(newData, item), _id };
     return newData;
   };
   return (

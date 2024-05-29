@@ -1,7 +1,7 @@
 import { getListApartmentGroupApi, updateApartmentGroupApi } from '@api';
 import { DataTable, FormList, TimeBody } from '@components/base';
 import DataFilter from '@components/base/DataFilter';
-import { Dropdownz, Hrz, Inputz } from '@components/core';
+import { Chipz, Dropdownz, Hrz, Inputz } from '@components/core';
 import { statuses } from '@constant';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
@@ -56,7 +56,7 @@ const ApartmentGroup = () => {
           columns={columns}
           params={params}
           setParams={setParams}
-          baseActions={['create', 'detail', 'delete']}
+          baseActions={['create', 'detail', 'delete', 'update']}
           //   actionsInfo={{ onViewDetail: (item) => navigate(`/prices/detail/${item._id}`), deleteApi: deletePriceApi }}
           statusInfo={{ changeStatusApi: updateApartmentGroupApi }}
           headerInfo={{

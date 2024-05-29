@@ -15,6 +15,7 @@ export const updateApartmentValid = {
     code: { type: 'string', allowNull: true },
     area: { type: 'number', allowNull: true },
     floor: { type: 'number', allowNull: true },
+    status: { type: 'number', allowNull: true },
     owner: { type: 'string', allowNull: true },
 };
 export const updateStatusApartmentValid = {

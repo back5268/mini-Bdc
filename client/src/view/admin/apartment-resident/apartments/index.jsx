@@ -54,7 +54,7 @@ const Apartment = () => {
           params={params}
           setParams={setParams}
           baseActions={['create', 'detail', 'update', 'delete']}
-          actionsInfo={{ deleteApi: deleteApartmentApi }}
+          actionsInfo={{ onViewDetail: (item) => navigate(`/apartments/detail/${item._id}`), deleteApi: deleteApartmentApi }}
           // statusInfo={{ changeStatusApi: updateApartmentApi }}
           headerInfo={{
             onCreate: () => {

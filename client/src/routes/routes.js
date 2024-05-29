@@ -43,6 +43,7 @@ const routes = [
   { path: '/apartment-groups/create', element: DetailApartmentGroup, layout: true },
   { path: '/apartments', element: Apartment, layout: true },
   { path: '/apartments/create', element: DetailApartment, layout: true },
+  { path: '/apartments/detail/:_id', element: DetailApartment, layout: true },
 
 
 
