@@ -1,9 +1,8 @@
-import React from 'react';
+import { Buttonz, Cardz, Dialogz, Hrz } from '@components/core';
+import { Loading } from '@components/shared';
 import { usePostApi } from '@lib/react-query';
 import { useToastState } from '@store';
 import { useNavigate } from 'react-router-dom';
-import { Buttonz, Cardz, Dialogz, Hrz } from '@components/core';
-import { Loading } from '@components/shared';
 
 const Wrapper = ({ isModal, children, title, open, setOpen }) => {
   if (isModal)
@@ -42,7 +41,6 @@ const FormDetail = (props) => {
   const isModal = type === 'modal';
   const { mutateAsync, isPending } = usePostApi(isUpdate ? updateApi : createApi);
   const newTitle = `${isUpdate ? 'Cập nhật' : 'Thêm mới'} ${title && String(title).toLocaleLowerCase()}`;
-
   const onSubmit = async (e) => {
     const data = handleData(e);
     if (typeof data === 'string') {
@@ -59,7 +57,6 @@ const FormDetail = (props) => {
       } else navigate(-1);
     }
   };
-
   return (
     <Wrapper title={newTitle} isModal={isModal} open={open} setOpen={setOpen}>
       <form onSubmit={handleSubmit(onSubmit)}>

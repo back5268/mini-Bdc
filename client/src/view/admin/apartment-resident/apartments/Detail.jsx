@@ -4,16 +4,15 @@ import { InputForm, TextAreaz } from '@components/core';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useGetApi } from '@lib/react-query';
 import { ApartmentValidation } from '@lib/validation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 
 const defaultValues = {
   name: '',
   code: '',
-  recipe: 1,
-  prices: 0,
-  serviceType: '',
+  area: 0,
+  floor: 0,
   description: ''
 };
 
@@ -21,7 +20,6 @@ const DetailApartment = () => {
   const { _id } = useParams();
   const isUpdate = Boolean(_id);
   const { data: item } = useGetApi(detailApartmentApi, { _id }, 'apartment', isUpdate);
-  const [prices, setPrices] = useState([{ key: 1 }]);
 
   const {
     register,
@@ -36,15 +34,14 @@ const DetailApartment = () => {
 
   useEffect(() => {
     if (isUpdate && item) {
-      //   if (item.recipe === 1) item.prices = Number(item.prices?.[0]?.amount);
-      //   else setPrices(item.prices);
-      //   for (const key in defaultValues) {
-      //     setValue(key, item[key]);
-      //   }
+      for (const key in defaultValues) {
+        setValue(key, item[key]);
+      }
     }
   }, [item]);
 
   const handleData = (data) => {
+    console.log(data);
     let newData = { ...data };
     return newData;
   };

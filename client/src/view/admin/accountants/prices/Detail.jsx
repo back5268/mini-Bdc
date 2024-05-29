@@ -1,14 +1,14 @@
-import { PriceValidation } from '@lib/validation';
-import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { addPriceApi, detailPriceApi, updatePriceApi } from '@api';
 import { FormDetail } from '@components/base';
-import { checkEqualProp } from '@lib/helper';
 import { Buttonz, DropdownForm, Hrz, InputForm, TextAreaz } from '@components/core';
-import { useParams } from 'react-router-dom';
-import { useGetApi } from '@lib/react-query';
 import { priceType, serviceType } from '@constant';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { checkEqualProp } from '@lib/helper';
+import { useGetApi } from '@lib/react-query';
+import { PriceValidation } from '@lib/validation';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import Price from './Price';
 
 const defaultValues = {
