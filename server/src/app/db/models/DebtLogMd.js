@@ -6,9 +6,11 @@ const ObjectId = Schema.Types.ObjectId;
 class DebtLogMd extends ModelBase {
   project;
   by;
-  name;
+  title;
   month;
   deadline;
+  apartments;
+  services;
   success;
   error;
   status;
@@ -19,9 +21,11 @@ class DebtLogMd extends ModelBase {
 export const DebtLog = DebtLogMd.init('DebtLog', {
   project: { type: String, required: true },
   by: { type: ObjectId, ref: 'User', required: true },
-  name: { type: String, required: true },
+  title: { type: String, required: true },
   month: { type: Number, required: true },
   deadline: { type: Date, required: true },
+  apartments: [{ type: String, required: true }],
+  services: [{ type: String, required: true }],
   success: { type: Number, required: true },
   error: { type: Number, required: true },
   status: { type: Number, enum: [1, 2], description: '1: Đang xử lý, 2: Đã xử lý', required: true },
@@ -31,6 +35,7 @@ export const DebtLog = DebtLogMd.init('DebtLog', {
       serviceInfo: { type: Object, required: true },
       from: { type: Date, required: true },
       to: { type: Date, required: true },
+      mess: { type: String },
       status: { type: Number, enum: [1, 2], description: '1: Thành công, 2: Thất bại', required: true }
     }
   ],

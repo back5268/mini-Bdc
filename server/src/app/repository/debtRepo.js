@@ -5,45 +5,42 @@ import {
   detailBillMd,
   detailDebitMd,
   detailElectricWaterMd,
-  detailProjectMd,
   detailServiceMd,
+  listServiceMd,
+  listVehicleMd,
   updateBillMd
 } from '@models';
 import moment from 'moment';
 
 export class Debt {
-  constructor({ projectId, apartmentId, serviceId, project, apartment, service, vehicle, month, from, to, deadline, discount }) {
+  constructor({ projectId, apartmentId, serviceId, apartment, service, vehicleType, month, from, to, deadline, discount }) {
     this.projectId = projectId;
     this.apartmentId = apartmentId;
     this.serviceId = serviceId;
-    this.project = project;
     this.apartment = apartment;
     this.service = service;
     this.month = month;
     this.discount = discount;
-    this.vehicle = vehicle;
+    this.vehicleType = vehicleType;
     this.from = moment(from).format('YYYY-MM-DD');
     this.to = moment(to).format('YYYY-MM-DD');
     this.deadline = moment(deadline).format('YYYY-MM-DD');
   }
 
   async setUp() {
-    if (!this.project) this.project = await detailProjectMd({ _id: this.projectId });
     if (!this.apartment)
       this.apartment = await detailApartmentMd({ _id: this.apartmentId, project: this.projectId }, [{ path: 'owner', select: 'fullName' }]);
     if (!this.service)
       this.service = await detailServiceMd({ _id: this.serviceId, project: this.projectId }, [{ path: 'price', select: 'prices recipe' }]);
     this.prices = this.service?.price?.prices;
-    this.serviceType = this.service?.type;
     this.bill = await detailBillMd({ month: this.month, project: this.projectId, apartment: this.apartmentId });
     this.dateUse = this.to.diff(this.from, 'days') + 1;
   }
 
   async valid() {
     if (!this.service) return { status: false, mess: 'Không tìm thấy dịch vụ' };
-    if (!this.apartment) return { status: false, mess: 'Không tìm thấy căn hộ' };
-    if (!this.prices) return { status: false, mess: 'Không tìm thấy bảng giá' };
-    if (this.dateUse <= 0) return { status: false, mess: 'Ngày sử dụng không hợp lệ' };
+    if (!this.apartment) return { serviceInfo: this.service, status: false, mess: 'Không tìm thấy căn hộ' };
+    if (this.dateUse <= 0) return { serviceInfo: this.service, status: false, mess: 'Ngày sử dụng không hợp lệ' };
     if (this.bill && this.bill.status !== 1) return { status: false, mess: `Bảng kê căn hộ tháng ${this.month} đã được duyệt` };
     return { status: true };
   }
@@ -65,12 +62,12 @@ export class Debt {
   async calcElectricWaterFees() {
     const type = this.serviceType === 2 ? 1 : 2;
     const electricWater = await detailElectricWaterMd({
-      project: this.project._id,
+      project: this.projectId,
       apartment: this.apartment._id,
       month: this.month,
       type
     });
-    if (!electricWater) return { mess: `Căn hộ chưa chốt ${type === 1 ? 'điện' : 'nước'} tháng ${this.month}` };
+    if (!electricWater) return { serviceInfo: this.service, mess: `Căn hộ chưa chốt ${type === 1 ? 'điện' : 'nước'} tháng ${this.month}` };
     if (this.service.price?.recipe === 1) {
       const quantity = electricWater.afterNumber - electricWater.beforeNumber;
       const price = this.prices[0]?.amount;
@@ -101,11 +98,34 @@ export class Debt {
   }
 
   async calcVehicleFees() {
-    if (!this.vehicle) return { mess: `Căn hộ không có phương tiện nào hoạt động trong tháng ${this.month}` };
-    const quantity = 1;
-    const price = this.prices[0]?.amount;
-    const cost = price * quantity;
-    return { quantity, price, cost };
+    let cost = 0;
+    const data = [];
+    const services = await listServiceMd(
+      {
+        apartments: { $elemMatch: { $eq: this.apartmentId } },
+        status: 1,
+        type: this.serviceType,
+        project: this.projectId
+      },
+      false,
+      false,
+      [{ path: 'price', select: 'prices recipe' }]
+    );
+    if (services.length === 0)
+      return { serviceInfo: this.service, mess: `Căn hộ không có phương tiện nào hoạt động trong tháng ${this.month}` };
+    else {
+      for (const service of services) {
+        const vehicles = await listVehicleMd({ apartment: apartmentId, status: 1, service: service._id });
+        if (vehicles.length === 0)
+          return { serviceInfo: this.service, mess: `Căn hộ không có phương tiện nào hoạt động trong tháng ${this.month}` };
+        for (const vehicle of vehicles) {
+          const amount = service.price?.prices?.[0]?.amount;
+          cost += amount;
+          data.push({ name: `${service?.name} - ${vehicle?.licensePlate}`, amount });
+        }
+      }
+    }
+    return { quantity: 1, price: cost, cost, data };
   }
 
   async run() {
@@ -113,19 +133,20 @@ export class Debt {
     const { status: statusValid, mess: messValid } = await this.valid();
     if (!statusValid) return { status: statusValid, mess: messValid };
     const checkDebit = await detailDebitMd({
-      project: this.project._id,
+      project: this.projectId,
       apartment: this.apartment._id,
       month: this.month,
       serviceType: this.serviceType
     });
-    if (checkDebit) return { status: false, mess: `Dịch vụ này của căn hộ đã được lên công nợ tháng ${this.month}` };
+    if (checkDebit)
+      return { serviceInfo: this.service, status: false, mess: `Dịch vụ này của căn hộ đã được lên công nợ tháng ${this.month}` };
     const object = {
-      project: this.project._id,
+      project: this.projectId,
       apartment: this.apartment._id,
       month: this.month,
-      serviceName: this.vehicle ? this.service.name + ' - ' + this.vehicle.licensePlate : this.service.name,
+      serviceName: this.serviceType !== 4 ? this.service.name : `Dịch vụ phương tiện tháng ${this.month}`,
       serviceType: this.serviceType,
-      prices: this.prices,
+      prices: this.serviceType !== 4 ? this.prices : [],
       fromDate: this.from,
       toDate: this.to,
       discount: this.discount
@@ -137,12 +158,12 @@ export class Debt {
     else value = await this.calcOtherFees();
     const { mess, quantity, price, cost } = value;
     if (mess) return { status: false, mess };
-    if (cost < this.discount) return { status: false, mess: `Giảm trừ không thể lớn hơn thành tiền` };
+    if (cost < this.discount) return { serviceInfo: this.service, status: false, mess: `Giảm trừ không thể lớn hơn thành tiền` };
     const summary = cost - this.discount;
     const debit = await createDebitMd({ ...object, quantity, price, cost, summary });
     if (!this.bill) {
       await createBillMd({
-        project: this.project._id,
+        project: this.projectId,
         apartment: this.apartment._id,
         month: this.month,
         amount: summary,
@@ -153,6 +174,6 @@ export class Debt {
         debits: [debit._id]
       });
     } else await updateBillMd({ _id: this.bill._id }, { amount: this.bill.amount + summary, $pull: { debits: debit._id } });
-    return { status: true };
+    return { serviceInfo: this.service, status: true };
   }
 }

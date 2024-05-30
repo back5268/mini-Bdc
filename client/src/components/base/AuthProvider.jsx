@@ -53,6 +53,8 @@ const AuthProvider = ({ children }) => {
     }
   }, [loadingz]);
 
+  console.log(loadingz);
+
   return <Fragment>{isLoading ? <Loading className="h-8 w-8 border-4" /> : children}</Fragment>;
 };
 

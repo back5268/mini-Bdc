@@ -1,6 +1,7 @@
 export * from './apartmentController';
 export * from './apartmentGroupController';
 export * from './authController';
+export * from './debtController';
 export * from './departmentController';
 export * from './electricWaterController';
 export * from './infoController';

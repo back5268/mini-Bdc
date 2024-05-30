@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
 import { Logo } from '@components/base';
-import { Buttonz, Dropdownz, Hrz, Inputz } from '@components/core';
-import { useLocation } from 'react-router-dom';
+import { Buttonz, Dropdownz, Hrz } from '@components/core';
+import {
+  BuildingOffice2Icon,
+  CalculatorIcon,
+  ChartBarIcon,
+  Cog6ToothIcon,
+  ComputerDesktopIcon,
+  ServerIcon,
+  Squares2X2Icon,
+  UsersIcon
+} from '@heroicons/react/24/outline';
 import { NavGroup, NavItem } from '@layout/shared';
 import { useToastState, useUserState } from '@store';
-import {
-  Squares2X2Icon,
-  ChartBarIcon,
-  BuildingOffice2Icon,
-  ServerIcon,
-  UsersIcon,
-  Cog6ToothIcon,
-  CalculatorIcon,
-  ComputerDesktopIcon
-} from '@heroicons/react/24/outline';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const icons = {
   Squares2X2Icon,
@@ -53,8 +53,10 @@ const Sidebar = (props) => {
   const onSelectProject = (e) => {
     setProject(e);
     localStorage.setItem('project', e);
-    showToast({ title: 'Đổi dự án thành công', severity: 'success' });
     setLoadingz()
+    setTimeout(() => {
+      showToast({ title: 'Đổi dự án thành công', severity: 'success' });
+    }, 1000)
   };
 
   return (
@@ -69,11 +71,12 @@ const Sidebar = (props) => {
         <Dropdownz
           value={project}
           onChange={onSelectProject}
-          className="!w-full !text-white"
+          className="!w-full text-on-sidebar"
           label="Chọn dự án"
           options={projects}
           optionLabel="name"
           optionValue="_id"
+          selectClassName="!text-on-sidebar"
         />
       </div>
       <Hrz className="mx-4" />
