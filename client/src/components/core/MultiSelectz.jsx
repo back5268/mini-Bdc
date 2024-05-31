@@ -14,7 +14,6 @@ export const MultiSelectz = (props) => {
     ...prop
   } = props;
   const isSelectAll = value?.length > 0 && value?.length === options.length;
-
   return (
     <div className={`w-full md:w-6/12 lg:w-3/12 p-2 ${className}`}>
       <Select
@@ -44,7 +43,7 @@ export const MultiSelectz = (props) => {
               className={`!py-1 my-1 ${isSelectAll ? 'bg-blue-gray-50' : 'bg-white'}`}
             >
               <div className="w-full flex gap-2 items-center">
-                <CheckBoxz checked={isSelectAll} /> Chọn tất cả
+                <CheckBoxz checked={isSelectAll} readOnly /> Chọn tất cả
               </div>
             </ListItem>
             {options.map((item) => {
@@ -62,7 +61,7 @@ export const MultiSelectz = (props) => {
                   className={`!py-1 ${active ? 'bg-blue-gray-50 my-1' : 'bg-white my-1'}`}
                 >
                   <div className="w-full flex gap-2 items-center">
-                    <CheckBoxz checked={active} /> {label}
+                    <CheckBoxz checked={active} readOnly /> {label}
                   </div>
                 </ListItem>
               );
@@ -123,7 +122,7 @@ export const MultiSelectForm = (props) => {
               className={`!py-1 my-1 ${isSelectAll ? 'bg-blue-gray-50' : 'bg-white'}`}
             >
               <div className="w-full flex gap-2 items-center">
-                <CheckBoxz checked={isSelectAll} /> Chọn tất cả
+                <CheckBoxz checked={isSelectAll} readOnly /> Chọn tất cả
               </div>
             </ListItem>
             {options.map((item) => {
@@ -133,7 +132,6 @@ export const MultiSelectForm = (props) => {
                 label = String(item[optionLabel]);
               } else key = label = String(item);
               const active = value.includes(key);
-
               return (
                 <ListItem
                   key={key}
@@ -141,7 +139,7 @@ export const MultiSelectForm = (props) => {
                   className={`!py-1 ${active ? 'bg-blue-gray-50 my-1' : 'bg-white my-1'}`}
                 >
                   <div className="w-full flex gap-2 items-center">
-                    <CheckBoxz checked={active} /> {label}
+                    <CheckBoxz checked={active} readOnly /> {label}
                   </div>
                 </ListItem>
               );

@@ -1,6 +1,6 @@
 import { addApartmentGroupApi, detailApartmentGroupApi, getListApartmentApi, updateApartmentGroupApi } from '@api';
 import { FormDetail } from '@components/base';
-import { InputForm, MultiSelectz, TextAreaz } from '@components/core';
+import { InputForm, MultiSelectForm, TextAreaz } from '@components/core';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { checkEqualProp } from '@lib/helper';
 import { useGetApi } from '@lib/react-query';
@@ -20,7 +20,7 @@ const DetailApartmentGroup = () => {
   const isUpdate = Boolean(_id);
   const { data: item } = useGetApi(detailApartmentGroupApi, { _id }, 'apartment-group', isUpdate);
   const { isLoading, data } = useGetApi(getListApartmentApi, null, 'apartments');
-  const [apartments, setApartments] = useState([]);
+  const [apartments, setApartments] = useState();
   const {
     register,
     handleSubmit,
@@ -48,7 +48,6 @@ const DetailApartmentGroup = () => {
     if (isUpdate) newData = { ...checkEqualProp(newData, item), _id };
     return newData;
   };
-
   return (
     <FormDetail
       type="nomal"
@@ -61,13 +60,13 @@ const DetailApartmentGroup = () => {
     >
       <div className="flex flex-wrap w-full">
         <InputForm id="name" label="Tên nhóm căn hộ (*)" errors={errors} register={register} />
-        <MultiSelectz
+        <MultiSelectForm
           options={data?.documents}
           optionLabel="name"
           optionValue="_id"
           id="apartments"
-          value={apartments}
           label="Căn hộ (*)"
+          watch={watch}
           setValue={setApartments}
         />
         <TextAreaz id="description" label="Mô tả" value={watch('description')} setValue={(e) => setValue('description', e)} />
