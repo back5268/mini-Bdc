@@ -1,9 +1,8 @@
-import React from 'react';
+import { Buttonz, Cardz, Dialogz, Hrz } from '@components/core';
+import { Loading } from '@components/shared';
 import { usePostApi } from '@lib/react-query';
 import { useToastState } from '@store';
 import { useNavigate } from 'react-router-dom';
-import { Buttonz, Cardz, Dialogz, Hrz } from '@components/core';
-import { Loading } from '@components/shared';
 
 const Wrapper = ({ isModal, children, title, open, setOpen }) => {
   if (isModal)

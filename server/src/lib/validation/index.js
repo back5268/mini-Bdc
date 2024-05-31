@@ -1,4 +1,5 @@
 export * from './apartmentGroupValidation';
+export * from './apartmentValidation';
 export * from './authValidation';
 export * from './departmentValidation';
 export * from './permissionValidation';
