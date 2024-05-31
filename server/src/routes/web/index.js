@@ -1,6 +1,5 @@
 import { authMiddleware, permissionMiddleware } from '@middleware';
 import express from 'express';
-import { apartmentGroupRouter } from './apartmentGroup';
 import { departmentRouter } from './department';
 import { permissionRouter } from './permission';
 import { projectRouter } from './project';
@@ -19,4 +18,3 @@ webRouter.use('/permissions', permissionRouter);
 webRouter.use('/tools', toolRouter);
 webRouter.use('/departments', departmentRouter);
 webRouter.use('/projects', projectzRouter);
-webRouter.use('/apartment_group', apartmentGroupRouter);

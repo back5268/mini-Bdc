@@ -33,6 +33,18 @@ export const PriceValidation = yup.object({
   serviceType: yup.string().required('Loại dịch vụ không được bỏ trống!')
 });
 
+export const ApartmentGroupValidation = yup.object({
+  name: yup.string().required('Tên bảng giá không được bỏ trống!')
+});
+
+export const ApartmentValidation = yup.object({
+  name: yup.string().required('Tên căn hộ không được bỏ trống!'),
+  code: yup.string().required('Mã căn hộ không được bỏ trống!'),
+  area: yup.number().required('Diện tích căn hộ không được bỏ trống!'),
+  status: yup.number().required('Trạng thái căn hộ không được bỏ trống!'),
+  floor: yup.number().required('Tầng không được bỏ trống!'),
+  owner: yup.string().required('Chủ hộ không được bỏ trống!'),
+});
 export const ServiceValidation = yup.object({
   name: yup.string().required('Tên dịch vụ không được bỏ trống!'),
   code: yup.string().required('Mã dịch vụ không được bỏ trống!'),
@@ -46,6 +58,12 @@ export const VehicleValidation = yup.object({
   apartment: yup.string().required('Căn hộ không được bỏ trống!'),
   service: yup.string().required('Dịch vụ không được bỏ trống!'),
   type: yup.number().required('Loại phương tiện không được bỏ trống!')
+});
+
+export const DebtValidation = yup.object({
+  month: yup.string().required('Kỳ tháng không được bỏ trống!'),
+  deadline: yup.string().required('Hạn thanh toán không được bỏ trống!'),
+  type: yup.string().required('Phạm vi tính toán không được bỏ trống!')
 });
 
 export const UserInfoValidation = yup.object({

@@ -19,9 +19,9 @@ const Templates = () => {
     { label: 'Tiêu đề mẫu thông báo', field: 'subject' },
     { label: 'Tiêu đề mẫu thông báo', field: 'subject' },
     { label: 'Mã mẫu thông báo', field: 'code' },
-    { label: 'Loại', body: (item) => Body(templateType, item.type) },
-    { label: 'Thời gian tạo', body: (item) => TimeBody(item.createdAt) },
-    { label: 'Thời gian cập nhật', body: (item) => TimeBody(item.updatedAt) }
+    { label: 'Loại', body: (e) => Body(templateType, e.type) },
+    { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
+    { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
   ];
 
   return (

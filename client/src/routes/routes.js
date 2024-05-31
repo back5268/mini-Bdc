@@ -1,8 +1,9 @@
 import { Dashboard } from '@view/admin';
-import { DetailPermission, Permissions, Tools } from '@view/admin/permissions';
+import { Debts, DetailPrice, DetailService, DetailVehicle, ElectricWater, Prices, Services, Vehicles } from '@view/admin/accountants';
+import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup } from '@view/admin/apartment-resident';
 import { Departments, DetailProject, Projects, Users } from '@view/admin/companies';
+import { DetailPermission, Permissions, Tools } from '@view/admin/permissions';
 import { ForgotPassword, SignIn } from '@view/auth';
-import { DetailPrice, DetailService, DetailVehicle, Prices, Services, Vehicles } from '@view/admin/accountants';
 
 const routes = [
   { path: '/auth/signin', element: SignIn, public: true },
@@ -34,7 +35,22 @@ const routes = [
 
   { path: '/vehicles', element: Vehicles, layout: true },
   { path: '/vehicles/create', element: DetailVehicle, layout: true },
-  { path: '/vehicles/detail/:_id', element: DetailVehicle, layout: true }
+  { path: '/vehicles/detail/:_id', element: DetailVehicle, layout: true },
+
+  { path: '/electric-waters', element: ElectricWater, layout: true },
+
+  // ==================== Căn hộ, cư dân ====================
+  { path: '/apartment-groups', element: ApartmentGroup, layout: true },
+  { path: '/apartment-groups/create', element: DetailApartmentGroup, layout: true },
+  { path: '/apartment-groups/detail/:_id', element: DetailApartmentGroup, layout: true },
+
+  { path: '/apartments', element: Apartment, layout: true },
+  { path: '/apartments/create', element: DetailApartment, layout: true },
+  { path: '/apartments/detail/:_id', element: DetailApartment, layout: true },
+
+
+
+  { path: '/debts', element: Debts, layout: true }
 ];
 
 export default routes;

@@ -18,11 +18,11 @@ const Services = () => {
   const columns = [
     { label: 'Tên dịch vụ', field: 'name' },
     { label: 'Mã dịch vụ', field: 'code' },
-    { label: 'Loại dịch vụ', body: e => Body(serviceType, e.type) },
-    { label: 'Bảng giá', body: e => e.price?.name },
-    { label: 'Căn hộ áp dụng', body: e => Body(serviceType, e.type) },
-    { label: 'Thời gian tạo', body: (item) => TimeBody(item.createdAt) },
-    { label: 'Thời gian cập nhật', body: (item) => TimeBody(item.updatedAt) }
+    { label: 'Loại dịch vụ', body: (e) => Body(serviceType, e.type) },
+    { label: 'Bảng giá', body: (e) => e.price?.name },
+    { label: 'Căn hộ áp dụng', body: (e) => Body(serviceType, e.type) },
+    { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
+    { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
   ];
 
   return (
@@ -33,12 +33,7 @@ const Services = () => {
           onChange={(e) => setFilter({ ...filter, keySearch: e.target.value })}
           label="Tìm kiếm theo tên, mã dịch vụ"
         />
-        <Dropdownz
-          value={filter.type}
-          onChange={(e) => setFilter({ ...filter, type: e })}
-          options={serviceType}
-          label="Loại dịch vụ"
-        />
+        <Dropdownz value={filter.type} onChange={(e) => setFilter({ ...filter, type: e })} options={serviceType} label="Loại dịch vụ" />
         <Dropdownz value={filter.status} onChange={(e) => setFilter({ ...filter, status: e })} options={statuses} label="Trạng thái" />
       </DataFilter>
       <Hrz />

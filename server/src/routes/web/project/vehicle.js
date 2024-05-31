@@ -2,10 +2,10 @@ import { addVehicle, deleteVehicle, detailVehicle, getListVehicle, updateVehicle
 import { upload } from '@lib/multer';
 import express from 'express';
 
-export const VehicleRouter = express.Router();
+export const vehicleRouter = express.Router();
 
-VehicleRouter.get('/getListVehicle', getListVehicle);
-VehicleRouter.get('/detailVehicle', detailVehicle);
-VehicleRouter.delete('/deleteVehicle', deleteVehicle);
-VehicleRouter.post('/addVehicle', upload.fields([{ name: 'files', maxCount: 2 }]), addVehicle);
-VehicleRouter.put('/updateVehicle', upload.fields([{ name: 'files', maxCount: 2 }]), updateVehicle);
+vehicleRouter.get('/getListVehicle', getListVehicle);
+vehicleRouter.get('/detailVehicle', detailVehicle);
+vehicleRouter.delete('/deleteVehicle', deleteVehicle);
+vehicleRouter.post('/addVehicle', upload.fields([{ name: 'files', maxCount: 10 }]), addVehicle);
+vehicleRouter.put('/updateVehicle', upload.fields([{ name: 'files', maxCount: 10 }]), updateVehicle);

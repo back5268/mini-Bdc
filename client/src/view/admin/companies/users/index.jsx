@@ -26,8 +26,8 @@ const Users = () => {
     { label: 'Mã nhân viên', field: 'code' },
     { label: 'Tài khoản', field: 'username' },
     { label: 'Email', field: 'email' },
-    { label: 'Thời gian tạo', body: (item) => TimeBody(item.createdAt) },
-    { label: 'Lần đăng nhập cuối', body: (item) => TimeBody(item.lastLogin) },
+    { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
+    { label: 'Lần đăng nhập cuối', body: (e) => TimeBody(e.lastLogin) }
   ];
 
   const onResetPassword = (item) => {
