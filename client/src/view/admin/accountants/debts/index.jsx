@@ -1,11 +1,11 @@
 import { getListDebtLogApi, getListMonthApi } from '@api';
-import { DataTable, FormList, NumberBody, TimeBody } from '@components/base';
+import { DataTable, FormList, TimeBody } from '@components/base';
 import DataFilter from '@components/base/DataFilter';
 import { Dropdownz, Hrz, InputCalendarz, Spinnerz } from '@components/core';
 import { debtStatus } from '@constant';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Calculator from './Calculator';
 
 const Debts = () => {
