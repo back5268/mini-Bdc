@@ -18,6 +18,7 @@ export const MultiSelectz = (props) => {
   return (
     <div className={`w-full md:w-6/12 lg:w-3/12 p-2 ${className}`}>
       <Select
+        menuProps={{ className: 'p-0' }}
         id={id}
         value={String(value)}
         size={size}
@@ -97,6 +98,7 @@ export const MultiSelectForm = (props) => {
   return (
     <div className={`flex flex-col gap-1 w-full lg:w-6/12 p-2 ${className}`}>
       <Select
+        menuProps={{ className: 'p-0' }}
         id={id}
         value={String(value)}
         size={size}
