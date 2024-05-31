@@ -1,6 +1,7 @@
 export * from './apartmentController';
 export * from './apartmentGroupController';
 export * from './authController';
+export * from './debtController';
 export * from './departmentController';
 export * from './electricWaterController';
 export * from './infoController';
@@ -12,4 +13,5 @@ export * from './templateController';
 export * from './toolController';
 export * from './userController';
 export * from './vehicleController';
+
 

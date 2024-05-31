@@ -10,3 +10,4 @@ export * from './templateValidation';
 export * from './userValidation';
 export * from './vehicleValidation';
 export * from './electricWaterValidation';
+export * from './debtValidation';

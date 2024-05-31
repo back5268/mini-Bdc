@@ -1,5 +1,5 @@
 import { Dashboard } from '@view/admin';
-import { DetailPrice, DetailService, DetailVehicle, ElectricWater, Prices, Services, Vehicles } from '@view/admin/accountants';
+import { Debts, DetailPrice, DetailService, DetailVehicle, ElectricWater, Prices, Services, Vehicles } from '@view/admin/accountants';
 import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup } from '@view/admin/apartment-resident';
 import { Departments, DetailProject, Projects, Users } from '@view/admin/companies';
 import { DetailPermission, Permissions, Tools } from '@view/admin/permissions';
@@ -48,6 +48,7 @@ const routes = [
 
 
 
+  { path: '/debts', element: Debts, layout: true }
 ];
 
 export default routes;

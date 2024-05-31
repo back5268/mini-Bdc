@@ -3,7 +3,7 @@ import { TrashIcon, DocumentMagnifyingGlassIcon } from '@heroicons/react/24/outl
 import { useToastState, useConfirmState } from '@store';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { removeSpecialCharacter } from '@lib/helper';
-import { Buttonz, Paginationz, Switchz } from '@components/core';
+import { Buttonz, CheckBoxz, Paginationz, Switchz } from '@components/core';
 import { Loading } from '@components/shared';
 
 const HeaderColumn = ({ children, className = '', ...prop }) => (
@@ -36,8 +36,11 @@ const DataTable = (props) => {
     statusInfo = {},
     baseActions = [],
     rows = [10, 20, 50, 100, 200, 500],
+    select,
+    setSelect,
     onSuccess = () => {},
-    hideParams
+    hideParams,
+    isPagination = true
   } = props;
   const {
     onViewDetail = () => {},
@@ -123,7 +126,7 @@ const DataTable = (props) => {
 
               return (
                 <Buttonz key={index} color={color} onClick={() => header.onClick()}>
-                  {header.children() || ""}
+                  {header.children() || ''}
                 </Buttonz>
               );
             })}
@@ -136,6 +139,14 @@ const DataTable = (props) => {
             <table className="min-w-full text-sm">
               <thead>
                 <tr>
+                  {select && (
+                    <HeaderColumn className="min-w-8">
+                      <CheckBoxz
+                        checked={select.length > 0 && select.length === data.length}
+                        onChange={() => setSelect(() => (select.length === data.length ? [] : data.map((d) => d._id)))}
+                      />
+                    </HeaderColumn>
+                  )}
                   <HeaderColumn className="min-w-8">#</HeaderColumn>
                   {columns.map((column, index) => (
                     <HeaderColumn key={index}>{column.label}</HeaderColumn>
@@ -149,6 +160,16 @@ const DataTable = (props) => {
                   data.map((item, index) => {
                     return (
                       <tr key={index}>
+                        {select && (
+                          <BodyColumn className="text-center">
+                            <CheckBoxz
+                              checked={select.includes(item._id)}
+                              onChange={() =>
+                                setSelect((pre) => (select.includes(item._id) ? pre.filter((p) => p !== item._id) : [...pre, item._id]))
+                              }
+                            />
+                          </BodyColumn>
+                        )}
                         <BodyColumn className="text-center">{(params.page - 1) * params.limit + index + 1}</BodyColumn>
                         {columns.map((column, i) => {
                           const children = column.body && typeof column.body === 'function' ? column.body(item) : item[column.field];
@@ -222,9 +243,11 @@ const DataTable = (props) => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center mt-4">
-        <Paginationz params={params} setParams={setParams} total={total} rows={rows} />
-      </div>
+      {isPagination && (
+        <div className="flex justify-center mt-4">
+          <Paginationz params={params} setParams={setParams} total={total} rows={rows} />
+        </div>
+      )}
     </div>
   );
 };

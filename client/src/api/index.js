@@ -1,6 +1,7 @@
 export * from './apartment';
 export * from './apartmentGroup';
 export * from './auth';
+export * from './debt';
 export * from './department';
 export * from './electricWater';
 export * from './info';

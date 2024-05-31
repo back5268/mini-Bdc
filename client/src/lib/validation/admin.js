@@ -58,6 +58,12 @@ export const VehicleValidation = yup.object({
   type: yup.number().required('Loại phương tiện không được bỏ trống!')
 });
 
+export const DebtValidation = yup.object({
+  month: yup.string().required('Kỳ tháng không được bỏ trống!'),
+  deadline: yup.string().required('Hạn thanh toán không được bỏ trống!'),
+  type: yup.string().required('Phạm vi tính toán không được bỏ trống!')
+});
+
 export const UserInfoValidation = yup.object({
   email: yup.string().email('Email không đúng định dạng!').required('Email không được bỏ trống!'),
   username: yup.string().required('Tài khoản không được bỏ trống!'),

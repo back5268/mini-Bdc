@@ -1,10 +1,11 @@
-import { Option, Select } from '@material-tailwind/react';
+import { ListItem, Select } from '@material-tailwind/react';
+import { CheckBoxz, Chipz } from '.';
 
-const MultiSelectz = (props) => {
+export const MultiSelectz = (props) => {
   const {
     id,
     value = [],
-    setValue = () => {},
+    onChange = () => {},
     size = 'lg',
     optionValue = 'key',
     optionLabel = 'label',
@@ -12,46 +13,39 @@ const MultiSelectz = (props) => {
     className = '',
     ...prop
   } = props;
-  console.log(props);
+  const isSelectAll = value?.length > 0 && value?.length === options.length;
+
   return (
-    <div className={`w-full p-2 ${className}`}>
+    <div className={`w-full md:w-6/12 lg:w-3/12 p-2 ${className}`}>
       <Select
         id={id}
         value={String(value)}
-        onChange={(e) => {
-          if (e === 'all') {
-            if (value.includes('all')) setValue([]);
-            else
-              setValue([
-                ...options.map((o) => {
-                  let key;
-                  if (typeof o === 'object') {
-                    key = String(o[optionValue]);
-                  } else key = String(o);
-                  return key;
-                }),
-                'all'
-              ]);
-          } else {
-            if (value.includes(e)) setValue(value.filter((v) => v !== e && v !== 'all'));
-            else {
-              const newValue = [...value, e];
-              if (newValue.length === options.length) setValue([...newValue, 'all']);
-              else setValue([...newValue]);
-            }
-          }
-          console.log(value);
-        }}
         size={size}
         color="cyan"
         className="rounded-md px-0"
+        onChange={() => {}}
+        selected={() => {
+          return (
+            <div className="w-full flex gap-2 overflow-hidden">
+              {value?.map((v, index) => {
+                const text = options.find((o) => o[optionValue] === v)?.[optionLabel];
+                return text && <Chipz key={index} color="blue-gray" value={text} />;
+              })}
+            </div>
+          );
+        }}
         {...prop}
       >
         {options?.length > 0 ? (
           <>
-            <Option value="all" className={value.includes('all') ? 'bg-blue-gray-50' : 'bg-white'}>
-              Chọn tất cả
-            </Option>
+            <ListItem
+              onClick={() => (isSelectAll ? onChange([]) : onChange(options.map((o) => o[optionValue])))}
+              className={`!py-1 my-1 ${isSelectAll ? 'bg-blue-gray-50' : 'bg-white'}`}
+            >
+              <div className="w-full flex gap-2 items-center">
+                <CheckBoxz checked={isSelectAll} /> Chọn tất cả
+              </div>
+            </ListItem>
             {options.map((item) => {
               let key, label;
               if (typeof item === 'object') {
@@ -61,9 +55,15 @@ const MultiSelectz = (props) => {
               const active = value.includes(key);
 
               return (
-                <Option key={key} value={key} className={active ? 'bg-blue-gray-50 my-1' : 'bg-white my-1'}>
-                  {label}
-                </Option>
+                <ListItem
+                  key={key}
+                  onClick={() => (active ? onChange((pre) => pre.filter((p) => p !== key)) : onChange((pre) => [...pre, key]))}
+                  className={`!py-1 ${active ? 'bg-blue-gray-50 my-1' : 'bg-white my-1'}`}
+                >
+                  <div className="w-full flex gap-2 items-center">
+                    <CheckBoxz checked={active} /> {label}
+                  </div>
+                </ListItem>
               );
             })}
           </>
@@ -75,4 +75,81 @@ const MultiSelectz = (props) => {
   );
 };
 
-export default MultiSelectz;
+export const MultiSelectForm = (props) => {
+  const {
+    emptyMessage = 'Không có dữ liệu',
+    id,
+    size = 'lg',
+    optionValue = 'key',
+    optionLabel = 'label',
+    watch,
+    setValue,
+    errors = {},
+    options = [],
+    className = '',
+    onChange: onChangez,
+    ...prop
+  } = props;
+  const value = watch(id);
+  const onChange = onChangez ? onChangez : (e) => setValue(id, e);
+  const isSelectAll = value?.length > 0 && value?.length === options.length;
+
+  return (
+    <div className={`flex flex-col gap-1 w-full lg:w-6/12 p-2 ${className}`}>
+      <Select
+        id={id}
+        value={String(value)}
+        size={size}
+        color="cyan"
+        className="rounded-md px-0"
+        selected={() => {
+          return (
+            <div className="w-full flex gap-2 overflow-hidden">
+              {value?.map((v, index) => {
+                const text = options.find((o) => o[optionValue] === v)?.[optionLabel];
+                return text && <Chipz key={index} color="blue-gray" value={text} />;
+              })}
+            </div>
+          );
+        }}
+        {...prop}
+      >
+        {options?.length > 0 ? (
+          <>
+            <ListItem
+              onClick={() => (isSelectAll ? onChange([]) : onChange(options.map((o) => o[optionValue])))}
+              className={`!py-1 my-1 ${isSelectAll ? 'bg-blue-gray-50' : 'bg-white'}`}
+            >
+              <div className="w-full flex gap-2 items-center">
+                <CheckBoxz checked={isSelectAll} /> Chọn tất cả
+              </div>
+            </ListItem>
+            {options.map((item) => {
+              let key, label;
+              if (typeof item === 'object') {
+                key = String(item[optionValue]);
+                label = String(item[optionLabel]);
+              } else key = label = String(item);
+              const active = value.includes(key);
+
+              return (
+                <ListItem
+                  key={key}
+                  onClick={() => (active ? onChange((pre) => pre.filter((p) => p !== key)) : onChange((pre) => [...pre, key]))}
+                  className={`!py-1 ${active ? 'bg-blue-gray-50 my-1' : 'bg-white my-1'}`}
+                >
+                  <div className="w-full flex gap-2 items-center">
+                    <CheckBoxz checked={active} /> {label}
+                  </div>
+                </ListItem>
+              );
+            })}
+          </>
+        ) : (
+          <div className="cursor-default">Không có dữ liệu</div>
+        )}
+      </Select>
+      {errors[id] && <small className="w-full ml-2 text-red-600">{errors[id].message}</small>}
+    </div>
+  );
+};
