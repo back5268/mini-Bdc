@@ -1,7 +1,14 @@
 import { Logo } from '@components/base';
 import { Buttonz, Dropdownz, Hrz } from '@components/core';
 import {
-  BuildingOffice2Icon, CalculatorIcon, ChartBarIcon, Cog6ToothIcon, ComputerDesktopIcon, ServerIcon, Squares2X2Icon, UsersIcon
+  BuildingOffice2Icon,
+  CalculatorIcon,
+  ChartBarIcon,
+  Cog6ToothIcon,
+  ComputerDesktopIcon,
+  ServerIcon,
+  Squares2X2Icon,
+  UsersIcon
 } from '@heroicons/react/24/outline';
 import { NavGroup, NavItem } from '@layout/shared';
 import { useToastState, useUserState } from '@store';
