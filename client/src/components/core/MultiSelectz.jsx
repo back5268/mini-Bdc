@@ -4,6 +4,7 @@ import { CheckBoxz, Chipz } from '.';
 export const MultiSelectz = (props) => {
   const {
     id,
+    emptyMessage = 'Không có dữ liệu',
     value = [],
     onChange = () => {},
     size = 'lg',
@@ -43,7 +44,7 @@ export const MultiSelectz = (props) => {
               className={`!py-1 my-1 ${isSelectAll ? 'bg-blue-gray-50' : 'bg-white'}`}
             >
               <div className="w-full flex gap-2 items-center">
-                <CheckBoxz checked={isSelectAll} /> Chọn tất cả
+                <CheckBoxz checked={isSelectAll} onChange={() => {}} /> Chọn tất cả
               </div>
             </ListItem>
             {options.map((item) => {
@@ -57,18 +58,18 @@ export const MultiSelectz = (props) => {
               return (
                 <ListItem
                   key={key}
-                  onClick={() => (active ? onChange((pre) => pre.filter((p) => p !== key)) : onChange((pre) => [...pre, key]))}
+                  onClick={() => (active ? onChange(value.filter((p) => p !== key)) : onChange([...value, key]))}
                   className={`!py-1 ${active ? 'bg-blue-gray-50 my-1' : 'bg-white my-1'}`}
                 >
                   <div className="w-full flex gap-2 items-center">
-                    <CheckBoxz checked={active} /> {label}
+                    <CheckBoxz checked={active} onChange={() => {}} /> {label}
                   </div>
                 </ListItem>
               );
             })}
           </>
         ) : (
-          <div className="cursor-default">Không có dữ liệu</div>
+          <div className="cursor-default">{emptyMessage}</div>
         )}
       </Select>
     </div>
@@ -90,7 +91,7 @@ export const MultiSelectForm = (props) => {
     onChange: onChangez,
     ...prop
   } = props;
-  const value = watch(id);
+  const value = watch(id) || [];
   const onChange = onChangez ? onChangez : (e) => setValue(id, e);
   const isSelectAll = value?.length > 0 && value?.length === options.length;
 
@@ -102,6 +103,7 @@ export const MultiSelectForm = (props) => {
         size={size}
         color="cyan"
         className="rounded-md px-0"
+        onChange={() => {}}
         selected={() => {
           return (
             <div className="w-full flex gap-2 overflow-hidden">
@@ -121,7 +123,7 @@ export const MultiSelectForm = (props) => {
               className={`!py-1 my-1 ${isSelectAll ? 'bg-blue-gray-50' : 'bg-white'}`}
             >
               <div className="w-full flex gap-2 items-center">
-                <CheckBoxz checked={isSelectAll} /> Chọn tất cả
+                <CheckBoxz checked={isSelectAll} onChange={() => {}} /> Chọn tất cả
               </div>
             </ListItem>
             {options.map((item) => {
@@ -135,18 +137,18 @@ export const MultiSelectForm = (props) => {
               return (
                 <ListItem
                   key={key}
-                  onClick={() => (active ? onChange((pre) => pre.filter((p) => p !== key)) : onChange((pre) => [...pre, key]))}
+                  onClick={() => (active ? onChange(value.filter((p) => p !== key)) : onChange([...value, key]))}
                   className={`!py-1 ${active ? 'bg-blue-gray-50 my-1' : 'bg-white my-1'}`}
                 >
                   <div className="w-full flex gap-2 items-center">
-                    <CheckBoxz checked={active} /> {label}
+                    <CheckBoxz checked={active} onChange={() => {}} /> {label}
                   </div>
                 </ListItem>
               );
             })}
           </>
         ) : (
-          <div className="cursor-default">Không có dữ liệu</div>
+          <div className="cursor-default">{emptyMessage}</div>
         )}
       </Select>
       {errors[id] && <small className="w-full ml-2 text-red-600">{errors[id].message}</small>}

@@ -33,7 +33,8 @@ export const PriceValidation = yup.object({
   serviceType: yup.string().required('Loại dịch vụ không được bỏ trống!')
 });
 export const ApartmentGroupValidation = yup.object({
-  name: yup.string().required('Tên bảng giá không được bỏ trống!')
+  name: yup.string().required('Tên bảng giá không được bỏ trống!'),
+  apartments: yup.array().required('Căn hộ không được bỏ trống!'),
 });
 export const ApartmentValidation = yup.object({
   name: yup.string().required('Tên căn hộ không được bỏ trống!'),

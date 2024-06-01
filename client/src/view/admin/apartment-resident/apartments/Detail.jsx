@@ -39,7 +39,6 @@ const DetailApartment = () => {
   useEffect(() => {
     if (isUpdate && item) {
       for (const key in defaultValues) {
-        console.log(key, item[key]);
         setValue(key, item[key]);
       }
     }
