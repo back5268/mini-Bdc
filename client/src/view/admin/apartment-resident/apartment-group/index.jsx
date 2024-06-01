@@ -40,7 +40,7 @@ const ApartmentGroup = () => {
   return (
     <div>
       <FormList title="Danh sách nhóm căn hộ">
-        <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="lg:w-6/12">
+        <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="lg:w-6/12 md:w-full">
           <Inputz
             value={filter.keySearch}
             onChange={(e) => setFilter({ ...filter, keySearch: e.target.value })}

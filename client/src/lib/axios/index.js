@@ -44,5 +44,5 @@ export const putData = (url, data, isUpload = false, blob = false, timeout = 600
 };
 
 export const deleteData = (url, data) => {
-  return clientApi.delete(url, convertData(data));
+  return clientApi.delete(url, { data: convertData(data) });
 };

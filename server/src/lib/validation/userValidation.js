@@ -1,8 +1,8 @@
 import { REGEX } from '@constant';
 
 export const listUserValid = {
-  page: 'number',
-  limit: 'number',
+  page: { type: 'number', allowNull: true },
+  limit: { type: 'number', allowNull: true },
   keySearch: { type: 'string', allowNull: true },
   email: { type: 'string', allowNull: true },
   type: { type: 'string', allowNull: true },
