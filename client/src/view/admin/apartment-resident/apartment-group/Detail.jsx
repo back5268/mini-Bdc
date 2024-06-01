@@ -47,7 +47,6 @@ const DetailApartmentGroup = () => {
     if (isUpdate) newData = { ...checkEqualProp(newData, item), _id };
     return newData;
   };
-
   return (
     <FormDetail
       type="nomal"

@@ -1,19 +1,16 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FormAuth } from '@components/base';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { usePostApi } from '@lib/react-query';
 import { SigninValidation } from '@lib/validation';
 import { useToastState, useUserState } from '@store';
-import { getInfoApi, signinApi } from '@api';
+import { signinApi } from '@api';
 import { Buttonz, CheckBoxz, InputForm, Linkz } from '@components/core';
-import { useNavigate } from 'react-router-dom';
 import { InputPassword } from '@components/shared';
 
 const SignIn = () => {
-  const navigate = useNavigate();
   const { showToast } = useToastState();
-  const { setUserInfo } = useUserState();
+  const { setLoadingz } = useUserState();
   const { mutateAsync, isPending } = usePostApi(signinApi);
 
   const {
@@ -26,13 +23,11 @@ const SignIn = () => {
   const onSubmit = async (data) => {
     const response = await mutateAsync(data);
     if (response) {
-      localStorage.setItem('token', response);
-      const res = await getInfoApi();
-      if (res) {
-        setUserInfo(res);
+      setTimeout(() => {
         showToast({ title: 'Đăng nhập thành công', severity: 'success' });
-        navigate(-1);
-      }
+      }, 1000)
+      localStorage.setItem('token', response);
+      setLoadingz()
     }
   };
 
