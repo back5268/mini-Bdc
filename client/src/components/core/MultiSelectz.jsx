@@ -105,6 +105,7 @@ export const MultiSelectForm = (props) => {
         color="cyan"
         className="rounded-md px-0"
         onChange={() => {}}
+        error={Boolean(errors[id])}
         selected={() => {
           return (
             <div className="w-full flex gap-2 overflow-hidden">

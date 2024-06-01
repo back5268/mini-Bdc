@@ -35,7 +35,7 @@ export const PriceValidation = yup.object({
 
 export const ApartmentGroupValidation = yup.object({
   name: yup.string().required('Tên bảng giá không được bỏ trống!'),
-  apartments: yup.array().required('Căn hộ không được bỏ trống!'),
+  apartments: yup.array().min(2, "Vui lòng chọn từ 2 căn hộ trở lên!").required('Căn hộ không được bỏ trống!'),
 });
 
 export const ApartmentValidation = yup.object({
