@@ -13,7 +13,7 @@ import {
 import moment from 'moment';
 
 export class Debt {
-  constructor({ projectId, apartmentId, serviceId, apartment, service, vehicleType, month, from, to, deadline, discount }) {
+  constructor({ projectId, apartmentId, serviceId, apartment, service, vehicleType, month, from, to, deadline, discount, serviceType }) {
     this.projectId = projectId;
     this.apartmentId = apartmentId;
     this.serviceId = serviceId;
@@ -22,15 +22,16 @@ export class Debt {
     this.month = month;
     this.discount = discount;
     this.vehicleType = vehicleType;
-    this.from = moment(from).format('YYYY-MM-DD');
-    this.to = moment(to).format('YYYY-MM-DD');
+    this.serviceType = serviceType;
+    this.from = moment(from);
+    this.to = moment(to);
     this.deadline = moment(deadline).format('YYYY-MM-DD');
   }
 
   async setUp() {
     if (!this.apartment)
       this.apartment = await detailApartmentMd({ _id: this.apartmentId, project: this.projectId }, [{ path: 'owner', select: 'fullName' }]);
-    if (!this.service)
+    if (!this.service && this.serviceType !== 4)
       this.service = await detailServiceMd({ _id: this.serviceId, project: this.projectId }, [{ path: 'price', select: 'prices recipe' }]);
     this.prices = this.service?.price?.prices;
     this.bill = await detailBillMd({ month: this.month, project: this.projectId, apartment: this.apartmentId });
@@ -144,11 +145,11 @@ export class Debt {
       project: this.projectId,
       apartment: this.apartment._id,
       month: this.month,
-      serviceName: this.serviceType !== 4 ? this.service.name : `Dịch vụ phương tiện tháng ${this.month}`,
+      serviceName: this.serviceType !== 4 ? this.service?.name : `Dịch vụ phương tiện tháng ${this.month}`,
       serviceType: this.serviceType,
       prices: this.serviceType !== 4 ? this.prices : [],
-      fromDate: this.from,
-      toDate: this.to,
+      fromDate: moment(this.from).format('YYYY-MM-DD'),
+      toDate: moment(this.to).format('YYYY-MM-DD'),
       discount: this.discount
     };
     let value;

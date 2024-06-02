@@ -38,6 +38,8 @@ const routes = [
   { path: '/vehicles/detail/:_id', element: DetailVehicle, layout: true },
 
   { path: '/electric-waters', element: ElectricWater, layout: true },
+  { path: '/debts', element: Debts, layout: true },
+
   // ==================== Căn hộ, cư dân ====================
   { path: '/apartment-groups', element: ApartmentGroup, layout: true },
   { path: '/apartment-groups/create', element: DetailApartmentGroup, layout: true },
@@ -45,10 +47,6 @@ const routes = [
   { path: '/apartments', element: Apartment, layout: true },
   { path: '/apartments/create', element: DetailApartment, layout: true },
   { path: '/apartments/detail/:_id', element: DetailApartment, layout: true },
-
-
-
-  { path: '/debts', element: Debts, layout: true }
 ];
 
 export default routes;

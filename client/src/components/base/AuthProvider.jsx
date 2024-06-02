@@ -1,4 +1,4 @@
-import { getInfoApi, getListDepartmentInfoApi, getListUserInfoApi } from '@api';
+import { getInfoApi, getListApartmentInfoApi, getListDepartmentInfoApi, getListUserInfoApi } from '@api';
 import { Loading } from '@components/shared';
 import { useDataState, useUserState } from '@store';
 import { Fragment, useEffect, useState } from 'react';
@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
-  const { setUsers, setDepartments } = useDataState();
+  const { setUsers, setDepartments, setApartments } = useDataState();
   const { setUserInfo, loadingz } = useUserState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,6 +31,8 @@ const AuthProvider = ({ children }) => {
       if (users) setUsers(users);
       const departements = await getListDepartmentInfoApi();
       if (departements) setDepartments(departements);
+      const apartments = await getListApartmentInfoApi();
+      if (apartments) setApartments(apartments);
     } catch (error) {
       navigate('/auth/signin');
       return false;

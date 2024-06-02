@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { addServiceApi, checkApartmentApi, detailServiceApi, getListPriceInfoApi, updateServiceApi } from '@api';
 import { DataTable, FormDetail } from '@components/base';
 import { checkEqualProp } from '@lib/helper';
-import { DropdownForm, Hrz, InputForm, Inputz, MultiSelectz, TextAreaz } from '@components/core';
+import { DropdownForm, Hrz, InputForm, Inputz, MultiSelectz } from '@components/core';
 import { useParams } from 'react-router-dom';
 import { useGetApi } from '@lib/react-query';
 import { serviceType, vehicleType } from '@constant';
@@ -25,7 +25,7 @@ const Apartments = (props) => {
     { label: 'Tên căn hộ', field: 'name' },
     { label: 'Mã căn hộ', field: 'code' },
     { label: 'Diện tích', field: 'area' },
-    { label: 'Trạng thái', field: 'status' },
+    { label: 'Tầng', field: 'floor' }
   ];
 
   return (
@@ -33,9 +33,10 @@ const Apartments = (props) => {
       <MultiSelectz
         label="Chọn căn hộ áp dụng (*)"
         value={apartments}
-        setValue={setApartments}
+        onChange={setApartments}
         options={apartmentData.map((u) => ({ key: u._id, label: `${u.name} - ${u.code}` }))}
         className="my-2 lg:w-6/12 mt-2"
+        emptyMessage="Vui lòng chọn loại dịch vụ"
       />
       <DataTable
         total={apartments.length}
@@ -75,7 +76,7 @@ const DetailService = () => {
     checkApartmentApi,
     { service: _id, type: watch('type'), vehicleType: watch('vehicleType') },
     'apartments',
-    isUpdate
+    Boolean(watch('type'))
   );
   const [price, setPrice] = useState(null);
 
@@ -87,6 +88,7 @@ const DetailService = () => {
 
   useEffect(() => {
     if (isUpdate && item) {
+      if (item.apartments?.length > 0) setApartments(item.apartments)
       for (const key in defaultValues) {
         setValue(key, item[key]);
       }
@@ -95,10 +97,7 @@ const DetailService = () => {
 
   const handleData = (data) => {
     let newData = { ...data };
-    if (Number(newData.recipe) === 1) {
-      if (!newData.Services) return 'Vui lòng nhập giá tiền';
-      else newData.Services = [{ from: 0, to: 0, amount: newData.Services }];
-    } else newData.Services = Services.map((p) => ({ ...p, key: undefined }));
+    if (apartments?.length > 0) newData.apartments = apartments;
     if (isUpdate) newData = { ...checkEqualProp(newData, item), _id };
     return newData;
   };

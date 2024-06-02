@@ -11,10 +11,10 @@ import { userRouter } from './user';
 export const webRouter = express.Router();
 
 webRouter.use(authMiddleware, permissionMiddleware);
-webRouter.use('/', projectRouter);
 webRouter.use('/users', userRouter);
 webRouter.use('/templates', templateRouter);
 webRouter.use('/permissions', permissionRouter);
 webRouter.use('/tools', toolRouter);
 webRouter.use('/departments', departmentRouter);
 webRouter.use('/projects', projectzRouter);
+webRouter.use('/', projectRouter);

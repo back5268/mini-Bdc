@@ -26,7 +26,7 @@ debtQueue.callbackCron = async (data) => {
           status: 1,
           type: serviceType,
           project: projectId
-        });
+        }, [{ path: 'price', select: 'prices recipe' }]);
         if (!service) {
           value = { status: false, mess: 'Không tìm thấy dịch vụ phát sinh của căn hộ' };
         }
@@ -34,11 +34,11 @@ debtQueue.callbackCron = async (data) => {
         value = await debt.run();
       }
       const { status, mess, serviceInfo } = value;
-      detail.push({ from, to, mess, status: status ? 1 : 0, serviceInfo: { serviceType, name: serviceInfo.name } });
+      detail.push({ from, to, mess, status: status ? 1 : 0, serviceInfo: { serviceType, name: serviceInfo?.name } });
       if (status) success += 1;
       else error += 1;
     }
   }
-  await updateDebtLogMd({ _id: debtLogId }, { error, success, detail });
+  await updateDebtLogMd({ _id: debtLogId }, { error, success, detail, status: 2 });
   ioSk.emit(`calculatorDebt${projectId}`, { time: Date.now() });
 };

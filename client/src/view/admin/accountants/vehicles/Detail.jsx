@@ -25,7 +25,6 @@ const DetailVehicle = () => {
   const { _id } = useParams();
   const isUpdate = Boolean(_id);
   const { data: item } = useGetApi(detailVehicleApi, { _id }, 'vehicle', isUpdate);
-  const { data: services } = useGetApi(getListServiceInfoApi, { status: 1, type: 4 }, 'services');
   const [files, setFiles] = useState([]);
   const { apartments } = useDataState();
 
@@ -39,6 +38,13 @@ const DetailVehicle = () => {
     resolver: yupResolver(VehicleValidation),
     defaultValues
   });
+
+  const { data: services } = useGetApi(
+    getListServiceInfoApi,
+    { status: 1, type: 4, apartment: watch('apartment') },
+    'services',
+    Boolean(watch('apartment'))
+  );
 
   useEffect(() => {
     if (isUpdate && item) {
@@ -98,6 +104,7 @@ const DetailVehicle = () => {
           errors={errors}
           watch={watch}
           setValue={setValue}
+          emptyMessage="Căn hộ chưa có dịch vụ"
         />
         <TextAreaz id="description" label="Mô tả" value={watch('description')} setValue={(e) => setValue('description', e)} />
         <div className="flex flex-wrap w-full">

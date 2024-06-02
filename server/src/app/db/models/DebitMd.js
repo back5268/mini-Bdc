@@ -32,7 +32,7 @@ DebitMd.init('Debit', {
   prices: [{ from: { type: Number }, to: { type: Number }, amount: { type: Number } }],
   fromDate: { type: Date, required: true },
   toDate: { type: Date, required: true },
-  data: { type: Object, required: true },
+  data: { type: Object },
   quantity: { type: Number, required: true },
   price: { type: Number, required: true },
   cost: { type: Number, required: true },

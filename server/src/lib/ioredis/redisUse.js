@@ -82,7 +82,7 @@ export class ArrayRedis {
   }
 
   async runCronjob() {
-    const length = await this.getLength();
+    let length = await this.getLength();
     if (length <= 0) return;
     do {
       let data = await this.pop();

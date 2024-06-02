@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Buttonz, Dialogz, DropdownForm, Hrz, InputCalendarForm, InputCalendarz } from '@components/core';
+import { Buttonz, Dialogz, DropdownForm, Hrz, InputCalendarForm, InputCalendarz, Inputz, MultiSelectForm } from '@components/core';
 import { Loading } from '@components/shared';
-import { usePostApi } from '@lib/react-query';
-import { calculatorDebtApi } from '@api';
+import { useGetApi, usePostApi } from '@lib/react-query';
+import { calculatorDebtApi, getListApartmentGroupInfoApi } from '@api';
 import { calculationRange, serviceType } from '@constant';
 import { DebtValidation } from '@lib/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DataTable } from '@components/base';
+import { useDataState, useToastState } from '@store';
+import { useEffect } from 'react';
+import moment from 'moment';
 
 const Calculator = (props) => {
   const { open, setOpen, setParams } = props;
   const { mutateAsync, isPending } = usePostApi(calculatorDebtApi);
   const [select, setSelect] = useState([]);
+  const [services, setServices] = useState([]);
+  const { apartments } = useDataState();
+  const { showToast } = useToastState();
+  const { data: apartmentGroups } = useGetApi(getListApartmentGroupInfoApi, {}, 'apartmentGroups');
 
   const {
     handleSubmit,
@@ -24,6 +31,47 @@ const Calculator = (props) => {
     resolver: yupResolver(DebtValidation)
   });
 
+  useEffect(() => {
+    const date = new Date();
+    setServices(
+      serviceType.map((s) => ({
+        name: s.label,
+        _id: s.key,
+        type: s.key,
+        from: new Date(date.getFullYear(), date.getMonth() - 1, 1),
+        to: new Date(date.getFullYear(), date.getMonth(), 1),
+        discount: 0
+      }))
+    );
+  }, [JSON.stringify(serviceType)]);
+
+  const handleData = (data) => {
+    const newData = { ...data };
+    if (Number(newData.type) === 1) newData.apartments = apartments.map((a) => a._id);
+    else if (Number(newData.type) === 2) {
+      let newApartments = [];
+      apartmentGroups.forEach((a) => {
+        if (newData.groupApartmens?.includes(a._id)) newApartments = [...newApartments, ...a.apartments];
+      });
+      newData.apartments = newApartments;
+    }
+    if (!(newData.apartments?.length > 0)) return 'Vui lòng chọn căn hộ tính phí!';
+    newData.services = services
+      .filter((s) => select.includes(s._id))
+      ?.map((s) => ({
+        ...s,
+        _id: undefined,
+        from: moment(s.from).format('YYYY-MM-DD HH:mm:ss'),
+        to: moment(s.to).format('YYYY-MM-DD HH:mm:ss')
+      }));
+    if (!(newData.services?.length > 0)) return 'Vui lòng chọn dịch vụ tính phí!';
+    newData.deadline = moment(newData.deadline).format('YYYY-MM-DD');
+    const month = new Date(newData.month);
+    newData.month = '' + month.getFullYear() + (month.getMonth() > 8 ? month.getMonth() : month.getMonth() + 1);
+    newData.type = undefined;
+    return newData;
+  };
+
   const onSubmit = async (e) => {
     const data = handleData(e);
     if (typeof data === 'string') {
@@ -32,32 +80,61 @@ const Calculator = (props) => {
     }
     const response = await mutateAsync(data);
     if (response) {
-      onSuccess();
       showToast({ title: 'Đã thêm hàng chờ tính toán công nợ', severity: 'success' });
       setOpen(false);
+      setSelect([]);
       reset();
       setParams((pre) => ({ ...pre, render: !pre.render }));
     }
   };
 
-  const handleData = (data) => {
-    const newData = { ...data };
-    return newData;
+  const onChangeTable = (key, field, value) => {
+    if (key && field) {
+      setServices((pre) =>
+        pre.map((p) => {
+          if (p._id === key) p[field] = value;
+          return { ...p };
+        })
+      );
+    }
   };
 
   const columns = [
     { label: 'Tên dịch vụ', field: 'name' },
-    { label: 'Ngày bắt đầu', body: (e) => <InputCalendarz className="!w-full" label="Ngày bắt đầu" /> },
-    { label: 'Ngày kết thúc', body: (e) => <InputCalendarz className="!w-full" label="Ngày kết thúc" /> }
+    {
+      label: 'Ngày bắt đầu',
+      body: (item) => (
+        <InputCalendarz className="!w-full" label="Ngày bắt đầu" value={item.from} onChange={(e) => onChangeTable(item._id, 'from', e)} />
+      )
+    },
+    {
+      label: 'Ngày kết thúc',
+      body: (item) => (
+        <InputCalendarz className="!w-full" label="Ngày kết thúc" value={item.to} onChange={(e) => onChangeTable(item._id, 'to', e)} />
+      )
+    },
+    {
+      label: 'Giảm trừ',
+      body: (item) => (
+        <Inputz
+          type="number"
+          className="!w-full"
+          label="Giảm trừ"
+          value={item.discount}
+          onChange={(e) => onChangeTable(item._id, 'discount', e.target.value)}
+        />
+      )
+    }
   ];
 
   return (
     <Dialogz
-      className="w-[1000px]"
+      className="w-[1200px]"
       title="Tính toán công nợ"
       open={open}
       setOpen={() => {
         setOpen(false);
+        setSelect([]);
         reset();
       }}
     >
@@ -83,40 +160,40 @@ const Calculator = (props) => {
                   errors={errors}
                   watch={watch}
                   setValue={setValue}
+                  onChange={(e) => {
+                    setValue('type', e);
+                    setValue('groupApartmens', undefined);
+                    setValue('apartments', undefined);
+                  }}
                   className="!w-full"
                 />
                 {Number(watch('type')) === 2 && (
-                  <DropdownForm
+                  <MultiSelectForm
                     id="groupApartmens"
                     label="Nhóm căn hộ (*)"
-                    options={calculationRange}
-                    errors={errors}
+                    options={apartmentGroups}
                     watch={watch}
                     setValue={setValue}
                     className="!w-full"
+                    optionLabel="name"
+                    optionValue="_id"
                   />
                 )}
                 {Number(watch('type')) === 3 && (
-                  <DropdownForm
-                    id="groupApartmens"
+                  <MultiSelectForm
+                    id="apartments"
                     label="Căn hộ (*)"
-                    options={calculationRange}
-                    errors={errors}
+                    options={apartments}
                     watch={watch}
                     setValue={setValue}
                     className="!w-full"
+                    optionLabel="name"
+                    optionValue="_id"
                   />
                 )}
               </div>
               <div className="w-full">
-                <DataTable
-                  select={select}
-                  setSelect={setSelect}
-                  isPagination={false}
-                  data={serviceType.map((s) => ({ name: s.label, _id: s.key }))}
-                  columns={columns}
-                  hideParams={true}
-                />
+                <DataTable select={select} setSelect={setSelect} isPagination={false} data={services} columns={columns} hideParams={true} />
               </div>
             </div>
           </div>

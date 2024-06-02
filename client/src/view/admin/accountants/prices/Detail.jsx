@@ -70,8 +70,27 @@ const DetailPrice = () => {
       <div className="flex flex-wrap w-full">
         <InputForm id="name" label="Tên bảng giá (*)" errors={errors} register={register} />
         <InputForm id="code" label="Mã bảng giá (*)" errors={errors} register={register} />
-        <DropdownForm id="serviceType" label="Loại dịch vụ (*)" options={serviceType} errors={errors} watch={watch} setValue={setValue} />
-        <DropdownForm id="recipe" label="Loại bảng giá (*)" options={priceType} errors={errors} watch={watch} setValue={setValue} />
+        <DropdownForm
+          id="serviceType"
+          label="Loại dịch vụ (*)"
+          options={serviceType}
+          errors={errors}
+          watch={watch}
+          setValue={setValue}
+          onChange={(e) => {
+            setValue('serviceType', e);
+            if ([1, 4, 5].includes(Number(e))) setValue('recipe', 1);
+          }}
+        />
+        <DropdownForm
+          id="recipe"
+          label="Loại bảng giá (*)"
+          options={priceType}
+          errors={errors}
+          watch={watch}
+          setValue={setValue}
+          disabled={[1, 4, 5].includes(Number(watch('serviceType')))}
+        />
         <TextAreaz id="description" label="Mô tả" value={watch('description')} setValue={(e) => setValue('description', e)} />
         <div className="w-full mt-4">
           <div className="p-2">

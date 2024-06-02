@@ -7,7 +7,7 @@ class VehicleMd extends ModelBase {
   project;
   by;
   updateBy;
-  aprtment;
+  apartment;
   name;
   licensePlate;
   type;
@@ -23,7 +23,7 @@ VehicleMd.init('Vehicle', {
   project: { type: String, required: true },
   by: { type: ObjectId, ref: 'User', required: true },
   updateBy: { type: ObjectId, ref: 'User' },
-  aprtment: { type: String, required: true },
+  apartment: { type: String, ref: 'Apartment', required: true },
   name: { type: String, required: true },
   licensePlate: { type: String, required: true },
   type: {

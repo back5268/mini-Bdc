@@ -1,5 +1,5 @@
 import { debtQueue } from '@lib/node-cron';
-import { listDebtLogValid } from '@lib/validation';
+import { calculatorDebtValid, listDebtLogValid } from '@lib/validation';
 import { countDebtLogMd, createDebtLogMd, listDebtLogMd } from '@models';
 import { validateData } from '@utils';
 import moment from 'moment';
@@ -26,7 +26,7 @@ export const getListDebtLog = async (req, res) => {
 
 export const calculatorDebt = async (req, res) => {
   try {
-    const { error, value } = validateData(listDebtLogValid, req.body);
+    const { error, value } = validateData(calculatorDebtValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { month, deadline, services, apartments } = value;
     const debtLog = await createDebtLogMd({
@@ -36,11 +36,11 @@ export const calculatorDebt = async (req, res) => {
       month,
       deadline,
       apartments,
-      services: services.map((s) => s.type),
+      services,
       status: 1
     });
     debtQueue.push({ debtLogId: debtLog._id, projectId: req.project?._id, month, deadline, services, apartments }, true);
-    res.json({ status: true });
+    res.json({ status: true, data: 1 });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }
