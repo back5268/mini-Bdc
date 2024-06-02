@@ -16,7 +16,7 @@ const Debts = () => {
   const [open, setOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
   const { isLoading, data } = useGetApi(getListDebtLogApi, params, 'debts');
-  const { data: months } = useGetApi(getListMonthApi, params, 'months');
+  const { data: months } = useGetApi(getListMonthApi, {}, 'months');
 
   const columns = [
     { label: 'Tiêu đề', field: 'title' },

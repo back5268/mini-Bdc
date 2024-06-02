@@ -7,6 +7,7 @@ import { electricWaterRouter } from './electricWater';
 import { priceRouter } from './price';
 import { serviceRouter } from './service';
 import { vehicleRouter } from './vehicle';
+import { billRouter } from './bill';
 
 export const projectRouter = express.Router();
 
@@ -18,3 +19,4 @@ projectRouter.use('/apartment-groups', apartmentGroupRouter);
 projectRouter.use('/apartments', apartmentRouter);
 projectRouter.use('/electric-waters', electricWaterRouter);
 projectRouter.use('/debts', debtLogRouter);
+projectRouter.use('/bills', billRouter);

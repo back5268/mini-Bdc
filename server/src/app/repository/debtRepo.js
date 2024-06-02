@@ -169,7 +169,7 @@ export class Debt {
         month: this.month,
         amount: summary,
         code: '123',
-        deadline: this.deadline,
+        deadline: moment(this.deadline).format('YYYY-MM-DD'),
         status: 1,
         customerInfo: { name: this.apartment.owner?.fullName },
         debits: [debit._id]

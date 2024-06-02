@@ -14,4 +14,4 @@ export * from './template';
 export * from './tool';
 export * from './user';
 export * from './vehicle';
-
+export * from './bill';
