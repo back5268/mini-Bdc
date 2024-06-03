@@ -3,7 +3,7 @@ import { TrashIcon, DocumentMagnifyingGlassIcon } from '@heroicons/react/24/outl
 import { useToastState, useConfirmState } from '@store';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { removeSpecialCharacter } from '@lib/helper';
-import { Buttonz, CheckBoxz, Paginationz, Switchz } from '@components/core';
+import { Buttonz, CheckBoxz, Paginationz, SplitButtonz, Switchz } from '@components/core';
 import { Loading } from '@components/shared';
 
 const HeaderColumn = ({ children, className = '', ...prop }) => (
@@ -49,7 +49,7 @@ const DataTable = (props) => {
     handleDelete = (item) => ({ _id: item._id }),
     moreActions
   } = actionsInfo;
-  const { onCreate = () => {}, onImport = () => {}, exportApi, moreHeader } = headerInfo;
+  const { onCreate = () => {}, onImport = () => {}, exportApi, moreHeader, items } = headerInfo;
   const { changeStatusApi = () => {}, handleChangeStatus = (item) => ({ _id: item._id, status: item.status ? 0 : 1 }) } = statusInfo;
 
   const onDeletez = (item) => {
@@ -89,8 +89,14 @@ const DataTable = (props) => {
     });
   };
 
+  const handleSelect = (callback = () => {}) => {
+    if (!(select?.length > 0)) return showToast({ title: `Vui lòng chọn ${title || 'dữ liệu'}!`, severity: 'warning' });
+    callback();
+  };
+
   const isActions = baseActions.includes('detail') || baseActions.includes('delete') || moreActions;
-  const isHeader = baseActions.includes('create') || baseActions.includes('import') || baseActions.includes('export') || moreHeader;
+  const isHeader =
+    baseActions.includes('create') || baseActions.includes('import') || baseActions.includes('export') || moreHeader || items;
   const isStatus = Boolean(statusInfo.changeStatusApi);
 
   useEffect(() => {
@@ -120,9 +126,10 @@ const DataTable = (props) => {
               Export
             </Buttonz>
           )}
+          {items?.length > 0 && <SplitButtonz items={items.map((item) => ({ ...item, onClick: () => handleSelect(item.onClick) }))} />}
           {moreHeader?.length > 0 &&
             moreHeader.map((header, index) => {
-              const color = header.color || 'green';
+              const color = header.color || 'cyan';
 
               return (
                 <Buttonz key={index} color={color} onClick={() => header.onClick()}>

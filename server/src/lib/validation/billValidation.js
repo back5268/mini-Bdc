@@ -12,3 +12,8 @@ export const listBillValid = {
 export const detailBillValid = {
   _id: 'string'
 };
+
+export const updateStatusBillValid = {
+  _ids: 'json',
+  status: 'number'
+};
