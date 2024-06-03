@@ -1,4 +1,4 @@
-import { addApartmentValid, detailApartmentValid, listApartmentValid, updateApartmentValid, updateStatusApartmentValid } from "@lib/validation";
+import { addApartmentValid, detailApartmentValid, listApartmentValid, updateApartmentValid } from "@lib/validation";
 import { countApartmentMd, createApartmentMd, deleteApartmentMd, detailApartmentMd, listApartmentMd, updateApartmentMd } from "@models";
 import { validateData } from "@utils";
 
@@ -18,6 +18,7 @@ export const getListApartment = async (req, res) => {
         res.status(500).json({ status: false, mess: error.toString() });
     }
 }
+
 export const deleteApartment = async (req, res) => {
     try {
         const { error, value } = validateData(detailApartmentValid, req.body);
@@ -30,6 +31,7 @@ export const deleteApartment = async (req, res) => {
         res.status(500).json({ status: false, mess: error.toString() });
     }
 };
+
 export const detailApartment = async (req, res) => {
     try {
         const { error, value } = validateData(detailApartmentValid, req.query);
@@ -42,11 +44,12 @@ export const detailApartment = async (req, res) => {
         res.status(500).json({ status: false, mess: error.toString() });
     }
 };
+
 export const updateApartment = async (req, res) => {
     try {
         const { error, value } = validateData(updateApartmentValid, req.body);
         if (error) return res.status(400).json({ status: false, mess: error });
-        const { _id, name, description, code, area, owner } = value;
+        const { _id, name, code } = value;
         const apartment = await detailApartmentMd({ _id });
         if (!apartment) return res.status(400).json({ status: false, mess: 'Căn hộ không tồn tại!' });
         if (name) {
@@ -64,25 +67,12 @@ export const updateApartment = async (req, res) => {
         res.status(500).json({ status: false, mess: error.toString() });
     }
 }
-export const updateStatusApartment = async (req, res) => {
-    try {
-        const { error, value } = validateData(updateStatusApartmentValid, req.body);
-        if (error) return res.status(400).json({ status: false, mess: error });
-        const { _id, status } = value;
 
-        const apartment = await detailApartmentMd({ _id });
-        if (!apartment) return res.status(400).json({ status: false, mess: 'Căn hộ không tồn tại!' });
-        const data = await updateApartmentMd({ _id }, { updateBy: req.userInfo._id, ...value });
-        res.status(201).json({ status: true, data });
-    } catch (error) {
-        res.status(500).json({ status: false, mess: error.toString() });
-    }
-};
 export const addApartment = async (req, res) => {
     try {
         const { error, value } = validateData(addApartmentValid, req.body);
         if (error) return res.status(400).json({ status: false, mess: error });
-        const { name, description, code, area, owner, floor, status } = value;
+        const { name, code} = value;
         if (name) {
             const checkName = await detailApartmentMd({ name });
             if (checkName) return res.status(400).json({ status: false, mess: 'Căn hộ đã tồn tại!' });
@@ -95,6 +85,15 @@ export const addApartment = async (req, res) => {
         value.project = req.project?._id;
         const data = await createApartmentMd({ by: req.userInfo._id, ...value });
         res.status(201).json({ status: true, data });
+    } catch (error) {
+        res.status(500).json({ status: false, mess: error.toString() });
+    }
+};
+
+export const getListApartmentInfo = async (req, res) => {
+    try {
+        const data = await listApartmentMd({}, false, false, false, "_id name code");
+        res.json({ status: true, data });
     } catch (error) {
         res.status(500).json({ status: false, mess: error.toString() });
     }

@@ -16,7 +16,6 @@ export const updateApartmentValid = {
     area: { type: 'number', allowNull: true },
     floor: { type: 'number', allowNull: true },
     status: { type: 'number', allowNull: true },
-    owner: { type: 'string', allowNull: true },
 };
 export const updateStatusApartmentValid = {
     _id: 'string',
@@ -29,5 +28,4 @@ export const addApartmentValid = {
     area: { type: 'number', allowNull: true },
     floor: { type: 'number', allowNull: true },
     status: { type: 'number', allowNull: true },
-    owner: { type: 'string', allowNull: true },
 };
