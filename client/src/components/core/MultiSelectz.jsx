@@ -41,7 +41,7 @@ export const MultiSelectz = (props) => {
           <>
             <ListItem
               onClick={() => (isSelectAll ? onChange([]) : onChange(options.map((o) => o[optionValue])))}
-              className={`!py-1 my-1 ${isSelectAll ? 'bg-blue-gray-50' : 'bg-white'}`}
+              className={`!py-1 ${isSelectAll ? 'bg-blue-gray-50' : 'bg-white'}`}
             >
               <div className="w-full flex gap-2 items-center">
                 <CheckBoxz checked={isSelectAll} onChange={() => {}} /> Chọn tất cả
@@ -69,7 +69,7 @@ export const MultiSelectz = (props) => {
             })}
           </>
         ) : (
-          <div className="cursor-default">{emptyMessage}</div>
+          <div className="cursor-default p-3">{emptyMessage}</div>
         )}
       </Select>
     </div>
@@ -122,7 +122,7 @@ export const MultiSelectForm = (props) => {
           <>
             <ListItem
               onClick={() => (isSelectAll ? onChange([]) : onChange(options.map((o) => o[optionValue])))}
-              className={`!py-1 my-1 ${isSelectAll ? 'bg-blue-gray-50' : 'bg-white'}`}
+              className={`!py-1 ${isSelectAll ? 'bg-blue-gray-50' : 'bg-white'}`}
             >
               <div className="w-full flex gap-2 items-center">
                 <CheckBoxz checked={isSelectAll} onChange={() => {}} /> Chọn tất cả
@@ -149,7 +149,7 @@ export const MultiSelectForm = (props) => {
             })}
           </>
         ) : (
-          <div className="cursor-default">{emptyMessage}</div>
+          <div className="cursor-default p-3">{emptyMessage}</div>
         )}
       </Select>
       {errors[id] && <small className="w-full ml-2 text-red-600">{errors[id].message}</small>}

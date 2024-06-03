@@ -17,7 +17,7 @@ const Apartment = () => {
     return <div>Tầng {rowData.floor}</div>;
   };
   const areaBody = (rowData) => {
-    return <div>{rowData.area} m2</div>;
+    return <div>{rowData.area}</div>;
   };
   const statusBody = (rowData) => {
     return <div>{statusApartment.find((s) => s.id === rowData.status)?.name}</div>;
@@ -25,11 +25,8 @@ const Apartment = () => {
   const columns = [
     { label: 'Tên căn hộ ', field: 'name' },
     { label: 'Mã căn hộ', field: 'code' },
-    { label: 'Diện tích', field: 'area', body: (e) => areaBody(e) },
+    { label: 'Diện tích (m2)', field: 'area', body: (e) => areaBody(e) },
     { label: 'Tầng', field: 'floor', body: (e) => floorBody(e) },
-    { label: 'Chủ sở hữu', body: (e) => e.owner?.fullName || '' },
-    { label: 'Người tạo', body: (e) => e.by?.fullName || '' },
-    { label: 'Người cập nhật', body: (e) => e.updateBy?.fullName || '' },
     { label: 'Trạng thái căn hộ', body: (e) => statusBody(e) },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
     { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
@@ -55,7 +52,6 @@ const Apartment = () => {
           setParams={setParams}
           baseActions={['create', 'detail', 'update', 'delete']}
           actionsInfo={{ onViewDetail: (item) => navigate(`/apartments/detail/${item._id}`), deleteApi: deleteApartmentApi }}
-          // statusInfo={{ changeStatusApi: updateApartmentApi }}
           headerInfo={{
             onCreate: () => {
               navigate('/apartments/create');

@@ -13,7 +13,7 @@ export const detailVehicleValid = {
 
 export const addVehicleValid = {
   name: 'string',
-  aprtment: 'string',
+  apartment: 'string',
   licensePlate: 'string',
   service: 'string',
   type: 'number',
@@ -24,7 +24,7 @@ export const addVehicleValid = {
 export const updateVehicleValid = {
   _id: 'string',
   name: { type: 'string', allowNull: true },
-  aprtment: { type: 'string', allowNull: true },
+  apartment: { type: 'string', allowNull: true },
   licensePlate: { type: 'string', allowNull: true },
   service: { type: 'string', allowNull: true },
   type: { type: 'number', allowNull: true },

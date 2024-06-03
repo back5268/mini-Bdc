@@ -232,7 +232,7 @@ const DataTable = (props) => {
                   <tr>
                     <BodyColumn
                       className="text-center py-4 !text-sm"
-                      colSpan={columns.length + 1 + (Number(isActions) || 0) + (Number(isStatus) || 0)}
+                      colSpan={columns.length + 1 + (Number(isActions) || 0) + (Number(isStatus) || 0) + (Boolean(select) ? 1 : 0)}
                     >
                       Không có dữ liệu
                     </BodyColumn>

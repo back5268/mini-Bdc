@@ -1,33 +1,46 @@
 import { getListDebtLogApi, getListMonthApi } from '@api';
 import { DataTable, FormList, TimeBody } from '@components/base';
 import DataFilter from '@components/base/DataFilter';
-import { Dropdownz, Hrz, InputCalendarz, Spinnerz } from '@components/core';
+import { Chipz, Dropdownz, Hrz, InputCalendarz, Spinnerz } from '@components/core';
 import { debtStatus } from '@constant';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
 import { useState } from 'react';
 import Calculator from './Calculator';
+import DetaiDebt from './Detail';
 
 const Debts = () => {
   const initParams = useGetParams();
   const [params, setParams] = useState(initParams);
   const [filter, setFilter] = useState({});
   const [open, setOpen] = useState(false);
+  const [openDetail, setOpenDetail] = useState(false);
   const { isLoading, data } = useGetApi(getListDebtLogApi, params, 'debts');
-  const { data: months } = useGetApi(getListMonthApi, params, 'months');
+  const { data: months } = useGetApi(getListMonthApi, {}, 'months');
 
   const columns = [
     { label: 'Tiêu đề', field: 'title' },
     { label: 'Tháng', field: 'month' },
     { label: 'Thành công', field: 'success' },
     { label: 'Thất bại', field: 'error' },
-    { label: 'Trạng thái', body: (e) => (e.status === 1 ? <Spinnerz /> : 'Đã xử lý') },
+    {
+      label: 'Trạng thái',
+      body: (e) =>
+        e.status === 1 ? (
+          <div className="flex items-center justify-center gap-4 font-medium">
+            <Spinnerz className="h-6 w-6" /> <span>Đang xử lý</span>
+          </div>
+        ) : (
+          <Chipz value="Đã xử lý" />
+        )
+    },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) }
   ];
 
   return (
     <FormList title="Lịch sử tính toán công nợ">
       <Calculator open={open} setOpen={setOpen} setParams={setParams} />
+      <DetaiDebt open={openDetail} setOpen={setOpenDetail} data={data?.documents} />
       <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="!w-full">
         <InputCalendarz value={filter.from} onChange={(e) => setFilter({ ...filter, from: e })} label="Từ ngày" />
         <InputCalendarz value={filter.to} onChange={(e) => setFilter({ ...filter, to: e })} label="Đến ngày" />
@@ -45,7 +58,7 @@ const Debts = () => {
         baseActions={['detail']}
         headerInfo={{ moreHeader: [{ children: () => 'Tính toán công nợ', onClick: () => setOpen(true) }] }}
         actionsInfo={{
-          onViewDetail: (item) => setOpen(item._id)
+          onViewDetail: (item) => setOpenDetail(item._id)
         }}
       />
     </FormList>

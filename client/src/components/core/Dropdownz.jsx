@@ -25,6 +25,11 @@ export const Dropdownz = (props) => {
         size={size}
         color="cyan"
         className={`rounded-md px-0 ${selectClassName}`}
+        selected={() => {
+          const option = options.find((o) => String(o[optionValue] || o) === String(value));
+          const text = option?.[optionLabel] || option;
+          return <div className="w-full flex gap-2 overflow-hidden">{text}</div>;
+        }}
         {...prop}
       >
         {options?.length > 0 ? (
@@ -35,13 +40,13 @@ export const Dropdownz = (props) => {
               label = String(item[optionLabel]);
             } else key = label = String(item);
             return (
-              <Option key={index} value={key} className="my-1 py-3">
+              <Option key={index} value={key} className="py-3">
                 {label}
               </Option>
             );
           })
         ) : (
-          <div className="cursor-default">Không có dữ liệu</div>
+          <div className="cursor-default p-3">Không có dữ liệu</div>
         )}
       </Select>
     </div>
@@ -74,6 +79,11 @@ export const DropdownForm = (props) => {
         size={size}
         color="cyan"
         error={Boolean(errors[id])}
+        selected={() => {
+          const option = options.find((o) => String(o[optionValue] || o) === String(watch(id)));
+          const text = option?.[optionLabel] || option;
+          return <div className="w-full flex gap-2 overflow-hidden">{text}</div>;
+        }}
         className="rounded-md px-0"
         {...prop}
       >
@@ -85,13 +95,13 @@ export const DropdownForm = (props) => {
               label = String(item[optionLabel]);
             } else key = label = String(item);
             return (
-              <Option key={key} value={key}>
+              <Option key={key} value={key} className="py-3">
                 {label}
               </Option>
             );
           })
         ) : (
-          <div className="cursor-default">{emptyMessage}</div>
+          <div className="cursor-default p-3">{emptyMessage}</div>
         )}
       </Select>
       {errors[id] && <small className="w-full ml-2 text-red-600">{errors[id].message}</small>}

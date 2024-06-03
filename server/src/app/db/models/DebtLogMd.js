@@ -25,9 +25,9 @@ export const DebtLog = DebtLogMd.init('DebtLog', {
   month: { type: Number, required: true },
   deadline: { type: Date, required: true },
   apartments: [{ type: String, required: true }],
-  services: [{ type: String, required: true }],
-  success: { type: Number, required: true },
-  error: { type: Number, required: true },
+  services: [{ type: Object, required: true }],
+  success: { type: Number, default: 0 },
+  error: { type: Number, default: 0 },
   status: { type: Number, enum: [1, 2], description: '1: Đang xử lý, 2: Đã xử lý', required: true },
   detail: [
     {

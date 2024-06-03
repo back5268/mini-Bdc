@@ -25,6 +25,14 @@ export const getListApartmentGroup = async (req, res) => {
   }
 };
 
+export const getListApartmentGroupInfo = async (req, res) => {
+  try {
+    res.json({ status: true, data: await listApartmentGroupMd({ project: req.project?._id }, false, false, false, '_id name apartments') });
+  } catch (error) {
+    res.status(500).json({ status: false, mess: error.toString() });
+  }
+};
+
 export const deleteApartmentGroup = async (req, res) => {
   try {
     const { error, value } = validateData(detailApartmentGroupValid, req.body);

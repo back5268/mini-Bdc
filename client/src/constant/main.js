@@ -48,6 +48,14 @@ export const debtStatus = [
   { label: 'Đã xử lý', key: 2 }
 ];
 
+export const billStatus = [
+  { label: 'Chờ duyệt', key: 1 },
+  { label: 'Chờ gửi', key: 2 },
+  { label: 'Chờ thanh toán', key: 3 },
+  { label: 'Đã thanh toán', key: 4 },
+  { label: 'Quá hạn thanh toán', key: 5 },
+];
+
 export const calculationRange = [
   { label: 'Tất cả căn hộ', key: 1 },
   { label: 'Nhóm căn hộ', key: 2 },

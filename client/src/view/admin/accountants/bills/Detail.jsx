@@ -3,7 +3,7 @@ import { Buttonz, Chipz, Dialogz, Hrz } from '@components/core';
 import { Body, DataTable, TimeBody } from '@components/base';
 import { serviceType } from '@constant';
 
-const DetaiDebt = (props) => {
+const DetaiBill = (props) => {
   const { open, setOpen, data = [] } = props;
   const item = data.find((d) => d._id === open);
 
@@ -35,4 +35,4 @@ const DetaiDebt = (props) => {
   );
 };
 
-export default DetaiDebt;
+export default DetaiBill;

@@ -64,7 +64,7 @@ export const addProject = async (req, res) => {
 
     value.images = [];
     if (req.files?.['images']?.[0]) {
-      for (const file of req.files['images'][0]) {
+      for (const file of req.files['images']) {
         value.images.push(await uploadFileToFirebase(file));
       }
     }

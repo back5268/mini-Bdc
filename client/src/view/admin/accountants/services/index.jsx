@@ -1,4 +1,4 @@
-import { deleteServiceApi, getListServiceApi, updateServiceApi } from '@api';
+import { deleteServiceApi, getListServiceApi, updateStatusServiceApi } from '@api';
 import { Body, DataTable, FormList, TimeBody } from '@components/base';
 import DataFilter from '@components/base/DataFilter';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
@@ -46,7 +46,7 @@ const Services = () => {
         setParams={setParams}
         baseActions={['create', 'detail', 'delete']}
         actionsInfo={{ onViewDetail: (item) => navigate(`/services/detail/${item._id}`), deleteApi: deleteServiceApi }}
-        statusInfo={{ changeStatusApi: updateServiceApi }}
+        statusInfo={{ changeStatusApi: updateStatusServiceApi }}
         headerInfo={{
           onCreate: () => navigate('/services/create')
         }}

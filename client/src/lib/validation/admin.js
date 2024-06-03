@@ -63,7 +63,7 @@ export const VehicleValidation = yup.object({
 export const DebtValidation = yup.object({
   month: yup.string().required('Kỳ tháng không được bỏ trống!'),
   deadline: yup.string().required('Hạn thanh toán không được bỏ trống!'),
-  type: yup.string().required('Phạm vi tính toán không được bỏ trống!')
+  type: yup.string().required('Phạm vi tính toán không được bỏ trống!'),
 });
 
 export const UserInfoValidation = yup.object({
