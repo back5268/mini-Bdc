@@ -69,3 +69,12 @@ export function removeVietnameseTones(str) {
   str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, ' ');
   return str;
 }
+
+export const checkJson = (str) => {
+  try {
+      const data = JSON.parse(str)
+      return data
+  } catch (e) {
+      return false
+  }
+}

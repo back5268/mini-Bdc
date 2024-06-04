@@ -7,10 +7,9 @@ class DepartmentMd extends ModelBase {
   by;
   updateBy;
   name;
+  code;
   description;
   status;
-  users;
-  tools;
   deletedAt;
 }
 
@@ -21,7 +20,6 @@ DepartmentMd.init('Department', {
   code: { type: String, required: true },
   description: { type: String },
   status: { type: Number, enum: [0, 1], default: 1 },
-  projects: [{ type: String, required: true }],
   deletedAt: { type: Date }
 });
 

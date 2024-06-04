@@ -10,24 +10,22 @@ export const detailApartmentValid = {
 };
 
 export const updateApartmentValid = {
-    _id: 'string',
-    name: { type: 'string', allowNull: true },
-    description: { type: 'string', allowNull: true },
-    code: { type: 'string', allowNull: true },
-    area: { type: 'number', allowNull: true },
-    floor: { type: 'number', allowNull: true },
-    status: { type: 'number', allowNull: true },
-};
-export const updateStatusApartmentValid = {
-    _id: 'string',
-    status: { type: 'string', allowNull: true }
+  _id: 'string',
+  name: { type: 'string', allowNull: true },
+  description: { type: 'string', allowNull: true },
+  code: { type: 'string', allowNull: true },
+  area: { type: 'number', allowNull: true },
+  floor: { type: 'number', allowNull: true },
+  status: { type: 'number', allowNull: true },
+  owner: { type: 'string', allowNull: true }
 };
 
 export const addApartmentValid = {
-    name: { type: 'string', allowNull: true },
-    description: { type: 'string', allowNull: true },
-    code: { type: 'string', allowNull: true },
-    area: { type: 'number', allowNull: true },
-    floor: { type: 'number', allowNull: true },
-    status: { type: 'number', allowNull: true },
+  name: { type: 'string', allowNull: true },
+  description: { type: 'string', allowNull: true },
+  code: { type: 'string', allowNull: true },
+  area: { type: 'number', allowNull: true },
+  floor: { type: 'number', allowNull: true },
+  status: { type: 'number', allowNull: true },
+  owner: { type: 'string', allowNull: true }
 };

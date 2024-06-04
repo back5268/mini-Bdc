@@ -16,7 +16,7 @@ const defaultValues = {
   area: 0,
   floor: 0,
   description: '',
-  status: 0
+  status: 1,
 };
 
 const DetailApartment = () => {

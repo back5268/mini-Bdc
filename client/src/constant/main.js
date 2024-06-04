@@ -61,6 +61,7 @@ export const calculationRange = [
   { label: 'Nhóm căn hộ', key: 2 },
   { label: 'Căn hộ', key: 3 }
 ];
+
 export const statusApartment = [
   { id: 1, name: 'Trống' },
   { id: 2, name: 'Đang cho thuê' },

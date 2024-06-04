@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
 import { ModelBase } from '@config';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
@@ -11,13 +11,13 @@ class ProjectMd extends ModelBase {
   address;
   email;
   phone;
-  roomNumber;
   description;
   avatar;
   images;
   managements;
   boards;
   status;
+  departments;
   deletedAt;
 }
 
@@ -29,13 +29,13 @@ ProjectMd.init('Project', {
   address: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: true },
-  roomNumber: { type: Number, required: true },
   description: { type: String },
   avatar: { type: String },
   images: [{ type: String }],
-  managements: [{ type: String, ref: 'User' }],
-  boards: [{ type: String, ref: 'User' }],
+  managements: [{ type: ObjectId, ref: 'User' }],
+  boards: [{ type: ObjectId, ref: 'User' }],
   status: { type: Number, enum: [0, 1], default: 1 },
+  departments: [{ type: String }],
   deletedAt: { type: Date }
 });
 

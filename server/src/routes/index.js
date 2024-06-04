@@ -1,12 +1,14 @@
-import { adminRouter } from './admin';
+import { appRouter } from './app';
 import { authRouter } from './auth';
 import { infoRouter } from './info';
+import { webRouter } from './web';
 
 export const routes = (app) => {
-  app.use('/admin', adminRouter);
+  app.use('/web', webRouter);
+  app.use('/app', appRouter);
   app.use('/auth', authRouter);
   app.use('/info', infoRouter);
-  app.get('/', (req, res) => {
-    res.json('Welcome to Decor Shop!');
+  app.get('/', async (req, res) => {
+    res.json('Welcome to mini-Bdc!');
   });
 };
