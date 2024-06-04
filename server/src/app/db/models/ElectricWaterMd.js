@@ -17,12 +17,13 @@ class ElectricWaterMd extends ModelBase {
   deletedAt;
 }
 
-export const ElectricWater = ElectricWaterMd.init('ElectricWater', {
+ElectricWaterMd.init('ElectricWater', {
   project: { type: String, required: true },
   by: { type: ObjectId, ref: 'User', required: true },
+  updateBy: { type: ObjectId, ref: 'User' },
   apartment: { type: String, required: true },
   type: { type: Number, enum: [1, 2], description: '1: Điện, 2: Nước', required: true },
-  month: { type: Number, required: true },
+  month: { type: String, required: true },
   beforeNumber: { type: Number, required: true },
   afterNumber: { type: Number, required: true },
   dateUpdate: { type: Date, required: true },

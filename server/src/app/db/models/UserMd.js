@@ -1,7 +1,4 @@
 import { ModelBase } from '@config';
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
-const ObjectId = Schema.Types.ObjectId;
 
 class UserMd extends ModelBase {
   fullName;
@@ -21,7 +18,7 @@ class UserMd extends ModelBase {
   status;
   otp;
   timeSendOtp;
-  code;
+  codeStaff;
   department;
   deletedAt;
 }
@@ -33,7 +30,7 @@ UserMd.init('User', {
   phone: { type: String },
   password: { type: String },
   gender: { type: Number, enum: [1, 2, 3], description: '1: Name, 2: Nữ, 3; Khác' },
-  type: { type: String, enum: ['admin', 'user', 'resident'], default: 'user' },
+  type: { type: String, enum: ['admin', 'staff', 'resident'], default: 'resident' },
   birthday: { type: Date },
   address: { type: String },
   bio: { type: String },
@@ -44,8 +41,8 @@ UserMd.init('User', {
   status: { type: Number, enum: [0, 1], default: 1, description: '0: Đã khóa, 1: Hoạt động' },
   otp: { type: String },
   timeSendOtp: { type: Date },
-  code: { type: String },
-  department: { type: ObjectId, ref: 'Department' },
+  codeStaff: { type: String },
+  department: { type: String, ref: 'Department', required: true },
   deletedAt: { type: Date }
 });
 

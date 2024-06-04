@@ -1,5 +1,13 @@
 import { REGEX } from '@constant';
 
+export const signupValid = {
+  name: 'string',
+  username: 'string',
+  otp: 'string',
+  email: 'email',
+  password: { type: 'string', pattern: REGEX.PASSWORD }
+};
+
 export const signinValid = {
   username: 'string',
   password: { type: 'string', pattern: REGEX.PASSWORD }

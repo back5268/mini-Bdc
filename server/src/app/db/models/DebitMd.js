@@ -3,10 +3,10 @@ import { ModelBase } from '@config';
 class DebitMd extends ModelBase {
   project;
   apartment;
-  serviceName;
-  serviceType;
+  bill;
+  service;
   month;
-  prices;
+  name;
   fromDate;
   toDate;
   data;
@@ -21,21 +21,15 @@ class DebitMd extends ModelBase {
 DebitMd.init('Debit', {
   project: { type: String, required: true },
   apartment: { type: String, required: true },
-  serviceName: { type: String, required: true },
-  serviceType: {
-    type: Number,
-    enum: [1, 2, 3, 4, 5],
-    required: true,
-    description: '1: Phí dịch vụ, 2: Phí điện, 3: Phí nước, 4: Phí phương tiện, 5: Phí khác'
-  },
+  bill: { type: String, required: true },
+  service: { type: String, required: true },
   month: { type: String, required: true },
-  prices: [{ from: { type: Number }, to: { type: Number }, amount: { type: Number } }],
+  name: { type: String, required: true },
   fromDate: { type: Date, required: true },
   toDate: { type: Date, required: true },
-  data: { type: Object },
+  data: { type: Object, required: true },
   quantity: { type: Number, required: true },
   price: { type: Number, required: true },
-  cost: { type: Number, required: true },
   discount: { type: Number, default: 0 },
   summary: { type: Number, required: true },
   note: { type: String },

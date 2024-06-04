@@ -14,7 +14,7 @@ export const socketMiddleware = async (socket, next) => {
       return;
     }
     next();
-  } catch (error) {
+  } catch (e) {
     socket.disconnect();
   }
 };
