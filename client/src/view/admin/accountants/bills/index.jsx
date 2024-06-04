@@ -1,4 +1,4 @@
-import { getListBillApi, getListMonthApi } from '@api';
+import { getListBillApi, getListMonthApi, updateStatusBillApi } from '@api';
 import { Body, DataTable, FormList, NumberBody, TimeBody } from '@components/base';
 import DataFilter from '@components/base/DataFilter';
 import { Dropdownz, Hrz, InputCalendarz, Inputz } from '@components/core';
@@ -6,7 +6,7 @@ import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
 import { useState } from 'react';
 import { billStatus } from '@constant';
-import { useDataState } from '@store';
+import { useDataState, useToastState } from '@store';
 import DetaiBill from './Detail';
 
 const Billz = ({ type = 'bill' }) => {
@@ -21,6 +21,7 @@ const Billz = ({ type = 'bill' }) => {
   const { isLoading, data } = useGetApi(getListBillApi, { ...params, status }, 'bills');
   const { data: months } = useGetApi(getListMonthApi, {}, 'months');
   const { apartments } = useDataState();
+  const { showToast } = useToastState();
 
   const columns = [
     { label: 'Mã bảng kê', field: 'code' },
@@ -31,6 +32,26 @@ const Billz = ({ type = 'bill' }) => {
     { label: 'Hạn thanh toán', body: (e) => TimeBody(e.deadline, 'date') },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
     { label: 'Trạng thái', body: (e) => Body(billStatus, e.status) }
+  ];
+
+  const onUpdate = async (status) => {
+    const response = await updateStatusBillApi({ _ids: select, status });
+    if (response) {
+      showToast({ title: 'Đổi trạng thái bảng kê thành công', severity: 'success' });
+      setParams((pre) => ({ ...pre, render: !pre.render }));
+    }
+  };
+
+  const billItems = [
+    { label: 'Chuyển trạng thái chờ duyệt', onClick: () => onUpdate(1) },
+    { label: 'Chuyển trạng thái chờ gửi', onClick: () => onUpdate(2) }
+  ];
+
+  const dataBrowsItems = [{ label: 'Duyệt số liệu', onClick: () => onUpdate(2) }];
+
+  const notificationItems = [
+    { label: 'Chuyển trạng thái chờ thanh toán', onClick: () => onUpdate(3) },
+    { label: 'Gửi thông báo', onClick: () => onUpdate(3) }
   ];
 
   return (
@@ -59,6 +80,7 @@ const Billz = ({ type = 'bill' }) => {
       </DataFilter>
       <Hrz />
       <DataTable
+        title="bảng kê"
         select={select}
         setSelect={setSelect}
         isLoading={isLoading}
@@ -68,9 +90,9 @@ const Billz = ({ type = 'bill' }) => {
         params={params}
         setParams={setParams}
         baseActions={['detail']}
-        headerInfo={{ moreHeader: [{ children: () => 'Tính toán công nợ', onClick: () => setOpen(true) }] }}
+        headerInfo={{ items: type === 'bill' ? billItems : type === 'dataBrowses' ? dataBrowsItems : notificationItems }}
         actionsInfo={{
-          onViewDetail: (item) => setOpenDetail(item._id)
+          onViewDetail: (item) => setOpen(item._id)
         }}
       />
     </FormList>

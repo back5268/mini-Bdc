@@ -1,5 +1,5 @@
-import { detailBillValid, listBillValid } from '@lib/validation';
-import { countBillMd, detailBillMd, listBillMd } from '@models';
+import { detailBillValid, listBillValid, updateStatusBillValid } from '@lib/validation';
+import { countBillMd, detailBillMd, listBillMd, updateBillMd } from '@models';
 import { validateData } from '@utils';
 
 export const getListBill = async (req, res) => {
@@ -19,6 +19,22 @@ export const getListBill = async (req, res) => {
     const documents = await listBillMd(where, page, limit, [{ path: 'apartment', select: 'name code' }]);
     const total = await countBillMd(where);
     res.json({ status: true, data: { documents, total } });
+  } catch (error) {
+    res.status(500).json({ status: false, mess: error.toString() });
+  }
+};
+
+export const updateStatusBill = async (req, res) => {
+  try {
+    const { error, value } = validateData(updateStatusBillValid, req.body);
+    if (error) return res.status(400).json({ status: false, mess: error });
+    const { _ids, status } = value;
+    for (const _id of _ids) {
+      if (status === 2) {
+        await updateBillMd({ _id }, { status, confirmDate: Date.now() });
+      } else await updateBillMd({ _id }, { status });
+    }
+    res.json({ status: true, data: {} });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }
