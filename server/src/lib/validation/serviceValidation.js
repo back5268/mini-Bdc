@@ -39,5 +39,5 @@ export const checkApartmentValid = {
 
 export const updateStatusServiceValid = {
   _id: 'string',
-  status: { type: 'string', allowNull: true }
+  status: 'number'
 };

@@ -1,4 +1,4 @@
-const tools = [
+export const tools = [
   {
     name: 'Dashboard',
     sort: 1,
@@ -71,7 +71,7 @@ const tools = [
       { name: 'Quản lý dịch vụ', route: '/services', sort: 2, actions: ['delete', 'create', 'update', 'read'] },
       { name: 'Quản lý phương tiện', route: '/vehicles', sort: 3, actions: ['delete', 'create', 'update', 'read'] },
       { name: 'Chỉ số điện nước', route: '/electric-waters', sort: 4, actions: ['delete', 'create', 'update', 'read'] },
-      { name: 'Tính toán công nợ', route: '/calculator', sort: 5, actions: ['delete', 'create', 'update', 'read'] },
+      { name: 'Tính toán công nợ', route: '/debts', sort: 5, actions: ['delete', 'create', 'update', 'read'] },
       { name: 'Danh sách duyệt số liệu', route: '/data-browses', sort: 6, actions: ['update', 'read'] },
       { name: 'Danh sách gửi thông báo', route: '/notifications', sort: 7, actions: ['update', 'read'] },
       { name: 'Danh sách bảng kê', route: '/bills', sort: 8, actions: ['update', 'read'] },

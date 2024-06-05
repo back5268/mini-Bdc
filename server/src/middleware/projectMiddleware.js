@@ -1,4 +1,4 @@
-import { detailProjectMd, listProjectMd } from '@models';
+import { detailProjectMd } from '@models';
 import { checkJson } from '@utils';
 
 export const projectMiddleware = async (req, res, next) => {

@@ -1,12 +1,12 @@
-import { DepartmentValidation } from '@lib/validation';
-import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import { addDepartmentApi, getListDepartmentInfoApi, updateDepartmentApi } from '@api';
 import { FormDetail } from '@components/base';
-import { checkEqualProp } from '@lib/helper';
 import { InputForm, TextAreaz } from '@components/core';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { checkEqualProp } from '@lib/helper';
+import { DepartmentValidation } from '@lib/validation';
 import { useDataState } from '@store';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
 const defaultValues = {
   name: '',

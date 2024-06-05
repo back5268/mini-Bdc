@@ -22,7 +22,7 @@ export const permissionMiddleware = async (req, res, next) => {
             });
           }
         });
-      } else return res.status(400).json({ status: false, mess: 'Bạn không có quyền thực hiện tác vụ này!' });
+      }
     } else {
       const tools = await listToolMd({ status: 1 }, false, false, false, 'name icon children', { sort: 1 });
       tools.forEach((t) => {

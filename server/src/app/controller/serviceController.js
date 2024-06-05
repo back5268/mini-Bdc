@@ -27,7 +27,7 @@ export const getListService = async (req, res) => {
     if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }, { code: { $regex: keySearch, $options: 'i' } }];
     if (type) where.type = type;
     if (status || status === 0) where.status = status;
-    const documents = await listServiceMd(where, page, limit);
+    const documents = await listServiceMd(where, page, limit, [{ path: 'price', select: 'name code' }]);
     const total = await countServiceMd(where);
     res.json({ status: true, data: { documents, total } });
   } catch (error) {
@@ -37,9 +37,10 @@ export const getListService = async (req, res) => {
 
 export const getListServiceInfo = async (req, res) => {
   try {
-    const { type, status } = req.query;
+    const { type, status, apartment } = req.query;
     const where = { project: req.project?._id };
     if (type) where.type = type;
+    if (apartment) where.apartments = { $elemMatch: { $eq: apartment } };
     if (status || status === 0) where.status = status;
     res.json({ status: true, data: await listServiceMd(where) });
   } catch (error) {
@@ -52,7 +53,7 @@ export const detailService = async (req, res) => {
     const { error, value } = validateData(detailServiceValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id } = value;
-    const data = await detailServiceMd({ _id }, [{ path: 'price', select: 'name code prices' }]);
+    const data = await detailServiceMd({ _id });
     if (!data) return res.status(400).json({ status: false, mess: 'Dịch vụ không tồn tại!' });
     res.json({ status: true, data });
   } catch (error) {
@@ -75,7 +76,7 @@ export const deleteService = async (req, res) => {
 
 export const checkApartment = async (req, res) => {
   try {
-    const { error, value } = validateData(checkApartmentValid, req.body);
+    const { error, value } = validateData(checkApartmentValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { service, type, vehicleType } = value;
     const services = await listServiceMd({ type, vehicleType, status: 1 });
@@ -93,9 +94,9 @@ export const checkApartment = async (req, res) => {
     where.$or = [{ _id: { $nin: arr } }];
     if (service) {
       const checkService = await detailServiceMd({ _id: service }, false, 'apartments');
-      if (checkService && checkService.apartments.length > 0) where.$or.push({ _id: { $in: checkService.apartments } });
+      if (checkService?.apartments?.length > 0) where.$or.push({ _id: { $in: checkService.apartments } });
     }
-    res.json({ status: true, data: await listApartmentMd({ _id: { $nin: arr } }) }, false, false, false, '_id name code');
+    res.json({ status: true, data: await listApartmentMd(where, false, false, false, '_id name code area floor') });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }

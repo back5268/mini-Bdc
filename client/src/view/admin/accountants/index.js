@@ -6,3 +6,6 @@ export { default as Vehicles } from './vehicles';
 export { default as DetailVehicle } from './vehicles/Detail';
 export { default as ElectricWater } from './electric-waters';
 export { default as Debts } from './debts';
+export { default as Bills } from './bills/Bills';
+export { default as DataBrowses } from './bills/DataBrowses';
+export { default as Notifications } from './bills/Notifications';

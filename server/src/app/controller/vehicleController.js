@@ -1,3 +1,4 @@
+import { uploadFileToFirebase } from '@lib/firebase';
 import { addVehicleValid, detailVehicleValid, listVehicleValid, updateVehicleValid } from '@lib/validation';
 import { createVehicleMd, countVehicleMd, deleteVehicleMd, detailVehicleMd, listVehicleMd, updateVehicleMd } from '@models';
 import { validateData } from '@utils';
@@ -14,7 +15,7 @@ export const getListVehicle = async (req, res) => {
     if (status || status === 0) where.status = status;
     const documents = await listVehicleMd(where, page, limit, [
       { path: 'apartment', select: 'name' },
-      { key: 'servicec', path: 'name' }
+      { path: 'service', select: 'name' }
     ]);
     const total = await countVehicleMd(where);
     res.json({ status: true, data: { documents, total } });
@@ -28,10 +29,7 @@ export const detailVehicle = async (req, res) => {
     const { error, value } = validateData(detailVehicleValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id } = value;
-    const data = await detailVehicleMd({ _id }, [
-      { path: 'apartment', select: 'name' },
-      { key: 'servicec', path: 'name' }
-    ]);
+    const data = await detailVehicleMd({ _id });
     if (!data) return res.status(400).json({ status: false, mess: 'Phương tiện không tồn tại!' });
     res.json({ status: true, data });
   } catch (error) {
@@ -56,17 +54,14 @@ export const addVehicle = async (req, res) => {
   try {
     const { error, value } = validateData(addVehicleValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { name, licensePlate } = value;
-
-    const checkName = await detailVehicleMd({ name });
-    if (checkName) return res.status(400).json({ status: false, mess: 'Tên phương tiện đã tồn tại!' });
+    const { licensePlate } = value;
 
     const checkLicensePlate = await detailVehicleMd({ licensePlate });
     if (checkLicensePlate) return res.status(400).json({ status: false, mess: 'Biển số xe đã tồn tại!' });
 
     value.files = [];
     if (req.files?.['files']?.[0]) {
-      for (const file of req.files['files'][0]) {
+      for (const file of req.files['files']) {
         value.files.push(await uploadFileToFirebase(file));
       }
     }
@@ -75,6 +70,7 @@ export const addVehicle = async (req, res) => {
     const data = await createVehicleMd({ by: req.userInfo._id, ...value });
     res.status(201).json({ status: true, data });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ status: false, mess: error.toString() });
   }
 };
@@ -83,17 +79,12 @@ export const updateVehicle = async (req, res) => {
   try {
     const { error, value } = validateData(updateVehicleValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { _id, name, licensePlate, files } = value;
+    const { _id, licensePlate, files } = value;
 
     const Vehicle = await detailVehicleMd({ _id });
     if (!Vehicle) return res.status(400).json({ status: false, mess: 'Phương tiện không tồn tại!' });
 
-    if (name) {
-      const checkName = await detailVehicleMd({ name });
-      if (checkName) return res.status(400).json({ status: false, mess: 'Tên phương tiện đã tồn tại!' });
-    }
-
-    if (code) {
+    if (licensePlate) {
       const checkLicensePlate = await detailVehicleMd({ licensePlate });
       if (checkLicensePlate) return res.status(400).json({ status: false, mess: 'Biển số xe đã tồn tại!' });
     }

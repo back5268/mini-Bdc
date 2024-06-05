@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
 import { ModelBase } from '@config';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
