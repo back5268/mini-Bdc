@@ -15,8 +15,12 @@ const AuthProvider = ({ children }) => {
       const response = await getInfoApi();
       if (response) {
         setUserInfo(response);
-      } else localStorage.removeItem('token');
+      } else {
+        localStorage.removeItem('token');
+        navigate('/auth/signin');
+      }
     } catch (error) {
+      navigate('/auth/signin');
       return false;
     } finally {
       setTimeout(() => {

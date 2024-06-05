@@ -10,6 +10,7 @@ import {
   listVehicleMd,
   updateBillMd
 } from '@models';
+import { generateRandomString } from '@utils';
 import moment from 'moment';
 
 export class Debt {
@@ -168,7 +169,7 @@ export class Debt {
         apartment: this.apartment._id,
         month: this.month,
         amount: summary,
-        code: '123',
+        code: `${this.month}_${(generateRandomString(4))}_${Date.now()}`,
         deadline: moment(this.deadline).format('YYYY-MM-DD'),
         status: 1,
         customerInfo: { name: this.apartment.owner?.fullName },
