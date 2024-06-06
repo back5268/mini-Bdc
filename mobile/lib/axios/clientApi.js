@@ -2,7 +2,7 @@ import { getStorage } from "@lib/async-storage";
 import axios from "axios";
 
 export const clientApi = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "http://192.168.1.148:5000",
   timeout: 10000,
 });
 

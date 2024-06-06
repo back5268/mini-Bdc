@@ -4,19 +4,19 @@ import { useAuthState } from "@store";
 
 const AuthLayout = () => {
   const { isAuthenticated } = useAuthState();
-  if (isAuthenticated) return <Redirect href="/home" />;
+  if (!isAuthenticated) return <Redirect href="/sign-in" />;
 
   return (
     <>
       <Stack>
         <Stack.Screen
-          name="sign-in"
+          name="index"
           options={{
             headerShown: false,
           }}
         />
         <Stack.Screen
-          name="forgot-password"
+          name="detail"
           options={{
             headerShown: false,
           }}

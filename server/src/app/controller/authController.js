@@ -32,8 +32,18 @@ export const getInfo = async (req, res) => {
   }
 };
 
+export const getInfoApp = async (req, res) => {
+  try {
+    console.log(req.userInfo);
+    res.json({ status: true, data: { userInfo: req.userInfo, aparments: [] } });
+  } catch (error) {
+    res.status(500).json({ status: false, mess: error.toString() });
+  }
+};
+
 export const signIn = async (req, res) => {
   try {
+    console.log(req.body);
     const { error, value } = validateData(signinValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { username, password } = value;

@@ -16,7 +16,7 @@ const Buttonz = ({
       }`}
       disabled={isLoading}
     >
-      <Text className={`text-white font-psemibold text-lg uppercase ${labelClassName}`}>
+      <Text className={`text-white font-psemibold text-nomal uppercase ${labelClassName}`}>
         {label}
       </Text>
 

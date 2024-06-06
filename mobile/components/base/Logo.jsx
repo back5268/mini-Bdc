@@ -5,7 +5,7 @@ import { images } from "@constants";
 const Logo = () => {
   return (
     <View className="w-full flex justify-center text-center items-center">
-      <Image source={images.logo} className="!w-28 !h-28" />
+      <Image source={images.logo} className="!w-24 !h-24" />
     </View>
   );
 };

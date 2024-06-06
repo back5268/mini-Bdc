@@ -9,7 +9,6 @@ import { Buttonz } from "@components/core";
 const Welcome = () => {
   const { isAuthenticated } = useAuthState();
   if (isAuthenticated) return <Redirect href="/home" />;
-  else return <Redirect href="/sign-in" />;
 
   return (
     <SafeAreaView className="bg-primary h-full">
