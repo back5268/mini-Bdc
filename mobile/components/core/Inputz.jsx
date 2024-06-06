@@ -1,8 +1,10 @@
 import { icons } from "@constants";
 import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
+console.log(icons.play === icons["play"]);
 
 const Inputz = ({
+  icon,
   label,
   type,
   value,
@@ -14,11 +16,20 @@ const Inputz = ({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View className={`space-y-2 ${className}`}>
-      <Text className="text-base text-gray-100 font-pmedium">{label}</Text>
-      <View className="w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary flex flex-row items-center">
+    <View className={`my-2 ${className}`}>
+      <Text className="text-base text-color font-pmedium">{label}</Text>
+      <View className="w-full h-12 px-4 border-[1px] border-border rounded-md focus:border-primary flex flex-row items-center">
+        {!!icon && (
+          <View className="mr-4">
+            <Image
+              source={icons[icon]}
+              className="w-6 h-6"
+              resizeMode="contain"
+            />
+          </View>
+        )}
         <TextInput
-          className="flex-1 text-white font-psemibold text-base"
+          className="flex-1 text-color font-pmedium text-base"
           value={value}
           placeholder={placeholder}
           placeholderTextColor="#7B7B8B"

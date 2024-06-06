@@ -26,4 +26,6 @@ export default {
   logout,
   eyeHide,
   eye,
+  user: eye,
+  password: eye,
 };

@@ -4,6 +4,8 @@ import "react-native-url-polyfill/auto";
 import { SplashScreen, Stack } from "expo-router";
 import { AuthProvider } from "@components/base";
 
+import '../style.css'
+
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {

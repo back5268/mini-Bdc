@@ -6,6 +6,7 @@ import { Buttonz, Inputz } from "@components/core";
 import { signinApi } from "@api";
 import { useAuthState } from "@store";
 import { asyncStorage } from "@lib/async-storage";
+import { Logo } from "@components/base";
 
 const SignIn = () => {
   const { setLoadingz } = useAuthState();
@@ -23,50 +24,39 @@ const SignIn = () => {
   };
 
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <SafeAreaView className="bg-background h-full">
       <ScrollView>
         <View
-          className="w-full flex justify-center h-full px-4 my-6"
+          className="justify-center h-full px-4"
           style={{
             minHeight: Dimensions.get("window").height - 100,
           }}
         >
-          <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-            Log in to Aora
+          <Logo />
+          <Text className="text-2xl text-center font-semibold text-color my-8 font-psemibold">
+            Log in to Mini BDC
           </Text>
 
           <Inputz
-            title="Email"
+            icon="user"
+            placeholder="Tài khoản (*)"
             value={form.email}
             handleChangeText={(e) => setForm({ ...form, email: e })}
-            otherStyles="mt-7"
             keyboardType="email-address"
           />
 
           <Inputz
-            title="Password"
+            icon="password"
+            type="password"
+            placeholder="Mật khẩu (*)"
             value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
-            otherStyles="mt-7"
           />
 
-          <Buttonz
-            label="Sign In"
-            handlePress={submit}
-            containerClassName="mt-7"
-          />
-
-          <View className="flex justify-center pt-5 flex-row gap-2">
-            <Text className="text-lg text-gray-100 font-pregular">
-              Quên mật khẩu
-            </Text>
-            <Link
-              href="/forgot-password"
-              className="text-lg font-psemibold text-secondary"
-            >
-              Quên mật khẩu
-            </Link>
-          </View>
+          <Link href="/forgot-password" className="text-base text-primary my-4">
+            Quên mật khẩu
+          </Link>
+          <Buttonz label="Sign In" handlePress={submit} />
         </View>
       </ScrollView>
     </SafeAreaView>

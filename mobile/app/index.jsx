@@ -1,76 +1,65 @@
-import { useState } from "react";
-import { Link } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { Redirect, router } from "expo-router";
+import { View, Text, Image, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, ScrollView, Dimensions } from "react-native";
-import { Buttonz, Inputz } from "@components/core";
-import { signinApi } from "@api";
 import { useAuthState } from "@store";
-import { asyncStorage } from "@lib/async-storage";
+import { images } from "@constants";
+import { Buttonz } from "@components/core";
 
-const SignIn = () => {
-  const { setLoadingz } = useAuthState();
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-
-  const submit = async () => {
-    const response = await signinApi(form.email, form.password);
-    if (response?.status) {
-      asyncStorage("token", response.data);
-      setLoadingz();
-    }
-  };
+const Welcome = () => {
+  const { isAuthenticated } = useAuthState();
+  if (isAuthenticated) return <Redirect href="/home" />;
+  else return <Redirect href="/sign-in" />;
 
   return (
     <SafeAreaView className="bg-primary h-full">
-      <ScrollView>
-        <View
-          className="w-full flex justify-center h-full px-4 my-6"
-          style={{
-            minHeight: Dimensions.get("window").height - 100,
-          }}
-        >
-          <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-            Log in to Aora
+      <ScrollView
+        contentContainerStyle={{
+          height: "100%",
+        }}
+      >
+        <View className="w-full flex justify-center items-center h-full px-4">
+          <Image
+            source={images.logo}
+            className="w-[130px] h-[84px]"
+            resizeMode="contain"
+          />
+
+          <Image
+            source={images.cards}
+            className="max-w-[380px] w-full h-[298px]"
+            resizeMode="contain"
+          />
+
+          <View className="relative mt-5">
+            <Text className="text-3xl text-white font-bold text-center">
+              Discover Endless{"\n"}
+              Possibilities with{" "}
+              <Text className="text-secondary-200">Aora</Text>
+            </Text>
+
+            <Image
+              source={images.path}
+              className="w-[136px] h-[15px] absolute -bottom-2 -right-8"
+              resizeMode="contain"
+            />
+          </View>
+
+          <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
+            Where Creativity Meets Innovation: Embark on a Journey of Limitless
+            Exploration with Aora
           </Text>
 
-          <Inputz
-            title="Email"
-            value={form.email}
-            handleChangeText={(e) => setForm({ ...form, email: e })}
-            otherStyles="mt-7"
-            keyboardType="email-address"
-          />
-
-          <Inputz
-            title="Password"
-            value={form.password}
-            handleChangeText={(e) => setForm({ ...form, password: e })}
-            otherStyles="mt-7"
-          />
-
           <Buttonz
-            label="Sign In"
-            handlePress={submit}
-            containerClassName="mt-7"
+            label="Đăng nhập"
+            handlePress={() => router.push("/sign-in")}
           />
-
-          <View className="flex justify-center pt-5 flex-row gap-2">
-            <Text className="text-lg text-gray-100 font-pregular">
-              Quên mật khẩu
-            </Text>
-            <Link
-              href="/forgot-password"
-              className="text-lg font-psemibold text-secondary"
-            >
-              Quên mật khẩu
-            </Link>
-          </View>
         </View>
       </ScrollView>
+
+      <StatusBar backgroundColor="#161622" style="light" />
     </SafeAreaView>
   );
 };
 
-export default SignIn;
+export default Welcome;
