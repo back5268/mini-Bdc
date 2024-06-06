@@ -15,6 +15,7 @@ import {
 import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup } from '@view/admin/apartment-resident';
 import { Departments, DetailProject, Projects, Users } from '@view/admin/companies';
 import { DetailPermission, Permissions, Tools } from '@view/admin/permissions';
+import {Request, DetailRequest} from '@view/admin/requests';
 import { ForgotPassword, SignIn } from '@view/auth';
 
 const routes = [
@@ -55,7 +56,11 @@ const routes = [
   { path: '/bills', element: Bills, layout: true },
   { path: '/data-browses', element: DataBrowses, layout: true },
   { path: '/notifications', element: Notifications, layout: true },
-
+  // ==================== Ý kiến cư dân ====================
+  //{ path: '/options', element: Bills, layout: true },
+  // { path: '/requests', element: Request, layout: true },
+  // { path: '/requests/create', element: DetailRequest, layout: true },
+  // { path: '/requests/detail/:_id', element: DetailRequest, layout: true },
   // ==================== Căn hộ, cư dân ====================
   { path: '/apartment-groups', element: ApartmentGroup, layout: true },
   { path: '/apartment-groups/create', element: DetailApartmentGroup, layout: true },

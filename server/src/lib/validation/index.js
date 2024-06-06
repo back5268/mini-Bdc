@@ -12,3 +12,4 @@ export * from './vehicleValidation';
 export * from './electricWaterValidation';
 export * from './debtValidation';
 export * from './billValidation';
+export * from './requestValidation';

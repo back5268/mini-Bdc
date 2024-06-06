@@ -15,3 +15,4 @@ export * from './tool';
 export * from './user';
 export * from './vehicle';
 export * from './bill';
+export * from './request';

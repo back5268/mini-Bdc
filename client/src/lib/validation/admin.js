@@ -127,3 +127,9 @@ export const NewsValidation = yup.object({
   content: yup.string().required('Nội dung không được bỏ trống!'),
   time: yup.number().required('Thời gian đọc không được bỏ trống!')
 });
+export const RequestValidation = yup.object({
+  name: yup.string().required('Tên yêu cầu không được bỏ trống!'),
+  code: yup.string().required('Mã yêu cầu không được bỏ trống!'),
+  description: yup.string().required('Mô tả không được bỏ trống!'),
+  status: yup.number().required('Trạng thái xử lí không được bỏ trống!'),
+});
