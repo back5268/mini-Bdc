@@ -33,8 +33,6 @@ const DetailApartmentGroup = () => {
 
   useEffect(() => {
     if (isUpdate && item) {
-      //   if (item.recipe === 1) item.prices = Number(item.prices?.[0]?.amount);
-      //   else setPrices(item.prices);
       for (const key in defaultValues) {
         setValue(key, item[key]);
       }

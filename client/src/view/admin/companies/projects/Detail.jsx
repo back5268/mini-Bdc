@@ -5,11 +5,11 @@ import { useForm } from 'react-hook-form';
 import { addProjectApi, detailProjectApi, getInfoApi, updateProjectApi } from '@api';
 import { FormDetail } from '@components/base';
 import { checkEqualProp } from '@lib/helper';
-import { InputForm, TextAreaz } from '@components/core';
+import { DropdownForm, InputForm, TextAreaz } from '@components/core';
 import { useParams } from 'react-router-dom';
 import { useGetApi } from '@lib/react-query';
 import { UploadFiles, UploadImage } from '@components/shared';
-import { useUserState } from '@store';
+import { useDataState, useUserState } from '@store';
 
 const defaultValues = {
   name: '',
@@ -17,6 +17,7 @@ const defaultValues = {
   email: '',
   phone: '',
   address: '',
+  department: '',
   description: ''
 };
 
@@ -27,6 +28,7 @@ const DetailProject = () => {
   const { data: item } = useGetApi(detailProjectApi, { _id }, 'project', isUpdate);
   const [avatar, setAvatar] = useState(null);
   const [images, setImages] = useState([]);
+  const { departments } = useDataState();
 
   const {
     register,
@@ -90,6 +92,16 @@ const DetailProject = () => {
       onSuccess={onSuccess}
     >
       <div className="flex flex-wrap w-full">
+        <DropdownForm
+          id="department"
+          label="Phòng ban quản lý (*)"
+          options={departments}
+          optionLabel="name"
+          optionValue="_id"
+          errors={errors}
+          watch={watch}
+          setValue={setValue}
+        />
         <InputForm id="name" label="Tên dự án (*)" errors={errors} register={register} />
         <InputForm id="code" label="Mã dự án (*)" errors={errors} register={register} />
         <InputForm id="email" label="Email (*)" errors={errors} register={register} />

@@ -7,14 +7,17 @@ import { useNavigate } from 'react-router-dom';
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const { setUsers, setDepartments, setApartments } = useDataState();
-  const { setUserInfo, loadingz } = useUserState();
+  const { setUserInfo, loadingz, project, setProject, isAuthenticated } = useUserState();
   const [isLoading, setIsLoading] = useState(false);
 
   const checkAuth = async () => {
     try {
       const response = await getInfoApi();
       if (response) {
-        setUserInfo(response);
+        const projects = response.projects;
+        const checkProject = projects?.find((p) => p._id === project);
+        if (!checkProject) setProject(projects[0]?._id);
+        setUserInfo(response); 
       } else {
         localStorage.removeItem('token');
         navigate('/auth/signin');

@@ -1,6 +1,15 @@
 import { uploadFileToFirebase } from '@lib/firebase';
 import { addProjectValid, detailProjectValid, listProjectValid, updateProjectValid } from '@lib/validation';
-import { createProjectMd, countProjectMd, deleteProjectMd, detailProjectMd, listProjectMd, updateProjectMd } from '@models';
+import {
+  createProjectMd,
+  countProjectMd,
+  deleteProjectMd,
+  detailProjectMd,
+  listProjectMd,
+  updateProjectMd,
+  detailDepartmentMd,
+  updateDepartmentMd
+} from '@models';
 import { validateData } from '@utils';
 
 export const getListProject = async (req, res) => {
@@ -15,6 +24,14 @@ export const getListProject = async (req, res) => {
     const documents = await listProjectMd(where, page, limit);
     const total = await countProjectMd(where);
     res.json({ status: true, data: { documents, total } });
+  } catch (error) {
+    res.status(500).json({ status: false, mess: error.toString() });
+  }
+};
+
+export const getListProjectInfo = async (req, res) => {
+  try {
+    res.json({ status: true, data: await listProjectMd({ status: 1 }) });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }
@@ -50,7 +67,7 @@ export const addProject = async (req, res) => {
   try {
     const { error, value } = validateData(addProjectValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { name, code } = value;
+    const { name, code, department } = value;
 
     const checkName = await detailProjectMd({ name });
     if (checkName) return res.status(400).json({ status: false, mess: 'Tên dự án đã tồn tại!' });
@@ -62,6 +79,9 @@ export const addProject = async (req, res) => {
       value.avatar = await uploadFileToFirebase(req.avatar);
     }
 
+    const checkDepartment = await detailDepartmentMd({ id: department });
+    if (!checkDepartment) return res.status(400).json({ status: false, mess: 'Phòng ban không tồn tại!' });
+
     value.images = [];
     if (req.files?.['images']?.[0]) {
       for (const file of req.files['images']) {
@@ -70,6 +90,7 @@ export const addProject = async (req, res) => {
     }
 
     const data = await createProjectMd({ by: req.userInfo._id, ...value });
+    await updateDepartmentMd({ _id: checkDepartment._id }, { $addToSet: { projects: data._id } });
     res.status(201).json({ status: true, data });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
@@ -80,7 +101,7 @@ export const updateProject = async (req, res) => {
   try {
     const { error, value } = validateData(updateProjectValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { _id, name, code, images } = value;
+    const { _id, name, code, images, department } = value;
 
     const project = await detailProjectMd({ _id });
     if (!project) return res.status(400).json({ status: false, mess: 'Dự án không tồn tại!' });
@@ -93,6 +114,13 @@ export const updateProject = async (req, res) => {
     if (code) {
       const checkCode = await detailProjectMd({ code });
       if (checkCode) return res.status(400).json({ status: false, mess: 'Mã dự án đã tồn tại!' });
+    }
+
+    if (department) {
+      const checkDepartment = await detailDepartmentMd({ id: department });
+      if (!checkDepartment) return res.status(400).json({ status: false, mess: 'Phòng ban không tồn tại!' });
+      await updateDepartmentMd({ _id: checkDepartment._id }, { $addToSet: { projects: _id } });
+      await updateDepartmentMd({ _id: project.department }, { $pull: { projects: _id } });
     }
 
     if (req.avatar) {

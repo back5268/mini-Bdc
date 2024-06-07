@@ -1,6 +1,6 @@
 import { addDepartmentApi, getListDepartmentInfoApi, updateDepartmentApi } from '@api';
 import { FormDetail } from '@components/base';
-import { InputForm, TextAreaz } from '@components/core';
+import { InputForm, MultiSelectForm, TextAreaz } from '@components/core';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { checkEqualProp } from '@lib/helper';
 import { DepartmentValidation } from '@lib/validation';
@@ -11,11 +11,12 @@ import { useForm } from 'react-hook-form';
 const defaultValues = {
   name: '',
   code: '',
-  description: ''
+  description: '',
+  projects: []
 };
 
 const DetailDepartment = (props) => {
-  const { open, setOpen, setParams, data } = props;
+  const { open, setOpen, setParams, data, projects } = props;
   const isUpdate = typeof open === 'string';
   const item = isUpdate ? data.find((d) => d._id === open) : {};
   const { setDepartments } = useDataState();
@@ -70,6 +71,17 @@ const DetailDepartment = (props) => {
       <div className="flex flex-wrap w-full">
         <InputForm id="name" label="Tên phòng ban (*)" errors={errors} register={register} />
         <InputForm id="code" label="Mã phòng ban (*)" errors={errors} register={register} />
+        <MultiSelectForm
+          options={projects}
+          optionLabel="name"
+          optionValue="_id"
+          id="projects"
+          watch={watch}
+          label="Dự án quản lý (*)"
+          setValue={setValue}
+          errors={errors}
+          disabled
+        />
         <TextAreaz id="description" label="Mô tả" value={watch('description')} setValue={(e) => setValue('description', e)} />
       </div>
     </FormDetail>

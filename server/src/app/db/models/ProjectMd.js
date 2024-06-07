@@ -17,7 +17,7 @@ class ProjectMd extends ModelBase {
   managements;
   boards;
   status;
-  departments;
+  department;
   deletedAt;
 }
 
@@ -35,7 +35,7 @@ ProjectMd.init('Project', {
   managements: [{ type: ObjectId, ref: 'User' }],
   boards: [{ type: ObjectId, ref: 'User' }],
   status: { type: Number, enum: [0, 1], default: 1 },
-  departments: [{ type: String }],
+  department: { type: ObjectId, ref: 'Department' },
   deletedAt: { type: Date }
 });
 
