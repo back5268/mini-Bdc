@@ -24,9 +24,17 @@ export const getInfo = async (req, res) => {
         });
         if (childrenz.length > 0) return { ...tool?._doc, children: childrenz };
       });
-      tools = tools.filter(t => t)
+      tools = tools.filter((t) => t);
     }
     res.json({ status: true, data: { userInfo: req.userInfo, permissions: req.permissions, projects, tools } });
+  } catch (error) {
+    res.status(500).json({ status: false, mess: error.toString() });
+  }
+};
+
+export const getInfoApp = async (req, res) => {
+  try {
+    res.json({ status: true, data: { userInfo: req.userInfo, aparments: [] } });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }
@@ -37,7 +45,7 @@ export const signIn = async (req, res) => {
     const { error, value } = validateData(signinValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { username, password } = value;
-    const checkUsername = await detailUserMd({ username });
+    const checkUsername = await detailUserMd({ $or: [{ username }, { email: username }] });
     if (!checkUsername) return res.status(400).json({ status: false, mess: 'Không tìm thấy người dùng!' });
     if (checkUsername.status === 0)
       return res.status(400).json({ status: false, mess: 'Tài khoản của bạn đã bị khóa, vui lòng liên hệ quản trị viên!' });

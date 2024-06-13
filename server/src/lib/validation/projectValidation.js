@@ -17,7 +17,7 @@ export const addProjectValid = {
   phone: 'string',
   address: 'string',
   description: { type: 'string', allowNull: true },
-  departments: { type: 'json', allowNull: true }
+  department: 'string'
 };
 
 export const updateProjectValid = {
@@ -31,5 +31,5 @@ export const updateProjectValid = {
   status: { type: 'number', allowNull: true },
   avatar: { type: 'string', allowNull: true },
   images: { type: 'json', allowNull: true },
-  departments: { type: 'json', allowNull: true }
+  department: { type: 'string', allowNull: true }
 };

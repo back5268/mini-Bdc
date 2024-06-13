@@ -9,6 +9,7 @@ class DepartmentMd extends ModelBase {
   name;
   code;
   description;
+  projects;
   status;
   deletedAt;
 }
@@ -19,6 +20,7 @@ DepartmentMd.init('Department', {
   name: { type: String, required: true },
   code: { type: String, required: true },
   description: { type: String },
+  projects: [{ type: String }],
   status: { type: Number, enum: [0, 1], default: 1 },
   deletedAt: { type: Date }
 });

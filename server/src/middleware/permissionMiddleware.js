@@ -22,7 +22,7 @@ export const permissionMiddleware = async (req, res, next) => {
             });
           }
         });
-      } else return res.status(400).json({ status: false, mess: 'Bạn không có quyền thực hiện tác vụ này!' });
+      }
     } else {
       const tools = await listToolMd({ status: 1 }, false, false, false, 'name icon children', { sort: 1 });
       tools.forEach((t) => {
@@ -39,7 +39,7 @@ export const permissionMiddleware = async (req, res, next) => {
     const method = req.method;
     const action = method === 'GET' ? 'read' : method === 'POST' ? 'create' : method === 'PUT' ? 'update' : 'delete';
     const checkPath = permissionz.find((p) => p.route === '/' + path.split('/')?.[1]);
-    if (baseUrl !== '/auth' && (!checkPath || !checkPath.actions.includes(action)))
+    if (!baseUrl.includes('/auth') && (!checkPath || !checkPath.actions.includes(action)))
       return res.status(400).json({ status: false, mess: 'Bạn không có quyền thực hiện tác vụ này!' });
     next();
   } catch (error) {
