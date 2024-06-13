@@ -1,4 +1,4 @@
-import { deleteUserApi, getInfoApi, getListResidentApi, updateUserApi } from '@api';
+import { deleteResidentApi, getInfoApi, getListResidentApi, updateResidentApi } from '@api';
 import { DataTable, FormList, TimeBody } from '@components/base';
 import DataFilter from '@components/base/DataFilter';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
@@ -7,7 +7,6 @@ import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
 import { useUserState } from '@store';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import DetailResident from './Detail';
 
 const Resindents = () => {
@@ -17,7 +16,6 @@ const Resindents = () => {
   const [filter, setFilter] = useState({});
   const [open, setOpen] = useState(false);
   const { isLoading, data } = useGetApi(getListResidentApi, params, 'residents');
-  const navigate = useNavigate();
   const genderBody = (rowData) => {
     return <div>{rowData.gender === 1 ? 'Nam' : 'Nữ'}</div>;
   };
@@ -60,9 +58,9 @@ const Resindents = () => {
         setShow={setOpen}
         actionsInfo={{
           onViewDetail: (item) => setOpen(item._id),
-          deleteApi: deleteUserApi
+          deleteApi: deleteResidentApi
         }}
-        statusInfo={{ changeStatusApi: updateUserApi }}
+        statusInfo={{ changeStatusApi: updateResidentApi }}
         headerInfo={{ onCreate: () => setOpen(true) }}
         onSuccess={onSuccess}
       />

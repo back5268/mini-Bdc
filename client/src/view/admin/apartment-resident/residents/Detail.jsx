@@ -1,4 +1,4 @@
-import { addResidentApi, getInfoApi, getListUserInfoApi, updateUserApi } from '@api';
+import { addResidentApi, getInfoApi, getListUserInfoApi, updateResidentApi } from '@api';
 import { FormDetail } from '@components/base';
 import { InputCalendarForm, InputForm, TextAreaz } from '@components/core';
 import { MultiRadio, UploadImage } from '@components/shared';
@@ -83,7 +83,7 @@ const DetailResident = (props) => {
       }}
       isUpdate={isUpdate}
       createApi={addResidentApi}
-      updateApi={updateUserApi}
+      updateApi={updateResidentApi}
       handleData={handleData}
       handleSubmit={handleSubmit}
       setParams={setParams}
