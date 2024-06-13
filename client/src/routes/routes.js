@@ -12,7 +12,7 @@ import {
   Services,
   Vehicles
 } from '@view/admin/accountants';
-import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup } from '@view/admin/apartment-resident';
+import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup, Residents } from '@view/admin/apartment-resident';
 import { Departments, DetailProject, Projects, Users } from '@view/admin/companies';
 import { DetailPermission, Permissions, Tools } from '@view/admin/permissions';
 import { ForgotPassword, SignIn } from '@view/auth';
@@ -60,9 +60,14 @@ const routes = [
   { path: '/apartment-groups', element: ApartmentGroup, layout: true },
   { path: '/apartment-groups/create', element: DetailApartmentGroup, layout: true },
   { path: '/apartment-groups/detail/:_id', element: DetailApartmentGroup, layout: true },
+
   { path: '/apartments', element: Apartment, layout: true },
   { path: '/apartments/create', element: DetailApartment, layout: true },
-  { path: '/apartments/detail/:_id', element: DetailApartment, layout: true }
+  { path: '/apartments/detail/:_id', element: DetailApartment, layout: true },
+
+  { path: '/residents', element: Residents, layout: true },
+  // { path: '/apartments/create', element: DetailApartment, layout: true },
+  // { path: '/apartments/detail/:_id', element: DetailApartment, layout: true }
 ];
 
 export default routes;

@@ -2,12 +2,13 @@ import { projectMiddleware } from '@middleware';
 import express from 'express';
 import { apartmentRouter } from './apartment';
 import { apartmentGroupRouter } from "./apartmentGroup";
+import { billRouter } from './bill';
 import { debtLogRouter } from './debt';
 import { electricWaterRouter } from './electricWater';
 import { priceRouter } from './price';
+import { residentRouter } from './resident';
 import { serviceRouter } from './service';
 import { vehicleRouter } from './vehicle';
-import { billRouter } from './bill';
 
 export const projectRouter = express.Router();
 
@@ -20,3 +21,4 @@ projectRouter.use('/apartments', apartmentRouter);
 projectRouter.use('/electric-waters', electricWaterRouter);
 projectRouter.use('/debts', debtLogRouter);
 projectRouter.use('/bills', billRouter);
+projectRouter.use('/residents', residentRouter);
