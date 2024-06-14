@@ -12,9 +12,11 @@ import {
   Services,
   Vehicles
 } from '@view/admin/accountants';
-import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup } from '@view/admin/apartment-resident';
+import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup } from '@view/admin/apartments';
 import { Departments, DetailProject, Projects, Users } from '@view/admin/companies';
+import { Templates } from '@view/admin/configs';
 import { DetailPermission, Permissions, Tools } from '@view/admin/permissions';
+import { Logs, News, Options } from '@view/admin/residents';
 import { ForgotPassword, SignIn } from '@view/auth';
 
 const routes = [
@@ -36,6 +38,9 @@ const routes = [
   { path: '/projects/create', element: DetailProject, layout: true },
   { path: '/projects/detail/:_id', element: DetailProject, layout: true },
 
+  // ==================== Cấu hình ====================
+  { path: '/templates', element: Templates, layout: true },
+
   // ==================== Kế toán ====================
   { path: '/prices', element: Prices, layout: true },
   { path: '/prices/create', element: DetailPrice, layout: true },
@@ -56,13 +61,18 @@ const routes = [
   { path: '/data-browses', element: DataBrowses, layout: true },
   { path: '/notifications', element: Notifications, layout: true },
 
-  // ==================== Căn hộ, cư dân ====================
+  // ==================== Căn hộ ====================
   { path: '/apartment-groups', element: ApartmentGroup, layout: true },
   { path: '/apartment-groups/create', element: DetailApartmentGroup, layout: true },
   { path: '/apartment-groups/detail/:_id', element: DetailApartmentGroup, layout: true },
   { path: '/apartments', element: Apartment, layout: true },
   { path: '/apartments/create', element: DetailApartment, layout: true },
-  { path: '/apartments/detail/:_id', element: DetailApartment, layout: true }
+  { path: '/apartments/detail/:_id', element: DetailApartment, layout: true },
+
+  // ==================== Cư dân ====================
+  { path: '/options', element: Options, layout: true },
+  { path: '/news', element: News, layout: true },
+  { path: '/logs', element: Logs, layout: true }
 ];
 
 export default routes;

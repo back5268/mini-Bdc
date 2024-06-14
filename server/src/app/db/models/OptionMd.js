@@ -17,7 +17,7 @@ class OptionMd extends ModelBase {
 
 OptionMd.init('Option', {
   project: { type: String, required: true },
-  apartment: { type: String, required: true },
+  apartment: { type: ObjectId, ref: 'Apartment', required: true },
   by: { type: ObjectId, ref: 'User', required: true },
   subject: { type: String, required: true },
   content: { type: String, required: true },

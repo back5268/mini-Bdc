@@ -18,9 +18,9 @@ const DetailLog = (props) => {
       }}
     >
       <div className="flex flex-wrap w-full">
-        <Inputz label="Địa chỉ gửi" value={item.to} className="w-full md:w-full lg:w-6/12" />
-        <Inputz label="Tiêu đề" value={item.subject} className="w-full md:w-full lg:w-6/12" />
-        <Inputz label="Loại thông báo" value={logType.find(l => l.key === item.type)?.label} className="w-full md:w-full lg:w-6/12" />
+        <Inputz label="Địa chỉ gửi" value={item.to} className="w-full md:w-full lg:w-6/12" disabled />
+        <Inputz label="Tiêu đề" value={item.subject} className="w-full md:w-full lg:w-6/12" disabled />
+        <Inputz label="Loại thông báo" value={logType.find(l => l.key === item.type)?.label} className="w-full md:w-full lg:w-6/12" disabled />
         <Editorz id="content" label="Nội dung" data={item.content} />
       </div>
     </FormDetail>

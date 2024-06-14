@@ -14,4 +14,7 @@ export * from './toolController';
 export * from './userController';
 export * from './vehicleController';
 export * from './billController';
+export * from './logController';
+export * from './newController';
+export * from './optionController';
 

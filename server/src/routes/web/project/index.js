@@ -8,6 +8,9 @@ import { priceRouter } from './price';
 import { serviceRouter } from './service';
 import { vehicleRouter } from './vehicle';
 import { billRouter } from './bill';
+import { logRouter } from './log';
+import { newsRouter } from './news';
+import { optionRouter } from './option';
 
 export const projectRouter = express.Router();
 
@@ -20,3 +23,6 @@ projectRouter.use('/apartments', apartmentRouter);
 projectRouter.use('/electric-waters', electricWaterRouter);
 projectRouter.use('/debts', debtLogRouter);
 projectRouter.use('/bills', billRouter);
+projectRouter.use('/logs', logRouter);
+projectRouter.use('/news', newsRouter);
+projectRouter.use('/options', optionRouter);

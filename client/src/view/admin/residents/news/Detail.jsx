@@ -9,9 +9,8 @@ import { InputForm } from '@components/core';
 import Editorz from '@components/core/Editorz';
 
 const defaultValues = {
-  title: '',
+  subject: '',
   content: '',
-  time: 0,
   hashtag: ''
 };
 
@@ -50,7 +49,7 @@ const DetailNews = (props) => {
 
   return (
     <FormDetail
-      title="mẫu thông báo"
+      title="tin tức"
       open={open}
       setOpen={() => {
         setOpen(false);
@@ -64,8 +63,7 @@ const DetailNews = (props) => {
       setParams={setParams}
     >
       <div className="flex flex-wrap w-full">
-        <InputForm id="title" label="Tiêu đề (*)" errors={errors} register={register} />
-        <InputForm id="time" label="Thời gian đọc (phút) (*)" type="number" errors={errors} register={register} />
+        <InputForm id="subject" label="Tiêu đề (*)" errors={errors} register={register} />
         <InputForm id="hashtag" label="Hashtag" errors={errors} register={register} />
         <Editorz id="content" label="Nội dung (*)" errors={errors} data={watch('content')} setData={(e) => setValue('content', e)} />
       </div>

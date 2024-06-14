@@ -18,7 +18,7 @@ const Logs = () => {
   const columns = [
     { label: 'Địa chỉ nhận', field: 'to' },
     { label: 'Tiêu đề', field: 'subject' },
-    { label: 'Loại thông báo', body: (e) => logType.find((c) => c.key === e.type)?.label },
+    { label: 'Loại thông báo', body: (e) => Body(logType, e.type) },
     { label: 'Thời gian gửi', body: (e) => TimeBody(e.createdAt) },
     { label: 'Trạng thái', body: (e) => Body(logStatus, e.status) }
   ];
@@ -26,7 +26,7 @@ const Logs = () => {
   return (
     <FormList title="Lịch sử gửi email">
       <DetailLog open={open} setOpen={setOpen} setParams={setParams} data={data?.documents} />
-      <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="md:w-full lg:w-full">
+      <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="!w-full">
         <InputCalendarz value={filter.fromDate} onChange={(e) => setFilter({ ...filter, fromDate: e })} label="Từ ngày" />
         <InputCalendarz value={filter.toDate} onChange={(e) => setFilter({ ...filter, toDate: e })} label="Đến ngày" />
         <Dropdownz value={filter.status} onChange={(e) => setFilter({ ...filter, status: e })} options={logStatus} label="Trạng thái" />

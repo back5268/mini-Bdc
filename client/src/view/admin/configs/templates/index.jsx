@@ -17,7 +17,6 @@ const Templates = () => {
 
   const columns = [
     { label: 'Tiêu đề mẫu thông báo', field: 'subject' },
-    { label: 'Tiêu đề mẫu thông báo', field: 'subject' },
     { label: 'Mã mẫu thông báo', field: 'code' },
     { label: 'Loại', body: (e) => Body(templateType, e.type) },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },

@@ -1,5 +1,5 @@
 import { getListNewsApi, updateNewsApi } from '@api';
-import { DataTable, FormList, NumberBody, TimeBody } from '@components/base';
+import { DataTable, FormList, TimeBody } from '@components/base';
 import DataFilter from '@components/base/DataFilter';
 import { Chipz, Dropdownz, Hrz, Inputz } from '@components/core';
 import { statuses } from '@constant';
@@ -16,24 +16,23 @@ const News = () => {
   const { isLoading, data } = useGetApi(getListNewsApi, params, 'news');
 
   const columns = [
-    { label: 'Tiêu đề', field: 'title' },
+    { label: 'Tiêu đề', field: 'subject' },
     {
       label: 'Hastag',
       body: (e) => (
         <div className="flex gap-1">
-          {e?.hashtag?.map((item, index) => (
+          {e.hashtag?.map((item, index) => (
             <Chipz key={index} className="text-center" value={item} />
           ))}
         </div>
       )
     },
-    { label: 'Thời gian đọc (phút)', body: (e) => NumberBody(e.time) },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
     { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
   ];
 
   return (
-    <FormList title="Danh sách mẫu thông báo">
+    <FormList title="Danh sách tin tức">
       <DetailNews open={open} setOpen={setOpen} setParams={setParams} data={data?.documents} />
       <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="lg:w-6/12">
         <Inputz
