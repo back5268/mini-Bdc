@@ -4,6 +4,7 @@ class DebitMd extends ModelBase {
   project;
   apartment;
   serviceName;
+  bill;
   serviceType;
   month;
   prices;
@@ -22,6 +23,7 @@ DebitMd.init('Debit', {
   project: { type: String, required: true },
   apartment: { type: String, required: true },
   serviceName: { type: String, required: true },
+  bill: { type: String, required: true },
   serviceType: {
     type: Number,
     enum: [1, 2, 3, 4, 5],

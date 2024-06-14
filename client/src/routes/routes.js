@@ -1,7 +1,7 @@
 import {
   Bills,
+  Calculator,
   DataBrowses,
-  Debts,
   DetailPrice,
   DetailService,
   DetailVehicle,
@@ -16,6 +16,7 @@ import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup, Detai
 import { Departments, DetailProject, Projects, Users } from '@view/admin/companies';
 import { Templates } from '@view/admin/configs';
 import { Project, Report } from '@view/admin/dashboard';
+import { Coins, Debits, Debts } from '@view/admin/debts';
 import { DetailPermission, Permissions, Tools } from '@view/admin/permissions';
 import { Logs, News, Options } from '@view/admin/residents';
 import { ForgotPassword, SignIn } from '@view/auth';
@@ -57,7 +58,7 @@ const routes = [
   { path: '/vehicles/detail/:_id', element: DetailVehicle, layout: true },
 
   { path: '/electric-waters', element: ElectricWater, layout: true },
-  { path: '/debts', element: Debts, layout: true },
+  { path: '/calculator', element: Calculator, layout: true },
 
   { path: '/bills', element: Bills, layout: true },
   { path: '/data-browses', element: DataBrowses, layout: true },
@@ -81,7 +82,12 @@ const routes = [
   // ==================== Cư dân ====================
   { path: '/options', element: Options, layout: true },
   { path: '/news', element: News, layout: true },
-  { path: '/logs', element: Logs, layout: true }
+  { path: '/logs', element: Logs, layout: true },
+
+  // ==================== Công nợ ====================
+  { path: '/debits', element: Debits, layout: true },
+  { path: '/debts', element: Debts, layout: true },
+  { path: '/coins', element: Coins, layout: true },
 ];
 
 export default routes;

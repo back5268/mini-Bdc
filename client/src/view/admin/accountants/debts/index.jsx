@@ -8,7 +8,7 @@ import { useState } from 'react';
 import Calculator from './Calculator';
 import DetaiDebt from './Detail';
 
-const Debts = () => {
+const Calculatorz = () => {
   const initParams = useGetParams();
   const [params, setParams] = useState(initParams);
   const [filter, setFilter] = useState({});
@@ -64,4 +64,4 @@ const Debts = () => {
   );
 };
 
-export default Debts;
+export default Calculatorz;

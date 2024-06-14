@@ -19,4 +19,4 @@ export * from './logController';
 export * from './newController';
 export * from './optionController';
 export * from './receiptController';
-
+export * from './coinController';

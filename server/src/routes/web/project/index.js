@@ -13,6 +13,7 @@ import { logRouter } from './log';
 import { newsRouter } from './news';
 import { optionRouter } from './option';
 import { receiptRouter } from './receipt';
+import { coinRouter } from './coin';
 
 export const projectRouter = express.Router();
 
@@ -30,3 +31,4 @@ projectRouter.use('/news', newsRouter);
 projectRouter.use('/options', optionRouter);
 projectRouter.use('/residents', residentRouter);
 projectRouter.use('/receipts', receiptRouter);
+projectRouter.use('/coins', coinRouter);
