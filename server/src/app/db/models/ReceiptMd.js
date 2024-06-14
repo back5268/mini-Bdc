@@ -8,6 +8,7 @@ class ReceiptMd extends ModelBase {
   by;
   payer;
   apartment;
+  bill;
   type;
   paymentType;
   amount;
@@ -21,7 +22,8 @@ ReceiptMd.init('Receipt', {
   by: { type: ObjectId, ref: 'User', required: true },
   payer: { type: ObjectId, ref: 'User', required: true },
   apartment: { type: String, required: true },
-  type: { type: Number, enum: [1, 2], description: '1: Phiếu thu, 2: Phiếu hoàn tiền', required: true },
+  bill: { type: String },
+  type: { type: Number, enum: [1, 2, 3], description: '1: Phiếu thu, 2: Phiếu hoàn tiền, 3: Phiếu hạch toán', required: true },
   paymentType: { type: Number, enum: [1, 2], description: '1: Chuyển khoản, 2: Tiền mặt', required: true },
   amount: { type: Number, required: true },
   note: { type: String },

@@ -1,6 +1,6 @@
 import { addDepartmentApi, updateDepartmentApi } from '@api';
 import { FormDetail } from '@components/base';
-import { InputForm } from '@components/core';
+import { DropdownForm, InputForm } from '@components/core';
 import Editorz from '@components/core/Editorz';
 import { UploadFiles } from '@components/shared';
 import { optionStatus, optionType } from '@constant';
@@ -92,7 +92,7 @@ const DetailOption = (props) => {
         />
         <InputForm id="subject" label="Tiêu đề (*)" errors={errors} register={register} />
         <Editorz id="content" label="Nội dung (*)" errors={errors} data={watch('content')} setData={(e) => setValue('content', e)} />
-        <UploadFiles label="File đính kèm" files={images} setFiles={setImages} />
+        <UploadFiles label="File đính kèm" files={files} setFiles={setFiles} />
         {isUpdate && (
           <DropdownForm
             id="status"

@@ -7,6 +7,7 @@ class BillMd extends ModelBase {
   project;
   apartment;
   amount;
+  paid;
   code;
   month;
   customerInfo;
@@ -20,8 +21,9 @@ class BillMd extends ModelBase {
 
 BillMd.init('Bill', {
   project: { type: String, required: true },
-  apartment: { type: ObjectId, ref: "Apartment", required: true },
+  apartment: { type: ObjectId, ref: 'Apartment', required: true },
   amount: { type: Number, required: true },
+  paid: { type: Number, required: true },
   code: { type: String, required: true },
   month: { type: String, required: true },
   customerInfo: { type: Object, required: true },

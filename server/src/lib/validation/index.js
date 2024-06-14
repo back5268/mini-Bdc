@@ -5,6 +5,7 @@ export * from './departmentValidation';
 export * from './permissionValidation';
 export * from './priceValidation';
 export * from './projectValidation';
+export * from './residentValidation';
 export * from './serviceValidation';
 export * from './templateValidation';
 export * from './userValidation';

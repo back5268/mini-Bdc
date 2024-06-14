@@ -1,4 +1,3 @@
-import { Dashboard } from '@view/admin';
 import {
   Bills,
   DataBrowses,
@@ -12,9 +11,10 @@ import {
   Services,
   Vehicles
 } from '@view/admin/accountants';
-import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup } from '@view/admin/apartments';
+import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup, Residents } from '@view/admin/apartments';
 import { Departments, DetailProject, Projects, Users } from '@view/admin/companies';
 import { Templates } from '@view/admin/configs';
+import { Project, Report } from '@view/admin/dashboard';
 import { DetailPermission, Permissions, Tools } from '@view/admin/permissions';
 import { Logs, News, Options } from '@view/admin/residents';
 import { ForgotPassword, SignIn } from '@view/auth';
@@ -23,7 +23,8 @@ const routes = [
   { path: '/auth/signin', element: SignIn, public: true },
   { path: '/auth/forgot-password', element: ForgotPassword, public: true },
 
-  { path: '/', element: Dashboard, layout: true },
+  { path: '/', element: Report, layout: true },
+  { path: '/project-info', element: Project, layout: true },
 
   // ==================== Phân quền ====================
   { path: '/permissions', element: Permissions, layout: true },
@@ -68,6 +69,7 @@ const routes = [
   { path: '/apartments', element: Apartment, layout: true },
   { path: '/apartments/create', element: DetailApartment, layout: true },
   { path: '/apartments/detail/:_id', element: DetailApartment, layout: true },
+  { path: '/residents', element: Residents, layout: true },
 
   // ==================== Cư dân ====================
   { path: '/options', element: Options, layout: true },

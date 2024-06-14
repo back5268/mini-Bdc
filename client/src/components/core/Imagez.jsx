@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { EyeIcon } from '@heroicons/react/24/outline';
-import { Buttonz, Dialogz } from '.';
+import { Dialogz } from '.';
 
 const Imagez = (props) => {
   const { className = 'h-10 w-10', bg, isZoom, ...prop } = props;

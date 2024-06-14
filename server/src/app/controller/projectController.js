@@ -42,7 +42,7 @@ export const detailProject = async (req, res) => {
     const { error, value } = validateData(detailProjectValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id } = value;
-    const data = await detailProjectMd({ _id });
+    const data = await detailProjectMd({ _id }, [{ path: 'department', select: 'name' }]);
     if (!data) return res.status(400).json({ status: false, mess: 'Dự án không tồn tại!' });
     res.json({ status: true, data });
   } catch (error) {

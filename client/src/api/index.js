@@ -9,6 +9,7 @@ export * from './log';
 export * from './permission';
 export * from './price';
 export * from './project';
+export * from './residents';
 export * from './service';
 export * from './template';
 export * from './tool';

@@ -125,12 +125,18 @@ export const PaymentValidation = yup.object({
 
 export const NewsValidation = yup.object({
   subject: yup.string().required('Tiêu đề không được bỏ trống!'),
-  content: yup.string().required('Nội dung không được bỏ trống!'),
+  content: yup.string().required('Nội dung không được bỏ trống!')
+});
+
+export const ResidentValidation = yup.object({
+  email: yup.string().email('Email không đúng định dạng!').required('Email không được bỏ trống!'),
+  username: yup.string().required('Tài khoản không được bỏ trống!'),
+  fullName: yup.string().required('Họ tên không được bỏ trống!'),
+  code: yup.string().required('Mã cư dân không được bỏ trống!'),
+  phone: yup.string().required('Số điện thoại không được bỏ trống!')
 });
 
 export const OptionValidation = yup.object({
-  apartment: yup.string().required('Căn hộ không được bỏ trống!'),
-  type: yup.number().required('Danh mục không được bỏ trống!'),
   subject: yup.string().required('Tiêu đề không được bỏ trống!'),
-  content: yup.number().required('Nội dung không được bỏ trống!')
+  content: yup.string().required('Nội dung không được bỏ trống!')
 });

@@ -1,3 +1,4 @@
+import { uploadFileToFirebase } from '@lib/firebase';
 import {
   addUserValid,
   changePasswordValid,
@@ -8,7 +9,6 @@ import {
 } from '@lib/validation';
 import { countUserMd, createUserMd, deleteUserMd, detailUserMd, listUserMd, updateUserMd } from '@models';
 import { generateRandomString, validateData } from '@utils';
-import { uploadFileToFirebase } from '@lib/firebase';
 import bcrypt from 'bcrypt';
 
 export const getListUser = async (req, res) => {
@@ -20,10 +20,11 @@ export const getListUser = async (req, res) => {
     if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }, { code: { $regex: keySearch, $options: 'i' } }];
     if (email) where.$or = [{ email: { $regex: email, $options: 'i' } }, { username: { $regex: email, $options: 'i' } }];
     if (type) {
-      if (type === 'customer') where.type = 'customer';
+      if (type === 'resident') where.type = 'resident';
       else where.type = { $in: ['user', 'admin'] };
     }
     if (status || status === 0) where.status = status;
+
     const documents = await listUserMd(where, page, limit);
     const total = await countUserMd(where);
     res.json({ status: true, data: { documents, total } });
@@ -160,3 +161,4 @@ export const resetPassword = async (req, res) => {
     res.status(500).json({ status: false, mess: error.toString() });
   }
 };
+
