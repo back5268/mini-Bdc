@@ -35,7 +35,9 @@ export const tools = [
     children: [
       { name: 'Quản lý nhóm căn hộ', route: '/apartment-groups', sort: 1, actions: ['delete', 'create', 'update', 'read'] },
       { name: 'Quản lý căn hộ', route: '/apartments', sort: 2, actions: ['delete', 'create', 'update', 'read'] },
-      { name: 'Quản lý cư dân', route: '/residents', sort: 3, actions: ['delete', 'create', 'update', 'read'] }
+      { name: 'Quản lý cư dân', route: '/residents', sort: 3, actions: ['delete', 'create', 'update', 'read'] },
+      { name: 'Quản lý phương tiện', route: '/vehicles', sort: 4, actions: ['delete', 'create', 'update', 'read'] },
+      { name: 'Chỉ số điện nước', route: '/electric-waters', sort: 5, actions: ['delete', 'create', 'update', 'read'] }
     ]
   },
   {
@@ -53,14 +55,10 @@ export const tools = [
     sort: 6,
     icon: 'CalculatorIcon',
     children: [
-      { name: 'Quản lý dịch vụ', route: '/services', sort: 2, actions: ['delete', 'create', 'update', 'read'] },
-      { name: 'Quản lý phương tiện', route: '/vehicles', sort: 3, actions: ['delete', 'create', 'update', 'read'] },
-      { name: 'Chỉ số điện nước', route: '/electric-waters', sort: 4, actions: ['delete', 'create', 'update', 'read'] },
-      { name: 'Tính toán công nợ', route: '/debts', sort: 5, actions: ['delete', 'create', 'update', 'read'] },
-      { name: 'Danh sách duyệt số liệu', route: '/data-browses', sort: 6, actions: ['update', 'read'] },
-      { name: 'Danh sách gửi thông báo', route: '/notifications', sort: 7, actions: ['update', 'read'] },
-      { name: 'Danh sách bảng kê', route: '/bills', sort: 8, actions: ['update', 'read'] },
-      { name: 'Quản lý phiếu thu', route: '/receipts', sort: 9, actions: ['delete', 'create', 'update', 'read'] }
+      { name: 'Quản lý dịch vụ', route: '/services', sort: 1, actions: ['delete', 'create', 'update', 'read'] },
+      { name: 'Tính toán công nợ', route: '/debts', sort: 2, actions: ['delete', 'create', 'update', 'read'] },
+      { name: 'Danh sách duyệt số liệu', route: '/data-browses', sort: 3, actions: ['update', 'read'] },
+      { name: 'Danh sách gửi thông báo', route: '/notifications', sort: 4, actions: ['update', 'read'] }
     ]
   },
   {
@@ -68,10 +66,10 @@ export const tools = [
     sort: 7,
     icon: 'ComputerDesktopIcon',
     children: [
-      { name: 'Bảng kê khách hàng', route: '/customer-bills', sort: 1, actions: ['update', 'read'] },
-      { name: 'Bảng kê dịch vụ', route: '/service-bills', sort: 2, actions: ['update', 'read'] },
-      { name: 'Tổng hợp công nợ', route: '/debits', sort: 3, actions: ['update', 'read'] },
-      { name: 'Tổng hợp chi tiết', route: '/debit-details', sort: 4, actions: ['update', 'read'] },
+      { name: 'Quản lý phiếu thu', route: '/receipts', sort: 1, actions: ['delete', 'create', 'update', 'read'] },
+      { name: 'Danh sách bảng kê', route: '/bills', sort: 2, actions: ['update', 'read'] },
+      { name: 'Bảng kê dịch vụ', route: '/service-bills', sort: 3, actions: ['update', 'read'] },
+      { name: 'Tổng hợp công nợ', route: '/debits', sort: 4, actions: ['update', 'read'] },
       { name: 'Quản lý tiền thừa', route: '/coins', sort: 5, actions: ['update', 'read'] }
     ]
   }

@@ -2,7 +2,7 @@ import { VehicleValidation } from '@lib/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { addVehicleApi, detailVehicleApi, getListServiceInfoApi, updateVehicleApi } from '@api';
+import { addVehicleApi, detailVehicleApi, updateVehicleApi } from '@api';
 import { FormDetail } from '@components/base';
 import { checkEqualProp } from '@lib/helper';
 import { DropdownForm, InputForm, TextAreaz } from '@components/core';
@@ -16,7 +16,6 @@ const defaultValues = {
   name: '',
   licensePlate: '',
   apartment: '',
-  service: '',
   type: '',
   description: ''
 };
@@ -38,13 +37,6 @@ const DetailVehicle = () => {
     resolver: yupResolver(VehicleValidation),
     defaultValues
   });
-
-  const { data: services } = useGetApi(
-    getListServiceInfoApi,
-    { status: 1, type: 4, apartment: watch('apartment') },
-    'services',
-    Boolean(watch('apartment'))
-  );
 
   useEffect(() => {
     if (isUpdate && item) {
@@ -94,17 +86,6 @@ const DetailVehicle = () => {
           errors={errors}
           watch={watch}
           setValue={setValue}
-        />
-        <DropdownForm
-          id="service"
-          label="Dịch vụ (*)"
-          options={services
-            ?.filter((a) => a.vehicleType === Number(watch('type')))
-            ?.map((p) => ({ key: p._id, label: `${p.name} - ${p.code}` }))}
-          errors={errors}
-          watch={watch}
-          setValue={setValue}
-          emptyMessage="Căn hộ chưa có dịch vụ"
         />
         <TextAreaz id="description" label="Mô tả" value={watch('description')} setValue={(e) => setValue('description', e)} />
         <div className="flex flex-wrap w-full">

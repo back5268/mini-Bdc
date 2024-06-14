@@ -71,17 +71,19 @@ const DetailDepartment = (props) => {
       <div className="flex flex-wrap w-full">
         <InputForm id="name" label="Tên phòng ban (*)" errors={errors} register={register} />
         <InputForm id="code" label="Mã phòng ban (*)" errors={errors} register={register} />
-        <MultiSelectForm
-          options={projects}
-          optionLabel="name"
-          optionValue="_id"
-          id="projects"
-          watch={watch}
-          label="Dự án quản lý (*)"
-          setValue={setValue}
-          errors={errors}
-          disabled
-        />
+        {isUpdate && (
+          <MultiSelectForm
+            options={projects}
+            optionLabel="name"
+            optionValue="_id"
+            id="projects"
+            watch={watch}
+            label="Dự án quản lý (*)"
+            setValue={setValue}
+            errors={errors}
+            disabled
+          />
+        )}
         <TextAreaz id="description" label="Mô tả" value={watch('description')} setValue={(e) => setValue('description', e)} />
       </div>
     </FormDetail>

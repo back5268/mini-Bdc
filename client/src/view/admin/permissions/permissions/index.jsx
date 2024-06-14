@@ -1,6 +1,5 @@
 import { deletePermissionApi, getListPermissionApi, updatePermissionApi } from '@api';
-import { DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base';
+import { DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Chipz, Dropdownz, Hrz, Inputz } from '@components/core';
 import { statuses } from '@constant';
 import { useGetParams } from '@hook';

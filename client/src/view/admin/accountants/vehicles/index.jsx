@@ -1,6 +1,5 @@
 import { deleteVehicleApi, getListVehicleApi, updateVehicleApi } from '@api';
-import { Body, DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base';
+import { Body, DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
 import { statuses, vehicleType } from '@constant';
 import { useGetParams } from '@hook';

@@ -50,14 +50,14 @@ export const ServiceValidation = yup.object({
   name: yup.string().required('Tên dịch vụ không được bỏ trống!'),
   code: yup.string().required('Mã dịch vụ không được bỏ trống!'),
   price: yup.string().required('Bảng giá không được bỏ trống!'),
-  type: yup.string().required('Loại dịch vụ không được bỏ trống!')
+  type: yup.string().required('Loại dịch vụ không được bỏ trống!'),
+  recipe: yup.string().required('Loại bảng giá không được bỏ trống!')
 });
 
 export const VehicleValidation = yup.object({
   name: yup.string().required('Tên phương tiện không được bỏ trống!'),
   licensePlate: yup.string().required('Biển số xe không được bỏ trống!'),
   apartment: yup.string().required('Căn hộ không được bỏ trống!'),
-  service: yup.string().required('Dịch vụ không được bỏ trống!'),
   type: yup.number().required('Loại phương tiện không được bỏ trống!')
 });
 

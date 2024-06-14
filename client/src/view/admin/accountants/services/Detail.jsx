@@ -8,7 +8,7 @@ import { checkEqualProp } from '@lib/helper';
 import { DropdownForm, Hrz, InputForm, Inputz, MultiSelectz } from '@components/core';
 import { useParams } from 'react-router-dom';
 import { useGetApi } from '@lib/react-query';
-import { serviceType, vehicleType } from '@constant';
+import { priceType, serviceType, vehicleType } from '@constant';
 import Price from '../prices/Price';
 
 const defaultValues = {
@@ -16,7 +16,9 @@ const defaultValues = {
   code: '',
   type: '',
   price: '',
-  vehicleType: ''
+  vehicleType: '',
+  recipe: 1,
+  prices: 0
 };
 
 const Apartments = (props) => {
@@ -59,6 +61,7 @@ const DetailService = () => {
   const isUpdate = Boolean(_id);
   const { data: item } = useGetApi(detailServiceApi, { _id }, 'service', isUpdate);
   const [apartments, setApartments] = useState([]);
+  const [prices, setPrices] = useState([{ key: 1 }]);
 
   const {
     register,
@@ -71,24 +74,16 @@ const DetailService = () => {
     defaultValues
   });
 
-  const { data: prices } = useGetApi(getListPriceInfoApi, { serviceType: watch('type'), status: 1 }, 'prices');
   const { data: apartmentData } = useGetApi(
     checkApartmentApi,
     { service: _id, type: watch('type'), vehicleType: watch('vehicleType') },
     'apartments',
     Boolean(watch('type'))
   );
-  const [price, setPrice] = useState(null);
-
-  useEffect(() => {
-    if (prices?.length > 0) {
-      setPrice(prices.find((p) => p._id === watch('price')));
-    }
-  }, [prices, watch('price')]);
 
   useEffect(() => {
     if (isUpdate && item) {
-      if (item.apartments?.length > 0) setApartments(item.apartments)
+      if (item.apartments?.length > 0) setApartments(item.apartments);
       for (const key in defaultValues) {
         setValue(key, item[key]);
       }
@@ -98,6 +93,10 @@ const DetailService = () => {
   const handleData = (data) => {
     let newData = { ...data };
     if (apartments?.length > 0) newData.apartments = apartments;
+    if (Number(newData.recipe) === 1) {
+      if (!newData.prices) return 'Vui lòng nhập giá tiền';
+      else newData.prices = [{ from: 0, to: 0, amount: newData.prices }];
+    } else newData.prices = prices.map((p) => ({ ...p, key: undefined }));
     if (isUpdate) newData = { ...checkEqualProp(newData, item), _id };
     return newData;
   };
@@ -127,14 +126,6 @@ const DetailService = () => {
             setValue('price', undefined);
           }}
         />
-        <DropdownForm
-          id="price"
-          label="Bảng giá (*)"
-          options={prices?.map((p) => ({ key: p._id, label: `${p.name} - ${p.code}` }))}
-          errors={errors}
-          watch={watch}
-          setValue={setValue}
-        />
         {Number(watch('type')) === 4 && (
           <DropdownForm
             id="vehicleType"
@@ -145,21 +136,36 @@ const DetailService = () => {
             setValue={setValue}
           />
         )}
-        {Boolean(price) && (
-          <div className="w-full mt-4">
-            <div className="p-2">
-              <label className="inline-block font-medium text-left mb-2">Thông tin bảng giá</label>
-              <Hrz />
-            </div>
-            <div className="w-full">
-              {price.recipe === 1 ? (
-                <Inputz disabled type="number" label="Giá tiền" className="w-full !lg:w-full" value={price.prices?.[0]?.amount} />
-              ) : (
-                price.prices?.map((price, index) => <Price key={index} price={price} isView={true} index={index} />)
+        <DropdownForm
+          id="recipe"
+          label="Loại bảng giá (*)"
+          options={priceType}
+          errors={errors}
+          watch={watch}
+          setValue={setValue}
+          disabled={[1, 4, 5].includes(Number(watch('serviceType')))}
+        />
+        <div className="w-full mt-4">
+          <div className="p-2">
+            <div className="flex justify-between items-center">
+              <label className="inline-block font-medium text-left mb-2">Thông tin giá</label>
+              {Number(watch('recipe')) !== 1 && (
+                <Buttonz
+                  onClick={() => setPrices((pre) => [...pre, { key: (pre[pre.length - 1]?.key || 1) + 1 }])}
+                  variant="outlined"
+                  label="Thêm mới"
+                  className="mb-2"
+                />
               )}
             </div>
+            <Hrz />
           </div>
-        )}
+          {Number(watch('recipe')) === 1 ? (
+            <InputForm type="number" id="prices" label="Giá tiền (*)" errors={errors} register={register} />
+          ) : (
+            prices.map((price, index) => <Price key={index} price={price} setPrices={setPrices} disabled={prices.length <= 1} />)
+          )}
+        </div>
         <div className="w-full">
           <div className="p-2">
             <label className="inline-block font-medium text-left mb-2">Căn hộ áp dụng</label>

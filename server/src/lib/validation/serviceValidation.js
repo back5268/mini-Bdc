@@ -15,6 +15,8 @@ export const addServiceValid = {
   code: 'string',
   price: 'string',
   type: 'number',
+  prices: 'json',
+  recipe: 'number',
   vehicleType: { type: 'number', allowNull: true },
   description: { type: 'string', allowNull: true },
   apartments: { type: 'json', allowNull: true }
@@ -28,7 +30,9 @@ export const updateServiceValid = {
   apartments: { type: 'json', allowNull: true },
   type: { type: 'number', allowNull: true },
   vehicleType: { type: 'number', allowNull: true },
-  description: { type: 'string', allowNull: true }
+  description: { type: 'string', allowNull: true },
+  prices: { type: 'json', allowNull: true },
+  recipe: { type: 'number', allowNull: true }
 };
 
 export const checkApartmentValid = {

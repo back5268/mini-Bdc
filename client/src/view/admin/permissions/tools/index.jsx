@@ -1,6 +1,5 @@
 import { getListToolApi, updateToolApi } from '@api';
-import { DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base';
+import { DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Dropdownz, Hrz } from '@components/core';
 import { statuses } from '@constant';
 import { useGetParams } from '@hook';

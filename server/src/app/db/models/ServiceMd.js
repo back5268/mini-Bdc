@@ -11,6 +11,8 @@ class ServiceMd extends ModelBase {
   code;
   type;
   vehicleType;
+  recipe;
+  prices;
   description;
   status;
   price;
@@ -35,6 +37,8 @@ ServiceMd.init('Service', {
     enum: [1, 2, 3, 4],
     description: '1: Ô tô, 2: Xe máy, 3: Xe máy điện, 4: Xe đạp'
   },
+  recipe: { type: Number, enum: [1, 2], required: true, description: '1: 1 giá, 2: Lũy tiến' },
+  prices: [{ from: { type: Number }, to: { type: Number }, amount: { type: Number } }],
   description: { type: String },
   status: { type: Number, enum: [0, 1], default: 1 },
   price: { type: ObjectId, ref: 'Price', required: true },

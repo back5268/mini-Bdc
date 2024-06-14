@@ -11,7 +11,6 @@ class VehicleMd extends ModelBase {
   name;
   licensePlate;
   type;
-  service;
   data;
   description;
   files;
@@ -31,7 +30,6 @@ VehicleMd.init('Vehicle', {
     enum: [1, 2, 3, 4],
     description: '1: Ô tô, 2: Xe máy, 3: Xe máy điện, 4: Xe đạp'
   },
-  service: { type: ObjectId, ref: 'Service', required: true },
   data: { type: Object },
   description: { type: String },
   files: [{ type: String, required: true }],

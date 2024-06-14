@@ -26,8 +26,6 @@ const DetailReceipt = (props) => {
   const item = isUpdate ? data.find((d) => d._id === open) : {};
   const title = type === 1 ? 'Phiếu thu' : type === 2 ? 'Phiếu hoàn tiền' : 'Phiếu hạch toán';
   const { residents } = useDataState();
-  const bills = useGetApi(getListBillByApartmentApi, { _id: watch('apartment') }, 'bills');
-  const coin = useGetApi(getCoinByApartmentApi, { _id: watch('apartment') }, 'coin');
 
   const {
     register,
@@ -40,6 +38,9 @@ const DetailReceipt = (props) => {
     resolver: yupResolver(UserValidation),
     defaultValues
   });
+
+  const { data: bills } = useGetApi(getListBillByApartmentApi, { _id: watch('apartment') }, 'bills', Boolean(watch("apartment")));
+  const { data: coin } = useGetApi(getCoinByApartmentApi, { _id: watch('apartment') }, 'coin', Boolean(watch("apartment")));
 
   useEffect(() => {
     if (isUpdate) {
@@ -89,7 +90,7 @@ const DetailReceipt = (props) => {
         <DropdownForm
           id="bill"
           label="Hóa đơn"
-          options={bills}
+          options={bills || []}
           optionLabel="code"
           optionValue="_id"
           errors={errors}
@@ -100,7 +101,7 @@ const DetailReceipt = (props) => {
         <DropdownForm
           id="payer"
           label="Người tạo (*)"
-          options={residents}
+          options={residents || []}
           optionLabel="fullName"
           optionValue="_id"
           errors={errors}

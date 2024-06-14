@@ -77,7 +77,7 @@ const FormDetail = (props) => {
               else navigate(-1);
             }}
           />
-          {((isUpdate && updateApi) && (!isUpdate && createApi)) && <Buttonz loading={isPending} type="submit" label="Xác nhận" />}
+          {((isUpdate && updateApi) || (!isUpdate && createApi)) && <Buttonz loading={isPending} type="submit" label="Xác nhận" />}
         </div>
       </form>
     </Wrapper>

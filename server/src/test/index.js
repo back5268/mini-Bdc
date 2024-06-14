@@ -1,4 +1,4 @@
-const { createToolMd } = require('@models');
+const { createToolMd, createUserMd } = require('@models');
 const { tools } = require('src/data/tools');
 
 const test = async () => {

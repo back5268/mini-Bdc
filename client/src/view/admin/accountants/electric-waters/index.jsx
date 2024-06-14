@@ -1,6 +1,5 @@
 import { getListElectricWaterApi, getListMonthApi } from '@api';
-import { Body, DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base';
+import { Body, DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Dropdownz, Hrz, Imagez } from '@components/core';
 import { electricWaterType } from '@constant';
 import { useGetParams } from '@hook';

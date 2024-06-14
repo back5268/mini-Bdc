@@ -1,6 +1,5 @@
 import { deleteProjectApi, getListProjectApi, updateProjectApi } from '@api';
-import { DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base';
+import { DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
 import { statuses } from '@constant';
 import { useGetParams } from '@hook';
