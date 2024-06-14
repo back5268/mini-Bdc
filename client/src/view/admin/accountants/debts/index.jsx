@@ -1,6 +1,6 @@
 import { getListDebtLogApi, getListMonthApi } from '@api';
 import { DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base/DataFilter';
+import DataFilter from '@components/base';
 import { Chipz, Dropdownz, Hrz, InputCalendarz, Spinnerz } from '@components/core';
 import { debtStatus } from '@constant';
 import { useGetParams } from '@hook';

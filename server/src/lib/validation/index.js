@@ -16,3 +16,4 @@ export * from './billValidation';
 export * from './logValidation';
 export * from './newsValidation';
 export * from './optionValidation';
+export * from './receiptValidation';

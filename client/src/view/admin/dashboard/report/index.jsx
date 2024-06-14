@@ -3,7 +3,7 @@ import BarChart from './BarChart';
 import LineChart from './LineChart';
 import PieChart from './PieChart';
 import { Cardz, Hrz, Imagez, InputCalendarz } from '@components/core';
-import DataFilter from '@components/base/DataFilter';
+import DataFilter from '@components/base';
 
 const Ticket = (props) => {
   const { image, amount, label } = props;

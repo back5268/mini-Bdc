@@ -1,6 +1,6 @@
 import { getListLogApi } from '@api';
 import { Body, DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base/DataFilter';
+import DataFilter from '@components/base';
 import { Dropdownz, Hrz, InputCalendarz } from '@components/core';
 import { logStatus, logType } from '@constant';
 import { useGetParams } from '@hook';

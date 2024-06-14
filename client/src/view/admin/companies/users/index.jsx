@@ -1,7 +1,7 @@
 import { deleteUserApi, getListUserApi, resetPasswordApi, updateUserApi } from '@api';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base/DataFilter';
+import DataFilter from '@components/base';
 import { Buttonz, Dialogz, Dropdownz, Hrz, Inputz } from '@components/core';
 import { statuses } from '@constant';
 import { useGetParams } from '@hook';

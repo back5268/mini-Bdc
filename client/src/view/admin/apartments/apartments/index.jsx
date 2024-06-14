@@ -1,6 +1,6 @@
 import { deleteApartmentApi, getListApartmentApi } from '@api';
 import { DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base/DataFilter';
+import DataFilter from '@components/base';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
 import { statusApartment, statuses } from '@constant';
 import { useGetParams } from '@hook';

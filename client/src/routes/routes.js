@@ -8,6 +8,7 @@ import {
   ElectricWater,
   Notifications,
   Prices,
+  Receipts,
   Services,
   Vehicles
 } from '@view/admin/accountants';
@@ -61,6 +62,8 @@ const routes = [
   { path: '/bills', element: Bills, layout: true },
   { path: '/data-browses', element: DataBrowses, layout: true },
   { path: '/notifications', element: Notifications, layout: true },
+
+  { path: '/receipts', element: Receipts, layout: true },
 
   // ==================== Căn hộ ====================
   { path: '/apartment-groups', element: ApartmentGroup, layout: true },

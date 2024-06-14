@@ -18,4 +18,5 @@ export * from './billController';
 export * from './logController';
 export * from './newController';
 export * from './optionController';
+export * from './receiptController';
 

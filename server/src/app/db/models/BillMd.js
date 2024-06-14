@@ -16,6 +16,7 @@ class BillMd extends ModelBase {
   sendDate;
   status;
   debits;
+  receipts;
   deletedAt;
 }
 
@@ -37,6 +38,7 @@ BillMd.init('Bill', {
     description: '1: Chờ duyệt, 2: Chờ gửi, 3: Chờ thanh toán, 4: Đã thanh toán, 5: Quá hạn thanh toán'
   },
   debits: [{ type: ObjectId, ref: 'Debit', required: true }],
+  receipts: [{ type: String }],
   deletedAt: { type: Date }
 });
 

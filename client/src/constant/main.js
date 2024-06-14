@@ -109,3 +109,14 @@ export const templateType = [
   { label: 'Phiếu thu', key: 4 },
   { label: 'Phiếu chi', key: 5 }
 ];
+
+export const receiptType = [
+  { label: 'Phiếu thu', key: 1, color: 'purple' },
+  { label: 'Phiếu hoàn tiền', key: 2, color: 'blue' },
+  { label: 'Phiếu hạch toán', key: 3, color: 'cyan' }
+];
+
+export const paymentType = [
+  { label: 'Chuyển khoản', key: 1 },
+  { label: 'Tiền mặt', key: 2 },
+];
