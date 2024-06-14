@@ -1,6 +1,7 @@
 import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
 
 const Buttonz = ({
+  children,
   label,
   handlePress,
   containerClassName = "",
@@ -11,14 +12,20 @@ const Buttonz = ({
     <TouchableOpacity
       onPress={handlePress}
       activeOpacity={0.7}
-      className={`bg-primary rounded-md min-h-[48px] my-2 flex flex-row justify-center items-center ${containerClassName} ${
+      className={`bg-primary rounded-md min-h-[48px] px-2 flex flex-row justify-center items-center ${containerClassName} ${
         isLoading ? "opacity-50" : ""
       }`}
       disabled={isLoading}
     >
-      <Text className={`text-white font-psemibold text-nomal uppercase ${labelClassName}`}>
-        {label}
-      </Text>
+      {children ? (
+        children
+      ) : (
+        <Text
+          className={`text-white font-psemibold text-nomal uppercase ${labelClassName}`}
+        >
+          {label}
+        </Text>
+      )}
 
       {isLoading && (
         <ActivityIndicator

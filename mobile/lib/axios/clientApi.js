@@ -2,7 +2,7 @@ import { getStorage } from "@lib/async-storage";
 import axios from "axios";
 
 export const clientApi = axios.create({
-  baseURL: "http://192.168.1.148:5000",
+  baseURL: "https://mini-bdc.onrender.com",
   timeout: 10000,
 });
 

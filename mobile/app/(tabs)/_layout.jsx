@@ -6,10 +6,10 @@ import { Iconz } from "@components/core";
 
 const TabIcon = ({ name, color, label, focused }) => {
   return (
-    <View className="flex items-center justify-center gap-2">
-      <Iconz name={name} color={color} />
+    <View className="flex items-center justify-center">
+      <Iconz name={name} color={color} size={20} />
       <Text
-        className={`${focused ? "font-psemibold" : "font-pregular"} text-xs`}
+        className={`${focused ? "font-psemibold" : "font-pregular"} text-xs mt-2`}
         style={{ color: color }}
       >
         {label}
@@ -34,6 +34,7 @@ const TabLayout = () => {
             borderTopWidth: 1,
             borderTopColor: "#232533",
             height: 80,
+            // display: "none"
           },
         }}
       >
@@ -53,30 +54,30 @@ const TabLayout = () => {
           }}
         />
         <Tabs.Screen
-          name="(news)"
+          name="(services)"
           options={{
-            title: "Tin tức",
+            title: "Dịch vụ",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
-                name="inbox"
+                name="layers"
                 color={color}
-                label="Tin tức"
+                label="Dịch vụ"
                 focused={focused}
               />
             ),
           }}
         />
         <Tabs.Screen
-          name="(requests)"
+          name="(bills)"
           options={{
-            title: "Yêu cầu",
+            title: "Hóa đơn",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
-                name="layers"
+                name="file-text"
                 color={color}
-                label="Yêu cầu"
+                label="Hóa đơn"
                 focused={focused}
               />
             ),
