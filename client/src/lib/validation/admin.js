@@ -35,7 +35,7 @@ export const PriceValidation = yup.object({
 });
 
 export const ApartmentGroupValidation = yup.object({
-  name: yup.string().required('Tên bảng giá không được bỏ trống!'),
+  name: yup.string().required('Tên nhóm căn hộ không được bỏ trống!'),
   apartments: yup.array().min(2, 'Vui lòng chọn từ 2 căn hộ trở lên!').required('Căn hộ không được bỏ trống!')
 });
 
@@ -49,7 +49,6 @@ export const ApartmentValidation = yup.object({
 export const ServiceValidation = yup.object({
   name: yup.string().required('Tên dịch vụ không được bỏ trống!'),
   code: yup.string().required('Mã dịch vụ không được bỏ trống!'),
-  price: yup.string().required('Bảng giá không được bỏ trống!'),
   type: yup.string().required('Loại dịch vụ không được bỏ trống!'),
   recipe: yup.string().required('Loại bảng giá không được bỏ trống!')
 });
@@ -129,11 +128,19 @@ export const NewsValidation = yup.object({
 });
 
 export const ResidentValidation = yup.object({
-  email: yup.string().email('Email không đúng định dạng!').required('Email không được bỏ trống!'),
-  username: yup.string().required('Tài khoản không được bỏ trống!'),
   fullName: yup.string().required('Họ tên không được bỏ trống!'),
-  code: yup.string().required('Mã cư dân không được bỏ trống!'),
-  phone: yup.string().required('Số điện thoại không được bỏ trống!')
+  email: yup.string().email('Email không đúng định dạng!').required('Email không được bỏ trống!'),
+  phone: yup.string().required('Số điện thoại không được bỏ trống!'),
+  apartment: yup.string().required('Căn hộ không được bỏ trống!'),
+  type: yup.string().required('Quan hệ với chủ hộ không được bỏ trống!')
+});
+
+export const ElectricWaterValidation = yup.object({
+  apartment: yup.string().required('Căn hộ không được bỏ trống!'),
+  type: yup.string().required('Loại chốt số không được bỏ trống!'),
+  beforeNumber: yup.string().required('Chỉ số đầu không được bỏ trống!'),
+  afterNumber: yup.string().required('Chỉ số cuối không được bỏ trống!'),
+  month: yup.string().required('Kỳ tháng không được bỏ trống!')
 });
 
 export const OptionValidation = yup.object({

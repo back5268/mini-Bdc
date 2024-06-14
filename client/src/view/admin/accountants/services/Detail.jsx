@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { addServiceApi, checkApartmentApi, detailServiceApi, getListPriceInfoApi, updateServiceApi } from '@api';
 import { DataTable, FormDetail } from '@components/base';
 import { checkEqualProp } from '@lib/helper';
-import { DropdownForm, Hrz, InputForm, Inputz, MultiSelectz } from '@components/core';
+import { Buttonz, DropdownForm, Hrz, InputForm, Inputz, MultiSelectz } from '@components/core';
 import { useParams } from 'react-router-dom';
 import { useGetApi } from '@lib/react-query';
 import { priceType, serviceType, vehicleType } from '@constant';
@@ -83,6 +83,8 @@ const DetailService = () => {
 
   useEffect(() => {
     if (isUpdate && item) {
+      if (item.recipe === 1) item.prices = Number(item.prices?.[0]?.amount);
+      if (item.prices) setPrices(item.prices);
       if (item.apartments?.length > 0) setApartments(item.apartments);
       for (const key in defaultValues) {
         setValue(key, item[key]);
@@ -143,7 +145,7 @@ const DetailService = () => {
           errors={errors}
           watch={watch}
           setValue={setValue}
-          disabled={[1, 4, 5].includes(Number(watch('serviceType')))}
+          disabled={[1, 4, 5].includes(Number(watch('type')))}
         />
         <div className="w-full mt-4">
           <div className="p-2">

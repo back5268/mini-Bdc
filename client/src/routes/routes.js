@@ -12,7 +12,7 @@ import {
   Services,
   Vehicles
 } from '@view/admin/accountants';
-import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup, Residents } from '@view/admin/apartments';
+import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup, DetailResident, Residents } from '@view/admin/apartments';
 import { Departments, DetailProject, Projects, Users } from '@view/admin/companies';
 import { Templates } from '@view/admin/configs';
 import { Project, Report } from '@view/admin/dashboard';
@@ -69,10 +69,14 @@ const routes = [
   { path: '/apartment-groups', element: ApartmentGroup, layout: true },
   { path: '/apartment-groups/create', element: DetailApartmentGroup, layout: true },
   { path: '/apartment-groups/detail/:_id', element: DetailApartmentGroup, layout: true },
+
   { path: '/apartments', element: Apartment, layout: true },
   { path: '/apartments/create', element: DetailApartment, layout: true },
   { path: '/apartments/detail/:_id', element: DetailApartment, layout: true },
+
   { path: '/residents', element: Residents, layout: true },
+  { path: '/residents/create', element: DetailResident, layout: true },
+  { path: '/residents/detail/:_id', element: DetailResident, layout: true },
 
   // ==================== Cư dân ====================
   { path: '/options', element: Options, layout: true },

@@ -39,8 +39,8 @@ const DetailReceipt = (props) => {
     defaultValues
   });
 
-  const { data: bills } = useGetApi(getListBillByApartmentApi, { _id: watch('apartment') }, 'bills', Boolean(watch("apartment")));
-  const { data: coin } = useGetApi(getCoinByApartmentApi, { _id: watch('apartment') }, 'coin', Boolean(watch("apartment")));
+  const { data: bills } = useGetApi(getListBillByApartmentApi, { _id: watch('apartment') }, 'bills', Boolean(watch('apartment')));
+  const { data: coin } = useGetApi(getCoinByApartmentApi, { _id: watch('apartment') }, 'coin', Boolean(watch('apartment')));
 
   useEffect(() => {
     if (isUpdate) {
@@ -82,22 +82,24 @@ const DetailReceipt = (props) => {
             watch={watch}
             setValue={setValue}
           />
-          <div className="w-full lg:w-6/12">
+          <div className="w-full lg:w-6/12 flex flex-col justify-center items-center">
             <span className="text-xl font-bold text-red-400">Tiền thừa căn hộ: {formatNumber(coin)}</span>
             {!watch('apartment') && <i>Vui lòng chọn căn hộ</i>}
           </div>
         </div>
-        <DropdownForm
-          id="bill"
-          label="Hóa đơn"
-          options={bills || []}
-          optionLabel="code"
-          optionValue="_id"
-          errors={errors}
-          watch={watch}
-          setValue={setValue}
-          emptyMessage="Vui lòng chọn căn hộ"
-        />
+        {[1, 3].includes(type) && (
+          <DropdownForm
+            id="bill"
+            label="Hóa đơn"
+            options={bills || []}
+            optionLabel="code"
+            optionValue="_id"
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+            emptyMessage="Vui lòng chọn căn hộ"
+          />
+        )}
         <DropdownForm
           id="payer"
           label="Người tạo (*)"

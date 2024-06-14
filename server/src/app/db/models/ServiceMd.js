@@ -15,7 +15,6 @@ class ServiceMd extends ModelBase {
   prices;
   description;
   status;
-  price;
   apartments;
   deletedAt;
 }
@@ -41,7 +40,6 @@ ServiceMd.init('Service', {
   prices: [{ from: { type: Number }, to: { type: Number }, amount: { type: Number } }],
   description: { type: String },
   status: { type: Number, enum: [0, 1], default: 1 },
-  price: { type: ObjectId, ref: 'Price', required: true },
   apartments: [{ type: String, required: true }],
   deletedAt: { type: Date }
 });

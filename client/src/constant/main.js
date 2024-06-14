@@ -62,10 +62,10 @@ export const calculationRange = [
   { label: 'Căn hộ', key: 3 }
 ];
 
-export const statusApartment = [
-  { id: 1, name: 'Trống' },
-  { id: 2, name: 'Đang cho thuê' },
-  { id: 3, name: 'Đang cải tạo' }
+export const apartmentStatus = [
+  { label: 'Trống', key: 1 },
+  { label: 'Đang cho thuê', key: 2 },
+  { label: 'Đang cải tạo', key: 3 }
 ];
 
 export const optionStatus = [
@@ -118,5 +118,15 @@ export const receiptType = [
 
 export const paymentType = [
   { label: 'Chuyển khoản', key: 1 },
-  { label: 'Tiền mặt', key: 2 },
+  { label: 'Tiền mặt', key: 2 }
+];
+
+export const residentType = [
+  { label: 'Chủ hộ', key: 1 },
+  { label: 'Vợ chồng', key: 2 },
+  { label: 'Con', key: 3 },
+  { label: 'Bố mẹ', key: 4 },
+  { label: 'Anh chị em', key: 5 },
+  { label: 'Khách thuê', key: 6 },
+  { label: 'Chủ hộ cũ', key: 7 }
 ];

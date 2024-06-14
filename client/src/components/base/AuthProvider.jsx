@@ -1,4 +1,4 @@
-import { getInfoApi, getListApartmentInfoApi, getListDepartmentInfoApi, getListUserInfoApi } from '@api';
+import { getInfoApi, getListApartmentInfoApi, getListDepartmentInfoApi, getListResidentInfoApi, getListUserInfoApi } from '@api';
 import { Loading } from '@components/shared';
 import { useDataState, useUserState } from '@store';
 import { Fragment, useEffect, useState } from 'react';
@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
-  const { setUsers, setDepartments, setApartments } = useDataState();
-  const { setUserInfo, loadingz, project, setProject, isAuthenticated } = useUserState();
+  const { setUsers, setDepartments, setApartments, setResidents } = useDataState();
+  const { setUserInfo, loadingz, project, setProject } = useUserState();
   const [isLoading, setIsLoading] = useState(false);
 
   const checkAuth = async () => {
@@ -17,7 +17,7 @@ const AuthProvider = ({ children }) => {
         const projects = response.projects;
         const checkProject = projects?.find((p) => p._id === project);
         if (!checkProject) setProject(projects[0]?._id);
-        setUserInfo(response); 
+        setUserInfo(response);
       } else {
         localStorage.removeItem('token');
         navigate('/auth/signin');
@@ -40,6 +40,8 @@ const AuthProvider = ({ children }) => {
       if (departements) setDepartments(departements);
       const apartments = await getListApartmentInfoApi();
       if (apartments) setApartments(apartments);
+      const residents = await getListResidentInfoApi();
+      if (residents) setResidents(residents);
     } catch (error) {
       navigate('/auth/signin');
       return false;

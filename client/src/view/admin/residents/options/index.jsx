@@ -1,4 +1,4 @@
-import { getListOptionApi, updateOptionApi } from '@api';
+import { getListOptionApi } from '@api';
 import { Body, DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
 import { optionStatus, optionType } from '@constant';
@@ -17,14 +17,14 @@ const Options = () => {
   const { apartments } = useDataState();
 
   const columns = [
-    { label: 'Căn hộ', body: (e) => e.apartment?.name },
+    { label: 'Căn hộ', body: (e) => Body(apartments, e.apartment, '_id', 'name') },
     { label: 'Danh mục', body: (e) => Body(optionType, e.type) },
     { label: 'Tiêu đề', field: 'subject' },
     { label: 'Nội dung', field: 'content' },
     {
       label: 'Người viết',
       body: (e) => (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 text-center">
           <span>{e.by?.fullName}</span>
           <span>{TimeBody(e.createdAt)}</span>
         </div>
@@ -66,7 +66,6 @@ const Options = () => {
         actionsInfo={{
           onViewDetail: (item) => setOpen(item._id)
         }}
-        statusInfo={{ changeStatusApi: updateOptionApi }}
         headerInfo={{ onCreate: () => setOpen(true) }}
       />
     </FormList>

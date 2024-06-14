@@ -17,7 +17,7 @@ const ApartmentGroup = () => {
   const navigate = useNavigate();
 
   const columns = [
-    { label: 'Tên nhóm căn ', field: 'name' },
+    { label: 'Tên nhóm căn hộ', field: 'name' },
     { label: 'Mô tả', field: 'description' },
     {
       label: 'Căn hộ',
@@ -26,7 +26,7 @@ const ApartmentGroup = () => {
         return (
           <div className="flex flex-wrap gap-2 w-full">
             {e.apartments?.map((apartment, index) => {
-              const label = apartments.find((u) => u._id === apartment)?.fullName;
+              const label = apartments.find((u) => u._id === apartment)?.name;
               return <Chipz key={index} value={label} className="text-center" />;
             })}
           </div>

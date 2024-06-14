@@ -12,7 +12,7 @@ export const getListOption = async (req, res) => {
     if (keySearch) where.$or = [{ subject: { $regex: keySearch, $options: 'i' } }];
     if (status || status === 0) where.status = status;
     if (type) where.type = type;
-    const documents = await listOptionMd(where, page, limit, [{ path: 'apartment', select: 'name' }, { path: 'by', select: 'fullName' }]);
+    const documents = await listOptionMd(where, page, limit, [{ path: 'by', select: 'fullName' }]);
     const total = await countOptionMd(where);
     res.json({ status: true, data: { documents, total } });
   } catch (error) {
@@ -62,7 +62,7 @@ export const addOption = async (req, res) => {
       }
     }
 
-    const data = await createOptionMd({ by: req.userInfo._id, project: req.project?._id, ...value });
+    const data = await createOptionMd({ by: req.userInfo._id, project: req.project?._id, ...value, status: 1 });
     res.status(201).json({ status: true, data });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });

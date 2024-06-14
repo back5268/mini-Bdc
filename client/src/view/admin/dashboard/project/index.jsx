@@ -1,5 +1,5 @@
 import { detailProjectApi } from '@api';
-import { Cardz, Imagez, Inputz, TextAreaz } from '@components/core';
+import { Cardz, Hrz, Imagez, Inputz, TextAreaz } from '@components/core';
 import { useGetApi } from '@lib/react-query';
 import { Carousel, IconButton } from '@material-tailwind/react';
 import { useUserState } from '@store';
@@ -12,9 +12,10 @@ const Project = () => {
   return (
     <Cardz className="p-4">
       <div className="flex flex-wrap">
-        <div className="w-full lg:w-7/12 p-4">
+        <div className="w-full lg:w-7/12 p-4 px-8">
           <div className="flex flex-col gap-2">
             <h2 className="font-semibold uppercase leading-normal mb-2">Thông tin dự án</h2>
+            <Hrz />
             <Inputz label="Tên dự án" className="!w-full" value={project?.name} />
             <Inputz label="Mã dự án" className="!w-full" value={project?.code} />
             <Inputz label="Địa chỉ" className="!w-full" value={project?.address} />
@@ -27,6 +28,7 @@ const Project = () => {
         <div className="w-full lg:w-5/12">
           <div className="flex flex-col gap-2 p-4">
             <h2 className="font-semibold uppercase leading-normal mb-2">Hình ảnh dự án</h2>
+            <Hrz />
             <Imagez src={project?.avatar} isZoom className="w-full" />
             {project?.images?.length > 0 && (
               <Carousel

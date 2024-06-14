@@ -1,10 +1,11 @@
-import { addApartmentGroupApi, detailApartmentGroupApi, getListApartmentApi, updateApartmentGroupApi } from '@api';
+import { addApartmentGroupApi, detailApartmentGroupApi, updateApartmentGroupApi } from '@api';
 import { FormDetail } from '@components/base';
 import { InputForm, MultiSelectForm, TextAreaz } from '@components/core';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { checkEqualProp } from '@lib/helper';
 import { useGetApi } from '@lib/react-query';
 import { ApartmentGroupValidation } from '@lib/validation';
+import { useDataState } from '@store';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
@@ -19,7 +20,8 @@ const DetailApartmentGroup = () => {
   const { _id } = useParams();
   const isUpdate = Boolean(_id);
   const { data: item } = useGetApi(detailApartmentGroupApi, { _id }, 'apartment-group', isUpdate);
-  const { isLoading, data } = useGetApi(getListApartmentApi, null, 'apartments');
+  const { apartments } = useDataState();
+
   const {
     register,
     handleSubmit,
@@ -41,10 +43,10 @@ const DetailApartmentGroup = () => {
 
   const handleData = (data) => {
     let newData = { ...data };
-    if (!newData.name) return 'Vui lòng nhập tên nhóm căn hộ!';
     if (isUpdate) newData = { ...checkEqualProp(newData, item), _id };
     return newData;
   };
+
   return (
     <FormDetail
       type="nomal"
@@ -58,7 +60,7 @@ const DetailApartmentGroup = () => {
       <div className="flex flex-wrap w-full">
         <InputForm id="name" label="Tên nhóm căn hộ (*)" errors={errors} register={register} />
         <MultiSelectForm
-          options={data?.documents}
+          options={apartments}
           optionLabel="name"
           optionValue="_id"
           id="apartments"

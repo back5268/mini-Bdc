@@ -33,9 +33,10 @@ const DetailNews = (props) => {
 
   useEffect(() => {
     if (isUpdate && item) {
-      if (item?.hashtag && Array.isArray(item.hashtag)) item.hashtag = item?.hashtag?.join('; ');
+      const itemz = { ...item }
+      if (itemz?.hashtag && Array.isArray(itemz.hashtag)) itemz.hashtag = itemz?.hashtag?.join('; ');
       for (const key in defaultValues) {
-        setValue(key, item[key]);
+        setValue(key, itemz[key]);
       }
     }
   }, [item]);

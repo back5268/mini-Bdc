@@ -1,35 +1,31 @@
 import { deleteApartmentApi, getListApartmentApi } from '@api';
-import { DataTable, FormList, TimeBody, DataFilter } from '@components/base';
+import { DataTable, FormList, TimeBody, DataFilter, Body, NumberBody } from '@components/base';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
-import { statusApartment, statuses } from '@constant';
+import { apartmentStatus } from '@constant';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-const Apartment = () => {
+
+const Apartments = () => {
   const initParams = useGetParams();
   const [params, setParams] = useState(initParams);
   const [filter, setFilter] = useState({});
   const { isLoading, data } = useGetApi(getListApartmentApi, params, 'apartments');
   const navigate = useNavigate();
-  const floorBody = (rowData) => {
-    return <div>Tầng {rowData.floor}</div>;
-  };
-  const areaBody = (rowData) => {
-    return <div>{rowData.area}</div>;
-  };
-  const statusBody = (rowData) => {
-    return <div>{statusApartment.find((s) => s.id === rowData.status)?.name}</div>;
-  };
+
   const columns = [
     { label: 'Tên căn hộ ', field: 'name' },
     { label: 'Mã căn hộ', field: 'code' },
-    { label: 'Diện tích (m2)', field: 'area', body: (e) => areaBody(e) },
-    { label: 'Tầng', field: 'floor', body: (e) => floorBody(e) },
-    { label: 'Trạng thái căn hộ', body: (e) => statusBody(e) },
-    { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
-    { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
+    { label: 'Diện tích (m2)', body: (e) => NumberBody(e.area) },
+    { label: 'Tầng', field: 'floor' },
+    { label: 'Chủ hộ', body: (e) => e.owner?.fullName },
+    { label: 'Số người', field: 'numberResident' },
+    { label: 'Số phương tiện', field: 'numberVehicle' },
+    { label: 'Trạng thái căn hộ', body: (e) => Body(apartmentStatus, e.status) },
+    { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) }
   ];
+
   return (
     <div>
       <FormList title="Danh sách căn hộ">
@@ -37,9 +33,14 @@ const Apartment = () => {
           <Inputz
             value={filter.keySearch}
             onChange={(e) => setFilter({ ...filter, keySearch: e.target.value })}
-            label="Tìm kiếm theo tên căn hộ"
+            label="Tìm kiếm theo tên, mã căn hộ"
           />
-          <Dropdownz value={filter.status} onChange={(e) => setFilter({ ...filter, status: e })} options={statuses} label="Trạng thái" />
+          <Dropdownz
+            value={filter.status}
+            onChange={(e) => setFilter({ ...filter, status: e })}
+            options={apartmentStatus}
+            label="Trạng thái"
+          />
         </DataFilter>
         <Hrz />
         <DataTable
@@ -62,4 +63,4 @@ const Apartment = () => {
   );
 };
 
-export default Apartment;
+export default Apartments;

@@ -1,7 +1,6 @@
-import { addDepartmentApi, updateDepartmentApi } from '@api';
+import { addOptionApi, updateOptionApi } from '@api';
 import { FormDetail } from '@components/base';
-import { DropdownForm, InputForm } from '@components/core';
-import Editorz from '@components/core/Editorz';
+import { DropdownForm, InputForm, TextAreaz } from '@components/core';
 import { UploadFiles } from '@components/shared';
 import { optionStatus, optionType } from '@constant';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -72,8 +71,8 @@ const DetailOption = (props) => {
         reset();
       }}
       isUpdate={isUpdate}
-      createApi={addDepartmentApi}
-      updateApi={updateDepartmentApi}
+      createApi={addOptionApi}
+      updateApi={updateOptionApi}
       handleData={handleData}
       handleSubmit={handleSubmit}
       setParams={setParams}
@@ -91,7 +90,7 @@ const DetailOption = (props) => {
           setValue={setValue}
         />
         <InputForm id="subject" label="Tiêu đề (*)" errors={errors} register={register} />
-        <Editorz id="content" label="Nội dung (*)" errors={errors} data={watch('content')} setData={(e) => setValue('content', e)} />
+        <TextAreaz id="content" label="Nội dung (*)" value={watch('content')} setValue={(e) => setValue('content', e)} />
         <UploadFiles label="File đính kèm" files={files} setFiles={setFiles} />
         {isUpdate && (
           <DropdownForm

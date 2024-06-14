@@ -20,7 +20,7 @@ class ElectricWaterMd extends ModelBase {
 export const ElectricWater = ElectricWaterMd.init('ElectricWater', {
   project: { type: String, required: true },
   by: { type: ObjectId, ref: 'User', required: true },
-  apartment: { type: String, required: true },
+  apartment: { type: ObjectId, ref: 'Apartment', required: true },
   type: { type: Number, enum: [1, 2], description: '1: Điện, 2: Nước', required: true },
   month: { type: Number, required: true },
   beforeNumber: { type: Number, required: true },

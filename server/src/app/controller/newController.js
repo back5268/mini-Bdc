@@ -50,14 +50,14 @@ export const addNews = async (req, res) => {
   try {
     const { error, value } = validateData(addNewsValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { title, content, time, hashtag } = value;
+    const { subject, content, hashtag } = value;
 
     const data = await createNewMd({
       by: req.userInfo._id,
-      title,
+      subject,
       content,
-      time,
-      hashtag
+      hashtag,
+      project: req.project?._id
     });
     res.status(201).json({ status: true, data });
   } catch (error) {
@@ -69,7 +69,7 @@ export const updateNews = async (req, res) => {
   try {
     const { error, value } = validateData(updateNewsValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { _id, subject, content, status, time, hashtag } = value;
+    const { _id, subject, content, status, hashtag } = value;
 
     const news = await detailNewMd({ _id });
     if (!news) return res.status(400).json({ status: false, mess: 'Tin tức không tồn tại!' });
