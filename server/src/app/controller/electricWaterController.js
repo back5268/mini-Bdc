@@ -42,7 +42,7 @@ export const addElectricWater = async (req, res) => {
     let { apartment, type, month } = value;
 
     const checkElectricWater = await detailElectricWaterMd({ apartment, type, month });
-    if (checkElectricWater) res.status(400).json({ status: false, mess: `Căn hộ này đã chốt chỉ số kỳ tháng ${month}` });
+    if (checkElectricWater) return res.status(400).json({ status: false, mess: `Căn hộ này đã chốt ${type === 2 ? 'Nước' : 'Điện'} chỉ số kỳ tháng ${month}` });
 
     if (req.file) {
       value.image = await uploadFileToFirebase(req.file);

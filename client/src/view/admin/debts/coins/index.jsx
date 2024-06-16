@@ -8,15 +8,15 @@ import { useDataState } from '@store';
 
 const Coins = () => {
   const initParams = useGetParams();
-  const [params, setParams] = useState(initParams);
+  const [params, setParams] = useState({ ...initParams, page: 1, limit: 100 });
   const [filter, setFilter] = useState({});
-  const { isLoading, data } = useGetApi(getListCoinApi, params, 'coins');
+  const { isLoading, data } = useGetApi(getListCoinApi, { ...params, limit: undefined, page: undefined }, 'coins');
   const { apartments } = useDataState();
 
   const columns = [
-    { label: 'Căn hộ', body: (e) => e.apartment?.name },
-    { label: 'Mã căn hộ', body: (e) => e.apartment?.code },
-    { label: 'Tổng tiền thừa', body: (e) => NumberBody(e.coinAfter) }
+    { label: 'Căn hộ', field: 'name' },
+    { label: 'Mã căn hộ', field: 'code' },
+    { label: 'Tổng tiền thừa', body: (e) => NumberBody(e.coin) }
   ];
 
   return (
@@ -35,8 +35,8 @@ const Coins = () => {
       <DataTable
         title="tiền thừa"
         isLoading={isLoading}
-        data={data?.documents}
-        total={data?.total}
+        data={data}
+        total={data?.length}
         columns={columns}
         params={params}
         setParams={setParams}

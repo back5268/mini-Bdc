@@ -79,7 +79,7 @@ export const getListDebt = async (req, res) => {
     if (apartment) where.apartment = apartment;
     if (month) where.month = { $lte: month };
 
-    const data = await listBillMd(where, false, false, [{ path: 'apartment', select: 'name code' }]);
+    const data = await listBillMd(where);
     const newData = [];
     data.forEach((d) => {
       const index = newData.findIndex((n) => n.apartment === d.apartment);

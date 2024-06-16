@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Buttonz, Dialogz, DropdownForm, Hrz, InputCalendarForm, InputCalendarz, Inputz, MultiSelectForm } from '@components/core';
 import { Loading } from '@components/shared';
 import { useGetApi, usePostApi } from '@lib/react-query';
-import { calculatorDebtApi, getListApartmentGroupInfoApi } from '@api';
+import { calculatorDebtApi, getListApartmentGroupInfoApi, getListMonthApi } from '@api';
 import { calculationRange, serviceType } from '@constant';
 import { DebtValidation } from '@lib/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,6 +20,7 @@ const Calculator = (props) => {
   const { apartments } = useDataState();
   const { showToast } = useToastState();
   const { data: apartmentGroups } = useGetApi(getListApartmentGroupInfoApi, {}, 'apartmentGroups');
+  const { data: months } = useGetApi(getListMonthApi, {}, 'months');
 
   const {
     handleSubmit,
@@ -66,8 +67,6 @@ const Calculator = (props) => {
       }));
     if (!(newData.services?.length > 0)) return 'Vui lòng chọn dịch vụ tính phí!';
     newData.deadline = moment(newData.deadline).format('YYYY-MM-DD');
-    const month = new Date(newData.month);
-    newData.month = '' + month.getFullYear() + (month.getMonth() > 8 ? month.getMonth() : month.getMonth() + 1);
     newData.type = undefined;
     return newData;
   };
@@ -144,7 +143,15 @@ const Calculator = (props) => {
             {isPending && <Loading />}
             <div className="flex flex-col items-center justify-center ">
               <div className="w-full lg:w-6/12">
-                <InputCalendarForm id="month" label="Kỳ tháng (*)" errors={errors} setValue={setValue} watch={watch} className="!w-full" />
+                <DropdownForm
+                  id="month"
+                  label="Kỳ tháng (*)"
+                  options={months}
+                  errors={errors}
+                  watch={watch}
+                  setValue={setValue}
+                  className="!w-full"
+                />
                 <InputCalendarForm
                   id="deadline"
                   label="Hạn thanh toán (*)"

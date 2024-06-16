@@ -15,7 +15,6 @@ class BillMd extends ModelBase {
   confirmDate;
   sendDate;
   status;
-  debits;
   receipts;
   deletedAt;
 }
@@ -24,7 +23,7 @@ BillMd.init('Bill', {
   project: { type: String, required: true },
   apartment: { type: ObjectId, ref: 'Apartment', required: true },
   amount: { type: Number, required: true },
-  paid: { type: Number, required: true },
+  paid: { type: Number, default: 0 },
   code: { type: String, required: true },
   month: { type: String, required: true },
   customerInfo: { type: Object, required: true },
@@ -37,7 +36,6 @@ BillMd.init('Bill', {
     required: true,
     description: '1: Chờ duyệt, 2: Chờ gửi, 3: Chờ thanh toán, 4: Đã thanh toán, 5: Quá hạn thanh toán'
   },
-  debits: [{ type: ObjectId, ref: 'Debit', required: true }],
   receipts: [{ type: String }],
   deletedAt: { type: Date }
 });

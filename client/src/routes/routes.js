@@ -8,6 +8,7 @@ import {
   ElectricWater,
   Notifications,
   Prices,
+  PrintBill,
   Receipts,
   Services,
   Vehicles
@@ -63,6 +64,7 @@ const routes = [
   { path: '/bills', element: Bills, layout: true },
   { path: '/data-browses', element: DataBrowses, layout: true },
   { path: '/notifications', element: Notifications, layout: true },
+  { path: '/bill-print/:_id', element: PrintBill, layout: true },
 
   { path: '/receipts', element: Receipts, layout: true },
 

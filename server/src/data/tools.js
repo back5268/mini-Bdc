@@ -57,8 +57,8 @@ export const tools = [
     children: [
       { name: 'Quản lý dịch vụ', route: '/services', sort: 1, actions: ['delete', 'create', 'update', 'read'] },
       { name: 'Tính toán công nợ', route: '/calculator', sort: 2, actions: ['delete', 'create', 'update', 'read'] },
-      { name: 'Danh sách duyệt số liệu', route: '/data-browses', sort: 3, actions: ['update', 'read'] },
-      { name: 'Danh sách gửi thông báo', route: '/notifications', sort: 4, actions: ['update', 'read'] }
+      { name: 'Danh sách duyệt số liệu', route: '/data-browses', sort: 3, actions: ['delete', 'create', 'update', 'read'] },
+      { name: 'Danh sách gửi thông báo', route: '/notifications', sort: 4, actions: ['delete', 'create', 'update', 'read'] }
     ]
   },
   {
@@ -67,10 +67,10 @@ export const tools = [
     icon: 'ComputerDesktopIcon',
     children: [
       { name: 'Quản lý phiếu thu', route: '/receipts', sort: 1, actions: ['delete', 'create', 'update', 'read'] },
-      { name: 'Danh sách bảng kê', route: '/bills', sort: 2, actions: ['update', 'read'] },
-      { name: 'Bảng kê dịch vụ', route: '/debits', sort: 3, actions: ['update', 'read'] },
-      { name: 'Tổng hợp công nợ', route: '/debts', sort: 4, actions: ['update', 'read'] },
-      { name: 'Quản lý tiền thừa', route: '/coins', sort: 5, actions: ['update', 'read'] }
+      { name: 'Danh sách bảng kê', route: '/bills', sort: 2, actions: ['delete', 'create', 'update', 'read'] },
+      { name: 'Bảng kê dịch vụ', route: '/debits', sort: 3, actions: ['delete', 'create', 'update', 'read'] },
+      { name: 'Tổng hợp công nợ', route: '/debts', sort: 4, actions: ['delete', 'create', 'update', 'read'] },
+      { name: 'Quản lý tiền thừa', route: '/coins', sort: 5, actions: ['delete', 'create', 'update', 'read'] }
     ]
   }
 ];

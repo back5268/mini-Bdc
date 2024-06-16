@@ -18,13 +18,13 @@ const Imagez = (props) => {
       )}
       <img className={`rounded-md object-cover object-center ${className}`} {...prop} />
       {isZoom && (
-        <div className={`absolute cursor-pointer rounded-md inset-0 justify-center items-center group-hover:flex flex`}>
+        <div onClick={() => setOpen(true)} className={`absolute cursor-pointer rounded-md inset-0 justify-center items-center group-hover:flex flex`}>
           {isHovered && <div className="absolute rounded-md inset-0 bg-black bg-opacity-50 opacity-50"></div>}
           <div
             className={`font-medium z-10 duration-300 ease-in-out transform 
             ${isHovered ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
           >
-            <EyeIcon onClick={() => setOpen(true)} className="w-8 h-8 text-white stroke-2" />
+            <EyeIcon className="w-8 h-8 text-white stroke-2" />
           </div>
         </div>
       )}

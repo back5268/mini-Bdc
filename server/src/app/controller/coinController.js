@@ -1,17 +1,26 @@
 import { listCoinValid } from '@lib/validation';
-import { countCoinMd, listCoinMd } from '@models';
+import { listApartmentMd, listCoinMd } from '@models';
 import { validateData } from '@utils';
 
 export const getListCoin = async (req, res) => {
   try {
     const { error, value } = validateData(listCoinValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { page, limit, apartment } = value;
+    const { apartment } = value;
     const where = { project: req.project?._id };
     if (apartment) where.apartment = apartment;
-    const documents = await listCoinMd(where, page, limit, [{ path: 'apartment', select: 'name code' }]);
-    const total = await countCoinMd(where);
-    res.json({ status: true, data: { documents, total } });
+    const whereApartment = { project: req.project?._id };
+    if (apartment) where._id = apartment;
+    const data = await listCoinMd(where);
+    const apartments = await listApartmentMd(whereApartment);
+
+    const newData = [];
+    apartments.forEach((a) => {
+      const item = data.find((d) => d.apartment === a._id);
+      if (!newData.find((n) => n._id === a._id)) newData.push({ _id: a._id, name: a.name, code: a.code, coin: item?.coin || 0 });
+    });
+
+    res.json({ status: true, data: newData });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }

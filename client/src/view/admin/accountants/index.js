@@ -10,3 +10,4 @@ export { default as Bills } from './bills/Bills';
 export { default as DataBrowses } from './bills/DataBrowses';
 export { default as Notifications } from './bills/Notifications';
 export { default as Receipts } from './receipts';
+export { default as PrintBill } from './bills/PrintBill';
