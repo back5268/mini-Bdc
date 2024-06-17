@@ -12,7 +12,7 @@ class MailLogMd extends ModelBase {
 }
 
 MailLogMd.init('MailLog', {
-  project: { type: String, required: true },
+  project: { type: String },
   to: { type: String, required: true },
   subject: { type: String, required: true },
   content: { type: String, required: true },

@@ -1,18 +1,17 @@
 import { Buttonz, InputForm } from '@components/core';
-import { REGEX } from '@constant';
 import { usePostApi } from '@lib/react-query';
 import { useToastState } from '@store';
 import React from 'react';
 
 const InputOtp = (props) => {
-  const { isSend, setIsSend, SendOtpApi, email, username, ...prop } = props;
+  const { isSend, setIsSend, SendOtpApi, username, ...prop } = props;
   const { mutateAsync, isPending } = usePostApi(SendOtpApi);
   const { showToast } = useToastState();
 
   const onSendOtp = async () => {
-    const response = await mutateAsync({ email, username });
+    const response = await mutateAsync({ username });
     if (response) {
-      showToast({ title: `Đã gửi mã OTP đến email ${email}`, severity: 'success' });
+      showToast({ title: `Đã gửi mã OTP đến email`, severity: 'success' });
       setIsSend(true);
     }
   };
@@ -23,7 +22,7 @@ const InputOtp = (props) => {
       <Buttonz
         onClick={onSendOtp}
         loading={isPending}
-        disabled={!(username && REGEX.C_EMAIL.test(email)) || isSend || isPending}
+        disabled={!(username) || isSend || isPending}
         className="m-2 px-6 text-center min-w-[100px]"
       >
         Gửi OTP

@@ -1,4 +1,4 @@
-import { getListDepartmentApi, getListProjectInfoApi, updateDepartmentApi } from '@api';
+import { deleteDepartmentApi, getListDepartmentApi, getListProjectInfoApi, updateDepartmentApi } from '@api';
 import { DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Chipz, Dropdownz, Hrz, Inputz } from '@components/core';
 import { statuses } from '@constant';
@@ -58,7 +58,8 @@ const Departments = () => {
         baseActions={['create', 'detail', 'delete']}
         setShow={setOpen}
         actionsInfo={{
-          onViewDetail: (item) => setOpen(item._id)
+          onViewDetail: (item) => setOpen(item._id),
+          deleteApi: deleteDepartmentApi
         }}
         statusInfo={{ changeStatusApi: updateDepartmentApi }}
         headerInfo={{ onCreate: () => setOpen(true) }}

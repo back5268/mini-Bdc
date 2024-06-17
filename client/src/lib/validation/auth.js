@@ -22,7 +22,6 @@ export const SignupValidation = yup.object({
 });
 
 export const ForgotPasswordValidation = yup.object({
-  email: yup.string().email('Email không đúng định dạng!').required('Email không được bỏ trống!'),
   username: yup.string().min(3, 'Tài khoản cần dài ít nhất 3 ký tự!').required(),
   otp: yup.string().min(6, 'Mã otp cần dài ít nhất 6 ký tự!').required(),
   password: yup

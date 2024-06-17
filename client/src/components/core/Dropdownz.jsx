@@ -20,7 +20,7 @@ export const Dropdownz = (props) => {
       <Select
         menuProps={{ className: 'p-0' }}
         id={id}
-        value={value ? String(value) : ''}
+        value={(value || value === 0) ? String(value) : ''}
         onChange={onChange}
         size={size}
         color="cyan"
@@ -74,7 +74,7 @@ export const DropdownForm = (props) => {
       <Select
         menuProps={{ className: 'p-0' }}
         id={id}
-        value={watch(id) ? String(watch(id)) : ''}
+        value={(watch(id) || watch(id) === 0) ? String(watch(id)) : ''}
         onChange={(e) => (onChange ? onChange(e) : setValue(id, e))}
         size={size}
         color="cyan"

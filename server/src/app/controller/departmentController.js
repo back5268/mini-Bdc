@@ -6,9 +6,10 @@ export const getListDepartment = async (req, res) => {
   try {
     const { error, value } = validateData(listDepartmentValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { page, limit, keySearch } = value;
+    const { page, limit, keySearch, status } = value;
     const where = {};
     if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }];
+    if (status || status === 0) where.status = status
     const documents = await listDepartmentMd(where, page, limit);
     const total = await countDepartmentMd(where);
     res.json({ status: true, data: { documents, total } });
