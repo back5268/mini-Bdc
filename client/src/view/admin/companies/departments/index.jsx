@@ -1,4 +1,4 @@
-import { deleteDepartmentApi, getListDepartmentApi, getListProjectInfoApi, updateDepartmentApi } from '@api';
+import { deleteDepartmentApi, getListDepartmentApi, getListDepartmentInfoApi, getListProjectInfoApi, updateDepartmentApi } from '@api';
 import { DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Chipz, Dropdownz, Hrz, Inputz } from '@components/core';
 import { statuses } from '@constant';
@@ -6,6 +6,7 @@ import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
 import React, { useState } from 'react';
 import DetailDepartment from './Detail';
+import { useDataState } from '@store';
 
 const Departments = () => {
   const initParams = useGetParams();
@@ -14,6 +15,7 @@ const Departments = () => {
   const [open, setOpen] = useState(false);
   const { isLoading, data } = useGetApi(getListDepartmentApi, params, 'departments');
   const { data: projects } = useGetApi(getListProjectInfoApi, {}, 'projects');
+  const { setDepartments } = useDataState()
 
   const columns = [
     { label: 'Tên phòng ban', field: 'name' },
@@ -35,6 +37,13 @@ const Departments = () => {
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
     { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
   ];
+
+  const onSuccess = async () => {
+    const response = await getListDepartmentInfoApi();
+    if (response) {
+      setDepartments(response);
+    }
+  };
 
   return (
     <FormList title="Danh sách phòng ban">
@@ -63,6 +72,7 @@ const Departments = () => {
         }}
         statusInfo={{ changeStatusApi: updateDepartmentApi }}
         headerInfo={{ onCreate: () => setOpen(true) }}
+        onSuccess={onSuccess}
       />
     </FormList>
   );

@@ -1,9 +1,10 @@
-import { deleteApartmentApi, getListApartmentApi } from '@api';
+import { deleteApartmentApi, getListApartmentApi, getListApartmentInfoApi } from '@api';
 import { DataTable, FormList, TimeBody, DataFilter, Body, NumberBody } from '@components/base';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
 import { apartmentStatus } from '@constant';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
+import { useDataState } from '@store';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,6 +14,7 @@ const Apartments = () => {
   const [filter, setFilter] = useState({});
   const { isLoading, data } = useGetApi(getListApartmentApi, params, 'apartments');
   const navigate = useNavigate();
+  const { setApartments } = useDataState()
 
   const columns = [
     { label: 'Tên căn hộ ', field: 'name' },
@@ -25,6 +27,13 @@ const Apartments = () => {
     { label: 'Trạng thái căn hộ', body: (e) => Body(apartmentStatus, e.status) },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) }
   ];
+
+  const onSuccess = async () => {
+    const response = await getListApartmentInfoApi();
+    if (response) {
+      setApartments(response);
+    }
+  };
 
   return (
     <div>
@@ -57,6 +66,7 @@ const Apartments = () => {
               navigate('/apartments/create');
             }
           }}
+          onSuccess={onSuccess}
         />
       </FormList>
     </div>

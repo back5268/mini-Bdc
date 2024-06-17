@@ -1,4 +1,4 @@
-import { deleteServiceApi, getListServiceApi, updateStatusServiceApi } from '@api';
+import { deleteServiceApi, getListServiceApi, getListServiceInfoApi, updateStatusServiceApi } from '@api';
 import { Body, DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Chipz, Dropdownz, Hrz, Inputz } from '@components/core';
 import { serviceType, statuses, vehicleType } from '@constant';
@@ -14,7 +14,7 @@ const Services = () => {
   const [params, setParams] = useState(initParams);
   const [filter, setFilter] = useState({});
   const { isLoading, data } = useGetApi(getListServiceApi, params, 'services');
-  const { apartments } = useDataState();
+  const { apartments, setServices } = useDataState();
 
   const columns = [
     { label: 'Tên dịch vụ', field: 'name' },
@@ -37,6 +37,13 @@ const Services = () => {
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
     { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
   ];
+
+  const onSuccess = async () => {
+    const response = await getListServiceInfoApi();
+    if (response) {
+      setServices(response);
+    }
+  };
 
   return (
     <FormList title="Danh sách dịch vụ">
@@ -63,6 +70,7 @@ const Services = () => {
         headerInfo={{
           onCreate: () => navigate('/services/create')
         }}
+        onSuccess={onSuccess}
       />
     </FormList>
   );
