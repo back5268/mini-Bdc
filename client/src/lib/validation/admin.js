@@ -148,10 +148,10 @@ export const OptionValidation = yup.object({
   content: yup.string().required('Nội dung không được bỏ trống!')
 });
 
-export const ResidentValidation = yup.object({
-  email: yup.string().email('Email không đúng định dạng!').required('Email không được bỏ trống!'),
-  username: yup.string().required('Tài khoản không được bỏ trống!'),
-  fullName: yup.string().required('Họ tên không được bỏ trống!'),
-  code: yup.string().required('Mã cư dân không được bỏ trống!'),
-  phone: yup.string().required('Số điện thoại không được bỏ trống!')
-});
+// export const ResidentValidation = yup.object({
+//   email: yup.string().email('Email không đúng định dạng!').required('Email không được bỏ trống!'),
+//   username: yup.string().required('Tài khoản không được bỏ trống!'),
+//   fullName: yup.string().required('Họ tên không được bỏ trống!'),
+//   code: yup.string().required('Mã cư dân không được bỏ trống!'),
+//   phone: yup.string().required('Số điện thoại không được bỏ trống!')
+// });
