@@ -99,20 +99,6 @@ export const ProductValidation = yup.object({
   price: yup.number().required('Giá bán ra không được bỏ trống!')
 });
 
-export const PromotionValidation = yup.object({
-  title: yup.string().required('Tiêu đề không được bỏ trống!'),
-  code: yup.string().required('Mã khuyến mãi không được bỏ trống!'),
-  amount: yup.number().required('Giá trị khuyến mãi không được bỏ trống!'),
-  amountType: yup.number().required('Loại giá trị không được bỏ trống!'),
-  start: yup.date().required('Ngày bắt đầu không được bỏ trống!'),
-  end: yup.date().required('Ngày kết thúc không được bỏ trống!')
-});
-
-export const ReceiptValidation = yup.object({
-  product: yup.string().required('Sản phẩm không được bỏ trống!'),
-  type: yup.string().required('Loại phiếu không được bỏ trống!')
-});
-
 export const PaymentValidation = yup.object({
   type: yup.string().required('Hình thức thanh toán không được bỏ trống!'),
   name: yup.string().required('Tên người nhận không được bỏ trống!'),
@@ -146,4 +132,10 @@ export const ElectricWaterValidation = yup.object({
 export const OptionValidation = yup.object({
   subject: yup.string().required('Tiêu đề không được bỏ trống!'),
   content: yup.string().required('Nội dung không được bỏ trống!')
+});
+
+export const ReceiptValidation = yup.object({
+  apartment: yup.string().required('Căn hộ không được bỏ trống!'),
+  payer: yup.string().required('Người tạo không được bỏ trống!'),
+  paymentType: yup.string().required('Loại thanh toán không được bỏ trống!'),
 });

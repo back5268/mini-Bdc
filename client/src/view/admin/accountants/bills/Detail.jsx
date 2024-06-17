@@ -24,11 +24,11 @@ const Header = ({ item = {} }) => {
       </div>
       <div className="w-full md:w-6/12 lg:w-4/12 my-2">
         <span className="font-medium">
-          Tổng thanh toán: <span className="text-red-600 text-xl font-semibold">{formatNumber(item?.amount)}</span>
+          Tổng thanh toán: <span className="text-red-600 text-xl font-semibold">{formatNumber(item?.amount - item?.paid)}</span>
         </span>
       </div>
       <div className="w-full md:w-6/12 lg:w-4/12 my-2">
-        <span className="font-medium">Ngày duyệt: {item?.deadline ? moment(item?.deadline).format('DD/MM/YYYY') : '--/--/----'}</span>
+        <span className="font-medium">Ngày duyệt: {item?.confirmDate ? moment(item?.confirmDate).format('DD/MM/YYYY') : '--/--/----'}</span>
       </div>
     </div>
   );
@@ -37,6 +37,7 @@ const Header = ({ item = {} }) => {
 const DetaiBill = (props) => {
   const { open, setOpen } = props;
   const { data: item } = useGetApi(detailBillApi, { _id: open }, 'bill', Boolean(open));
+  console.log(item);
 
   const columns = [
     { label: 'Loại dịch vụ', body: (e) => Body(serviceType, e.serviceType) },

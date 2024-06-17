@@ -1,5 +1,5 @@
 import { getListDebtApi, getListMonthApi } from '@api';
-import { DataTable, FormList, NumberBody, DataFilter } from '@components/base';
+import { DataTable, FormList, NumberBody, DataFilter, Body } from '@components/base';
 import { Dropdownz, Hrz } from '@components/core';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
@@ -15,8 +15,8 @@ const Debts = () => {
   const { apartments } = useDataState();
 
   const columns = [
-    { label: 'Căn hộ', body: (e) => e.apartment?.name },
-    { label: 'Mã căn hộ', body: (e) => e.apartment?.code },
+    { label: 'Căn hộ', body: (e) => Body(apartments, e.apartment, '_id', 'name') },
+    { label: 'Mã căn hộ', body: (e) => Body(apartments, e.apartment, '_id', 'code') },
     { label: 'Tháng', field: 'month' },
     { label: 'Số dư đầu kỳ', body: (e) => NumberBody(e.before) },
     { label: 'Phát sinh trong tháng', body: (e) => NumberBody(e.amount) },

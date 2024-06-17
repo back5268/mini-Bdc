@@ -8,7 +8,6 @@ class CoinMd extends ModelBase {
   apartment;
   type;
   amount;
-  receipt;
   coinBefore;
   coinAfter;
   deletedAt;
@@ -19,7 +18,6 @@ CoinMd.init('Coin', {
   apartment: { type: String, required: true },
   type: { type: Number, enum: [1, 2], description: '1: Trừ tiền, 2: Tăng tiền', required: true },
   amount: { type: Number, required: true },
-  receipt: { type: ObjectId, ref: 'Receipt', required: true },
   coinBefore: { type: Number, required: true },
   coinAfter: { type: Number, required: true },
   deletedAt: { type: Date }

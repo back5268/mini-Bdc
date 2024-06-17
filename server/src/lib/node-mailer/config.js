@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import { createMailLogMd } from '@models';
 dotenv.config();
 
 let transporter = nodemailer.createTransport({
@@ -17,7 +18,7 @@ export const connectNodemailer = () => {
   });
 };
 
-export const sendMail = async ({ to, subject, text, html, attachments = [] }) => {
+export const sendMail = async ({ to, subject, text, html, attachments = [], project, type }) => {
   let mailOptions = {
     from: process.env.NODEMAILER_USERNAME,
     to,
@@ -47,8 +48,8 @@ export const sendMail = async ({ to, subject, text, html, attachments = [] }) =>
 
   try {
     let info = await transporter.sendMail(mailOptions);
-    return { status: true, data: { ...attr, status: 1, mess: info.response } };
+    await createMailLogMd({ ...attr, status: 1, mess: info.response, project, type });
   } catch (error) {
-    return { status: false, data: { ...attr, status: 2, mess: error.code } };
+    await createMailLogMd({ ...attr, status: 2, mess: error.code, project, type });
   }
 };

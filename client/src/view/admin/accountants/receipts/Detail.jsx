@@ -1,4 +1,4 @@
-import { UserValidation } from '@lib/validation';
+import { ReceiptValidation } from '@lib/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -35,7 +35,7 @@ const DetailReceipt = (props) => {
     reset,
     watch
   } = useForm({
-    resolver: yupResolver(UserValidation),
+    resolver: yupResolver(ReceiptValidation),
     defaultValues
   });
 
@@ -51,7 +51,7 @@ const DetailReceipt = (props) => {
   }, [item]);
 
   const handleData = (data) => {
-    const newData = { ...data };
+    const newData = { ...data, type };
     if (isUpdate) return { ...checkEqualProp(newData, item), _id: open };
     else return newData;
   };

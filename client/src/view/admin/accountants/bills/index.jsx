@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { billStatus } from '@constant';
 import { useDataState, useToastState } from '@store';
 import DetaiBill from './Detail';
-import { PrinterIcon } from '@heroicons/react/24/outline';
+import { PrinterIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 const Billz = ({ type = 'bill' }) => {
   const initParams = useGetParams();
@@ -15,6 +15,7 @@ const Billz = ({ type = 'bill' }) => {
   const [filter, setFilter] = useState({});
   const [select, setSelect] = useState([]);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const title = type === 'bill' ? 'bảng kê' : type === 'dataBrowses' ? 'duyệt số liệu' : 'gửi thông báo';
   const status = type === 'bill' ? [3, 4, 5] : type === 'dataBrowses' ? [1] : [2];
   const className = type === 'bill' ? 'md:w-full lg:w-6/12' : 'md:w-6/12 lg:w-9/12';
@@ -29,6 +30,7 @@ const Billz = ({ type = 'bill' }) => {
     { label: 'Căn hộ', body: (e) => e.apartment?.name },
     { label: 'Chủ hộ', body: (e) => e.customerInfo?.name },
     { label: 'Số tiền', body: (e) => NumberBody(e.amount) },
+    { label: 'Đã thanh toán', body: (e) => NumberBody(e.paid) },
     { label: 'Hạn thanh toán', body: (e) => TimeBody(e.deadline, 'date') },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
     { label: 'Trạng thái', body: (e) => Body(billStatus, e.status) }
@@ -52,8 +54,10 @@ const Billz = ({ type = 'bill' }) => {
   const notificationItems = [{ label: 'Chuyển trạng thái chờ thanh toán', onClick: () => onUpdate(3) }];
 
   const onSendBill = async (item) => {
-    const response = await sendBillApi({ _ids: item._id });
+    setLoading(true);
+    const response = await sendBillApi({ _id: item._id });
     if (response) {
+      setLoading(false);
       showToast({ title: 'Gửi thông báo thành công', severity: 'success' });
       setParams((pre) => ({ ...pre, render: !pre.render }));
     }
@@ -62,7 +66,7 @@ const Billz = ({ type = 'bill' }) => {
   const onRenderBill = async (item) => {
     const response = await renderBillApi({ _id: item._id });
     if (response) {
-      window.open(`/print/detail/${item._id}`, '_blank');
+      window.open(`/print/${item._id}`, '_blank');
     }
   };
 
@@ -95,7 +99,7 @@ const Billz = ({ type = 'bill' }) => {
         title="bảng kê"
         select={select}
         setSelect={setSelect}
-        isLoading={isLoading}
+        isLoading={isLoading || loading}
         data={data?.documents}
         total={data?.total}
         columns={columns}
@@ -112,8 +116,8 @@ const Billz = ({ type = 'bill' }) => {
               onClick: (item) => onRenderBill(item)
             },
             {
-              icon: PrinterIcon,
-              isHide: type === 2 ? false : true,
+              icon: PaperAirplaneIcon,
+              isHide: type === 'notifications' ? false : true,
               onClick: (item) => onSendBill(item)
             }
           ]

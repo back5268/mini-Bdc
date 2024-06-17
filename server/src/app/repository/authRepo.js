@@ -17,7 +17,6 @@ export const sendOtpAuthRepo = async (body) => {
   const dataMail = await sendMailForgotPassword({ to: email, username, otp });
 
   if (dataMail?.status) {
-    await createLogMd({ ...dataMail?.data });
     await updateUserMd({ _id: checkUser._id }, { otp, timeSendOtp: moment().format('YYYY-MM-DD') });
     return { data };
   } else return { mess: dataMail.mess };

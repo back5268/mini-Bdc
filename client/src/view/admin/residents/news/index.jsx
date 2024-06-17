@@ -1,4 +1,4 @@
-import { getListNewsApi, updateNewsApi } from '@api';
+import { getListNewsApi, sendNewsApi, updateNewsApi } from '@api';
 import { DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Chipz, Dropdownz, Hrz, Inputz } from '@components/core';
 import { statuses } from '@constant';
@@ -6,7 +6,7 @@ import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
 import React, { useState } from 'react';
 import DetailNews from './Detail';
-import { PrinterIcon } from '@heroicons/react/24/outline';
+import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 import { useToastState } from '@store';
 
 const News = () => {
@@ -16,10 +16,13 @@ const News = () => {
   const [open, setOpen] = useState(false);
   const { isLoading, data } = useGetApi(getListNewsApi, params, 'news');
   const { showToast } = useToastState();
+  const [loading, setLoading] = useState(false);
 
   const onSendNews = async (item) => {
-    const response = await sendNewsApi({ _ids: item._id });
+    setLoading(true);
+    const response = await sendNewsApi({ _id: item._id });
     if (response) {
+      setLoading(false);
       showToast({ title: 'Gửi thông báo thành công', severity: 'success' });
       setParams((pre) => ({ ...pre, render: !pre.render }));
     }
@@ -52,7 +55,7 @@ const News = () => {
       </DataFilter>
       <Hrz />
       <DataTable
-        isLoading={isLoading}
+        isLoading={isLoading || loading}
         data={data?.documents}
         total={data?.total}
         columns={columns}
@@ -64,7 +67,7 @@ const News = () => {
           onViewDetail: (item) => setOpen(item._id),
           moreActions: [
             {
-              icon: PrinterIcon,
+              icon: PaperAirplaneIcon,
               onClick: (item) => onSendNews(item)
             }
           ]

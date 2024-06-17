@@ -52,56 +52,51 @@ export const detailReceipt = async (req, res) => {
 };
 
 export const addReceipt = async (req, res) => {
-  try {
-    const { error, value } = validateData(addReceiptValid, req.body);
-    if (error) return res.status(400).json({ status: false, mess: error });
-    const { apartment, bill, type, amount } = value;
-    let billz;
-    if (bill) {
-      billz = await detailBillMd({ _id: bill, status: 3 });
-      if (!billz) return res.status(400).json({ status: false, mess: 'Không tìm thấy hợp đồng!' });
-    }
-
-    const checkCoin = await detailCoinMd({ apartment });
-    const coinBefore = checkCoin?.coinAfter || 0;
-    if ([2, 3].includes(type)) if (coinBefore < amount) res.status(400).json({ status: false, mess: 'Tiền thừa căn hộ không đủ!' });
-    if (type === 3 && !billz) res.status(400).json({ status: false, mess: 'Không tìm thấy tiền thừa để hạch toán!' });
-
-    value.files = [];
-    if (req.files?.['files']?.[0]) {
-      for (const file of req.files['files']) {
-        value.files.push(await uploadFileToFirebase(file));
-      }
-    }
-
-    let params;
-    if (type === 1) {
-      if (!billz) billz = { amount: 0 };
-      if (amount > billz.amount) {
-        if (billz._id) await updateBillMd({ _id: bill }, { paid: billz.amount, $addToSet: { receipts: data._id } });
-        params = { type: 2, amount: amount - billz.amount, coinAfter: coinBefore + amount - billz.amount };
-      } else if (billz._id) await updateBillMd({ _id: bill }, { paid: amount, $addToSet: { receipts: data._id } });
-    } else if (type === 2) {
-      params = { type: 1, amount, coinAfter: coinBefore - amount };
-    } else if (type === 3) {
-      params = { type: 1, amount, coinAfter: coinBefore - amount };
-    }
-
-    if (params) {
-      const coin = await createCoinMd({
-        project: req.project?._id,
-        apartment,
-        receipt: data._id,
-        coinBefore,
-        ...params
-      });
-      value.coin = coin._id;
-    }
-    const data = await createReceiptMd({ by: req.userInfo._id, project: req.project?._id, ...value, status: 1 });
-    res.status(201).json({ status: true, data });
-  } catch (error) {
-    res.status(500).json({ status: false, mess: error.toString() });
+  const { error, value } = validateData(addReceiptValid, req.body);
+  if (error) return res.status(400).json({ status: false, mess: error });
+  const { apartment, bill, type, amount } = value;
+  let billz;
+  if (bill) {
+    billz = await detailBillMd({ _id: bill, status: 3 });
+    if (!billz) return res.status(400).json({ status: false, mess: 'Không tìm thấy hợp đồng!' });
   }
+
+  const checkCoin = await detailCoinMd({ apartment });
+  const coinBefore = checkCoin?.coinAfter || 0;
+  if ([2, 3].includes(type)) if (coinBefore < amount) res.status(400).json({ status: false, mess: 'Tiền thừa căn hộ không đủ!' });
+  if (type === 3 && !billz) res.status(400).json({ status: false, mess: 'Không tìm thấy tiền thừa để hạch toán!' });
+
+  value.files = [];
+  if (req.files?.['files']?.[0]) {
+    for (const file of req.files['files']) {
+      value.files.push(await uploadFileToFirebase(file));
+    }
+  }
+
+  let params;
+  if (type === 1) {
+    if (!billz) billz = { amount: 0 };
+    if (amount > billz.amount) {
+      if (billz._id) await updateBillMd({ _id: bill }, { paid: billz.amount });
+      params = { type: 2, amount: amount - billz.amount, coinAfter: coinBefore + amount - billz.amount };
+    } else if (billz._id) await updateBillMd({ _id: bill }, { paid: amount });
+  } else if (type === 2) {
+    params = { type: 1, amount, coinAfter: coinBefore - amount };
+  } else if (type === 3) {
+    params = { type: 1, amount, coinAfter: coinBefore - amount };
+  }
+
+  if (params) {
+    const coin = await createCoinMd({
+      project: req.project?._id,
+      apartment,
+      coinBefore,
+      ...params
+    });
+    value.coin = coin._id;
+  }
+  const data = await createReceiptMd({ by: req.userInfo._id, project: req.project?._id, ...value, status: 1 });
+  res.status(201).json({ status: true, data });
 };
 
 export const cancelReceipt = async (req, res) => {

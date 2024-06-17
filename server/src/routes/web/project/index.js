@@ -18,7 +18,7 @@ import { debitRouter } from './debit';
 
 export const projectRouter = express.Router();
 
-// projectRouter.use(projectMiddleware);
+projectRouter.use(projectMiddleware);
 projectRouter.use('/prices', priceRouter);
 projectRouter.use('/services', serviceRouter);
 projectRouter.use('/vehicles', vehicleRouter);

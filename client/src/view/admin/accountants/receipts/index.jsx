@@ -1,4 +1,4 @@
-import { cancelReceiptApi, getListReceiptApi } from '@api';
+import { cancelReceiptApi, getListReceiptApi, renderReceiptApi, sendReceiptApi } from '@api';
 import { Body, DataFilter, DataTable, FormList, NumberBody, TimeBody } from '@components/base';
 import { Dropdownz, Hrz } from '@components/core';
 import { paymentType, receiptType, statuses } from '@constant';
@@ -28,7 +28,7 @@ const Receipts = () => {
     {
       label: 'Người tạo',
       body: (e) => (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 items-center">
           <span>{e.payer?.fullName}</span>
           {TimeBody(e.createdAt)}
         </div>
@@ -45,6 +45,21 @@ const Receipts = () => {
         setParams((pre) => ({ ...pre, render: !pre.render }));
       }
     });
+  };
+
+  const onSendReceipt = async (item) => {
+    const response = await sendReceiptApi({ _ids: item._id });
+    if (response) {
+      showToast({ title: 'Gửi thông báo thành công', severity: 'success' });
+      setParams((pre) => ({ ...pre, render: !pre.render }));
+    }
+  };
+
+  const onRenderReceipt = async (item) => {
+    const response = await renderReceiptApi({ _id: item._id });
+    if (response) {
+      window.open(`/print/${item._id}?type=receipt`, '_blank');
+    }
   };
 
   const onOpen = (type, item) => {
@@ -89,10 +104,20 @@ const Receipts = () => {
         columns={columns}
         params={params}
         setParams={setParams}
-        baseActions={['detail', 'delete']}
+        baseActions={['delete']}
         actionsInfo={{
           onDelete,
           onViewDetail: (e) => onOpen(e.type, e)
+          // moreActions: [
+          //   {
+          //     icon: PrinterIcon,
+          //     onClick: (item) => onRenderReceipt(item)
+          //   },
+          //   {
+          //     icon: PaperAirplaneIcon,
+          //     onClick: (item) => onSendReceipt(item)
+          //   }
+          // ]
         }}
         headerInfo={{
           moreHeader: [
