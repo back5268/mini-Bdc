@@ -15,7 +15,6 @@ export const addVehicleValid = {
   name: 'string',
   apartment: 'string',
   licensePlate: 'string',
-  service: 'string',
   type: 'number',
   description: { type: 'string', allowNull: true },
   data: { type: 'json', allowNull: true }
@@ -26,7 +25,6 @@ export const updateVehicleValid = {
   name: { type: 'string', allowNull: true },
   apartment: { type: 'string', allowNull: true },
   licensePlate: { type: 'string', allowNull: true },
-  service: { type: 'string', allowNull: true },
   type: { type: 'number', allowNull: true },
   description: { type: 'string', allowNull: true },
   data: { type: 'json', allowNull: true },

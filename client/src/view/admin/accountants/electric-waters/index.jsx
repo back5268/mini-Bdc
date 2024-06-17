@@ -1,12 +1,12 @@
-import { getListElectricWaterApi, getListMonthApi } from '@api';
-import { Body, DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base/DataFilter';
+import { deleteElectricWaterApi, getListElectricWaterApi, getListMonthApi } from '@api';
+import { Body, DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Dropdownz, Hrz, Imagez } from '@components/core';
 import { electricWaterType } from '@constant';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
 import { useDataState } from '@store';
 import React, { useState } from 'react';
+import DetailElectricWater from './Detail';
 
 const ElectricWaters = () => {
   const initParams = useGetParams();
@@ -15,29 +15,29 @@ const ElectricWaters = () => {
   const { isLoading, data } = useGetApi(getListElectricWaterApi, params, 'electricWaters');
   const { data: months } = useGetApi(getListMonthApi, params, 'months');
   const { apartments } = useDataState();
+  const [open, setOpen] = useState(false);
 
   const columns = [
-    { label: 'Căn hộ', body: (e) => e.apartment?.name },
+    { label: 'Căn hộ', body: (e) => Body(apartments, e.apartment, "_id", "name") },
     { label: 'Tháng', field: 'month' },
     { label: 'Loại', body: (e) => Body(electricWaterType, e.type) },
     { label: 'Chỉ số đầu', field: 'beforeNumber' },
     { label: 'Chỉ số cuối', field: 'afterNumber' },
-    { label: 'Hình ảnh', body: (e) => <Imagez isZoom src={e.image} /> },
+    { label: 'Hình ảnh', body: (e) => <div className='flex justify-center'><Imagez className="w-32 h-32" isZoom src={e.image} /></div> },
     {
       label: 'Người chốt',
       body: (e) => (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 justify-center text-center">
           <span>{e.by?.fullName}</span>
           {TimeBody(e.dateUpdate)}
         </div>
       )
     },
-    { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
-    { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
   ];
 
   return (
     <FormList title="Chỉ số điện nước">
+      <DetailElectricWater open={open} setOpen={setOpen} setParams={setParams} data={data?.documents} months={months} />
       <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="md:w-6/12">
         <Dropdownz value={filter.type} onChange={(e) => setFilter({ ...filter, type: e })} options={electricWaterType} label="Loại" />
         <Dropdownz
@@ -51,7 +51,21 @@ const ElectricWaters = () => {
         <Dropdownz value={filter.month} onChange={(e) => setFilter({ ...filter, month: e })} options={months} label="Tháng" />
       </DataFilter>
       <Hrz />
-      <DataTable isLoading={isLoading} data={data?.documents} total={data?.total} columns={columns} params={params} setParams={setParams} />
+      <DataTable
+        isLoading={isLoading}
+        data={data?.documents}
+        total={data?.total}
+        columns={columns}
+        params={params}
+        setParams={setParams}
+        baseActions={['create', 'detail', 'delete']}
+        setShow={setOpen}
+        actionsInfo={{
+          onViewDetail: (item) => setOpen(item._id),
+          deleteApi: deleteElectricWaterApi
+        }}
+        headerInfo={{ onCreate: () => setOpen(true) }}
+      />
     </FormList>
   );
 };

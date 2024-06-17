@@ -1,6 +1,5 @@
 import { deleteVehicleApi, getListVehicleApi, updateVehicleApi } from '@api';
-import { Body, DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base/DataFilter';
+import { Body, DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
 import { statuses, vehicleType } from '@constant';
 import { useGetParams } from '@hook';
@@ -22,7 +21,6 @@ const Vehicles = () => {
     { label: 'Biển số xe', field: 'licensePlate' },
     { label: 'Căn hộ', body: (e) => e.apartment?.name },
     { label: 'Loại phương tiện', body: (e) => Body(vehicleType, e.type) },
-    { label: 'Dịch vụ', body: (e) => e.service?.name },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
     { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
   ];

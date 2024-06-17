@@ -1,6 +1,7 @@
 import { ModelBase } from '@config';
 
 class MailLogMd extends ModelBase {
+  project;
   to;
   subject;
   content;
@@ -11,6 +12,7 @@ class MailLogMd extends ModelBase {
 }
 
 MailLogMd.init('MailLog', {
+  project: { type: String, required: true },
   to: { type: String, required: true },
   subject: { type: String, required: true },
   content: { type: String, required: true },

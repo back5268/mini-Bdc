@@ -27,7 +27,7 @@ export const getListService = async (req, res) => {
     if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }, { code: { $regex: keySearch, $options: 'i' } }];
     if (type) where.type = type;
     if (status || status === 0) where.status = status;
-    const documents = await listServiceMd(where, page, limit, [{ path: 'price', select: 'name code' }]);
+    const documents = await listServiceMd(where, page, limit);
     const total = await countServiceMd(where);
     res.json({ status: true, data: { documents, total } });
   } catch (error) {
@@ -106,7 +106,7 @@ export const addService = async (req, res) => {
   try {
     const { error, value } = validateData(addServiceValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { name, code, price, type, vehicleType } = value;
+    const { name, code, type, vehicleType } = value;
 
     const checkName = await detailServiceMd({ name });
     if (checkName) return res.status(400).json({ status: false, mess: 'Tên dịch vụ đã tồn tại!' });
@@ -114,9 +114,6 @@ export const addService = async (req, res) => {
     const checkCode = await detailServiceMd({ code });
     if (checkCode) return res.status(400).json({ status: false, mess: 'Mã dịch vụ đã tồn tại!' });
     if (type === 4 && !vehicleType) res.status(400).json({ status: false, mess: 'Loại phương tiện không được bỏ trống!' });
-
-    const checkPrice = await detailPriceMd({ _id: price });
-    if (!checkPrice) return res.status(400).json({ status: false, mess: 'Bảng giá không tồn tại!' });
 
     value.project = req.project?._id;
     const data = await createServiceMd({ by: req.userInfo._id, ...value });
@@ -130,7 +127,7 @@ export const updateService = async (req, res) => {
   try {
     const { error, value } = validateData(updateServiceValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { _id, name, code, price, type, vehicleType } = value;
+    const { _id, name, code, type, vehicleType } = value;
 
     const service = await detailServiceMd({ _id });
     if (!service) return res.status(400).json({ status: false, mess: 'Dịch vụ không tồn tại!' });
@@ -143,11 +140,6 @@ export const updateService = async (req, res) => {
     if (code) {
       const checkCode = await detailServiceMd({ code });
       if (checkCode) return res.status(400).json({ status: false, mess: 'Mã dịch vụ đã tồn tại!' });
-    }
-
-    if (price) {
-      const checkPrice = await detailPriceMd({ _id: price });
-      if (!checkPrice) return res.status(400).json({ status: false, mess: 'Bảng giá không tồn tại!' });
     }
 
     if (type === 4 && !vehicleType) res.status(400).json({ status: false, mess: 'Loại phương tiện không được bỏ trống!' });

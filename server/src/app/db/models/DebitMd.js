@@ -1,9 +1,13 @@
 import { ModelBase } from '@config';
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
 class DebitMd extends ModelBase {
   project;
   apartment;
   serviceName;
+  bill;
   serviceType;
   month;
   prices;
@@ -20,8 +24,9 @@ class DebitMd extends ModelBase {
 
 DebitMd.init('Debit', {
   project: { type: String, required: true },
-  apartment: { type: String, required: true },
+  apartment: { type: ObjectId, ref: 'Apartment', required: true },
   serviceName: { type: String, required: true },
+  bill: { type: String, required: true },
   serviceType: {
     type: Number,
     enum: [1, 2, 3, 4, 5],

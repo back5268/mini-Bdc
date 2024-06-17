@@ -20,9 +20,9 @@ TemplateMd.init('Template', {
   updateBy: { type: ObjectId, ref: 'User' },
   type: {
     type: Number,
-    enum: [1, 2, 3, 4, 5, 6],
+    enum: [1, 2, 3, 4],
     required: true,
-    description: '1: Quên mật khẩu, 2: Thêm mới người dùng, 3: Thông báo, 4: Bảng kê, 5: Phiếu thu, 6: Phiếu chi'
+    description: '1: Quên mật khẩu, 2: Thông báo, 3: Bảng kê, 4: Phiếu'
   },
   code: { type: String, required: true },
   subject: { type: String, required: true },

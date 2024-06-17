@@ -1,10 +1,10 @@
 import { deleteServiceApi, getListServiceApi, updateStatusServiceApi } from '@api';
-import { Body, DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base/DataFilter';
-import { Dropdownz, Hrz, Inputz } from '@components/core';
-import { serviceType, statuses } from '@constant';
+import { Body, DataTable, FormList, TimeBody, DataFilter } from '@components/base';
+import { Chipz, Dropdownz, Hrz, Inputz } from '@components/core';
+import { serviceType, statuses, vehicleType } from '@constant';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
+import { useDataState } from '@store';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,13 +14,26 @@ const Services = () => {
   const [params, setParams] = useState(initParams);
   const [filter, setFilter] = useState({});
   const { isLoading, data } = useGetApi(getListServiceApi, params, 'services');
+  const { apartments } = useDataState();
 
   const columns = [
     { label: 'Tên dịch vụ', field: 'name' },
     { label: 'Mã dịch vụ', field: 'code' },
     { label: 'Loại dịch vụ', body: (e) => Body(serviceType, e.type) },
-    { label: 'Bảng giá', body: (e) => e.price?.name },
-    { label: 'Căn hộ áp dụng', body: (e) => Body(serviceType, e.type) },
+    { label: 'Loại phương tiện', body: (e) => Body(vehicleType, e.vehicleType) },
+    {
+      label: 'Căn hộ áp dụng',
+      body: (e) => {
+        return (
+          <div className="flex flex-wrap gap-2 w-full">
+            {e.apartments?.map((a, index) => {
+              const label = apartments?.find((u) => u._id === a)?.name;
+              return <Chipz key={index} value={label} className="text-center" />;
+            })}
+          </div>
+        );
+      }
+    },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
     { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
   ];

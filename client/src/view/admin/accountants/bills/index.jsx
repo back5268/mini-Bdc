@@ -1,6 +1,5 @@
-import { getListBillApi, getListMonthApi, updateStatusBillApi } from '@api';
-import { Body, DataTable, FormList, NumberBody, TimeBody } from '@components/base';
-import DataFilter from '@components/base/DataFilter';
+import { deleteBillApi, getListBillApi, getListMonthApi, renderBillApi, sendBillApi, updateStatusBillApi } from '@api';
+import { Body, DataTable, FormList, NumberBody, TimeBody, DataFilter } from '@components/base';
 import { Dropdownz, Hrz, InputCalendarz, Inputz } from '@components/core';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
@@ -8,6 +7,7 @@ import { useState } from 'react';
 import { billStatus } from '@constant';
 import { useDataState, useToastState } from '@store';
 import DetaiBill from './Detail';
+import { PrinterIcon } from '@heroicons/react/24/outline';
 
 const Billz = ({ type = 'bill' }) => {
   const initParams = useGetParams();
@@ -49,10 +49,22 @@ const Billz = ({ type = 'bill' }) => {
 
   const dataBrowsItems = [{ label: 'Duyệt số liệu', onClick: () => onUpdate(2) }];
 
-  const notificationItems = [
-    { label: 'Chuyển trạng thái chờ thanh toán', onClick: () => onUpdate(3) },
-    { label: 'Gửi thông báo', onClick: () => onUpdate(3) }
-  ];
+  const notificationItems = [{ label: 'Chuyển trạng thái chờ thanh toán', onClick: () => onUpdate(3) }];
+
+  const onSendBill = async (item) => {
+    const response = await sendBillApi({ _ids: item._id });
+    if (response) {
+      showToast({ title: 'Gửi thông báo thành công', severity: 'success' });
+      setParams((pre) => ({ ...pre, render: !pre.render }));
+    }
+  };
+
+  const onRenderBill = async (item) => {
+    const response = await renderBillApi({ _id: item._id });
+    if (response) {
+      window.open(`/print/detail/${item._id}`, '_blank');
+    }
+  };
 
   return (
     <FormList title={`Danh sách ${title}`}>
@@ -89,10 +101,22 @@ const Billz = ({ type = 'bill' }) => {
         columns={columns}
         params={params}
         setParams={setParams}
-        baseActions={['detail']}
+        baseActions={['detail', 'delete']}
         headerInfo={{ items: type === 'bill' ? billItems : type === 'dataBrowses' ? dataBrowsItems : notificationItems }}
         actionsInfo={{
-          onViewDetail: (item) => setOpen(item._id)
+          deleteApi: deleteBillApi,
+          onViewDetail: (item) => setOpen(item._id),
+          moreActions: [
+            {
+              icon: PrinterIcon,
+              onClick: (item) => onRenderBill(item)
+            },
+            {
+              icon: PrinterIcon,
+              isHide: type === 2 ? false : true,
+              onClick: (item) => onSendBill(item)
+            }
+          ]
         }}
       />
     </FormList>

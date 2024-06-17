@@ -1,6 +1,5 @@
 import { getListTemplateApi, updateTemplateApi } from '@api';
-import { Body, DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base/DataFilter';
+import { Body, DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
 import { statuses, templateType } from '@constant';
 import { useGetParams } from '@hook';
@@ -16,7 +15,6 @@ const Templates = () => {
   const { isLoading, data } = useGetApi(getListTemplateApi, params, 'templates');
 
   const columns = [
-    { label: 'Tiêu đề mẫu thông báo', field: 'subject' },
     { label: 'Tiêu đề mẫu thông báo', field: 'subject' },
     { label: 'Mã mẫu thông báo', field: 'code' },
     { label: 'Loại', body: (e) => Body(templateType, e.type) },

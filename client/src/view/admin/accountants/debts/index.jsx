@@ -1,15 +1,16 @@
 import { getListDebtLogApi, getListMonthApi } from '@api';
-import { DataTable, FormList, TimeBody } from '@components/base';
-import DataFilter from '@components/base/DataFilter';
+import { DataTable, FormList, TimeBody, DataFilter } from '@components/base';
 import { Chipz, Dropdownz, Hrz, InputCalendarz, Spinnerz } from '@components/core';
 import { debtStatus } from '@constant';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Calculator from './Calculator';
 import DetaiDebt from './Detail';
+import { socket } from '@lib/socket-io';
+import { useUserState } from '@store';
 
-const Debts = () => {
+const Calculatorz = () => {
   const initParams = useGetParams();
   const [params, setParams] = useState(initParams);
   const [filter, setFilter] = useState({});
@@ -17,6 +18,7 @@ const Debts = () => {
   const [openDetail, setOpenDetail] = useState(false);
   const { isLoading, data } = useGetApi(getListDebtLogApi, params, 'debts');
   const { data: months } = useGetApi(getListMonthApi, {}, 'months');
+  const { project } = useUserState();
 
   const columns = [
     { label: 'Tiêu đề', field: 'title' },
@@ -27,8 +29,8 @@ const Debts = () => {
       label: 'Trạng thái',
       body: (e) =>
         e.status === 1 ? (
-          <div className="flex items-center justify-center gap-4 font-medium">
-            <Spinnerz className="h-6 w-6" /> <span>Đang xử lý</span>
+          <div className="flex items-center justify-center gap-4 font-medium bg-amber-300 p-2 rounded-lg text-white uppercase text-xs">
+            <Spinnerz className="h-5 w-5" color="white" /> <span>Đang xử lý</span>
           </div>
         ) : (
           <Chipz value="Đã xử lý" />
@@ -36,6 +38,33 @@ const Debts = () => {
     },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) }
   ];
+
+  useEffect(() => {
+    const key = `calculatorDebt${project}`;
+    console.log(key);
+    function onConnect() {
+      console.log('Connecting...');
+    }
+
+    function onDisconnect(reason) {
+      console.log('Disconnecting...', reason);
+    }
+
+    function onEvent(event) {
+      console.log(event);
+      setParams((pre) => ({ ...pre, render: !pre.render }));
+    }
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    socket.on(key, onEvent);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+      socket.off(key, onEvent);
+    };
+  }, [project]);
 
   return (
     <FormList title="Lịch sử tính toán công nợ">
@@ -65,4 +94,4 @@ const Debts = () => {
   );
 };
 
-export default Debts;
+export default Calculatorz;

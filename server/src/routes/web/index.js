@@ -10,7 +10,7 @@ import { userRouter } from './user';
 
 export const webRouter = express.Router();
 
-webRouter.use(authMiddleware, permissionMiddleware);
+// webRouter.use(authMiddleware, permissionMiddleware);
 webRouter.use('/users', userRouter);
 webRouter.use('/templates', templateRouter);
 webRouter.use('/permissions', permissionRouter);

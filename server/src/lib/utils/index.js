@@ -41,6 +41,37 @@ export const generateRandomString = (length = 6) => {
   return result;
 }
 
+export const replaceFistText = (inputString, prefix = "\\$") => {
+  const regex = new RegExp(`${prefix}\\w+\\s?`, 'g');
+  return inputString.replace(regex, '');
+}
+
+export const ghepGiaTri = ({obj, html, format}) => {
+  for (let key of Object.keys(obj)) {
+      if (obj[key] === 0 || (obj[key] && obj[key] !== "undefined")) {
+          if (format && typeof obj[key] === "number") {
+              html = html.replaceAll(key, formatNumber(obj[key], true))
+              html = html.replaceAll(key.toLocaleUpperCase(), formatNumber(obj[key], true))
+          } else {
+              html = html.replaceAll(key, obj[key])
+              html = html.replaceAll(key.toLocaleUpperCase(), obj[key])
+          }
+      }
+  }
+  return html
+}
+
+export const formatNumber = (value, noRound) => {
+  if (value || value === 0) {
+      if (!Number(value)) return 0
+      else {
+          let a = new Intl.NumberFormat('en-US').format(noRound ? value : Math.round(value))
+          return a.replaceAll('.', '|').replaceAll(',', '.').replaceAll('|', ',');
+      }
+  }
+  else return " "
+}
+
 export function removeVietnameseTones(str) {
   str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
   str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');

@@ -165,10 +165,12 @@ const DataTable = (props) => {
               <tbody>
                 {data && data.length > 0 ? (
                   data.map((item, index) => {
+                    const className = item.className || '';
+
                     return (
                       <tr key={index}>
                         {select && (
-                          <BodyColumn className="text-center">
+                          <BodyColumn className={`text-center ${className}`}>
                             <CheckBoxz
                               checked={select.includes(item._id)}
                               onChange={() =>
@@ -177,24 +179,24 @@ const DataTable = (props) => {
                             />
                           </BodyColumn>
                         )}
-                        <BodyColumn className="text-center">{(params.page - 1) * params.limit + index + 1}</BodyColumn>
+                        <BodyColumn className={`text-center ${className}`}>{(params.page - 1) * params.limit + index + 1}</BodyColumn>
                         {columns.map((column, i) => {
                           const children = column.body && typeof column.body === 'function' ? column.body(item) : item[column.field];
                           return (
-                            <BodyColumn key={i} className={column.className}>
+                            <BodyColumn key={i} className={className || column.className}>
                               {children}
                             </BodyColumn>
                           );
                         })}
                         {isStatus && (
-                          <BodyColumn>
+                          <BodyColumn className={className}>
                             <div className="flex justify-center items-center">
                               <Switchz checked={Boolean(item.status)} onChange={() => onChangeStatus(item)} />
                             </div>
                           </BodyColumn>
                         )}
                         {isActions && (
-                          <BodyColumn>
+                          <BodyColumn className={className}>
                             <div className="flex justify-center items-center gap-2">
                               {baseActions.includes('detail') && (
                                 <Buttonz onClick={() => onViewDetail(item)} variant="outlined" className="rounded-full p-2">
@@ -216,17 +218,20 @@ const DataTable = (props) => {
                                   const color = action.color || 'cyan';
                                   const variant = action.variant || 'outlined';
                                   const Icon = action.icon;
+                                  const isHide = action.isHide;
 
                                   return (
-                                    <Buttonz
-                                      key={index}
-                                      color={color}
-                                      onClick={() => action.onClick(item)}
-                                      variant={variant}
-                                      className="rounded-full p-2"
-                                    >
-                                      <Icon className="w-5" />
-                                    </Buttonz>
+                                    !isHide && (
+                                      <Buttonz
+                                        key={index}
+                                        color={color}
+                                        onClick={() => action.onClick(item)}
+                                        variant={variant}
+                                        className="rounded-full p-2"
+                                      >
+                                        <Icon className="w-5" />
+                                      </Buttonz>
+                                    )
                                   );
                                 })}
                             </div>

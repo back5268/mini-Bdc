@@ -26,6 +26,5 @@ export const updateTemplateValid = {
   content: { type: 'string', allowNull: true },
   description: { type: 'string', allowNull: true },
   status: { type: 'number', allowNull: true },
-  type: { type: 'number', allowNull: true },
-  files: { type: 'json', allowNull: true }
+  type: { type: 'number', allowNull: true }
 };

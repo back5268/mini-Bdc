@@ -1,27 +1,33 @@
-import { Dashboard } from '@view/admin';
 import {
   Bills,
+  Calculator,
   DataBrowses,
-  Debts,
   DetailPrice,
   DetailService,
   DetailVehicle,
   ElectricWater,
   Notifications,
   Prices,
+  PrintBill,
+  Receipts,
   Services,
   Vehicles
 } from '@view/admin/accountants';
-import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup, Residents } from '@view/admin/apartment-resident';
+import { Apartment, ApartmentGroup, DetailApartment, DetailApartmentGroup, DetailResident, Residents } from '@view/admin/apartments';
 import { Departments, DetailProject, Projects, Users } from '@view/admin/companies';
+import { Templates } from '@view/admin/configs';
+import { Project, Report } from '@view/admin/dashboard';
+import { Coins, Debits, Debts } from '@view/admin/debts';
 import { DetailPermission, Permissions, Tools } from '@view/admin/permissions';
+import { Logs, News, Options } from '@view/admin/residents';
 import { ForgotPassword, SignIn } from '@view/auth';
 
 const routes = [
   { path: '/auth/signin', element: SignIn, public: true },
   { path: '/auth/forgot-password', element: ForgotPassword, public: true },
 
-  { path: '/', element: Dashboard, layout: true },
+  { path: '/', element: Report, layout: true },
+  { path: '/project-info', element: Project, layout: true },
 
   // ==================== Phân quền ====================
   { path: '/permissions', element: Permissions, layout: true },
@@ -35,6 +41,9 @@ const routes = [
   { path: '/projects', element: Projects, layout: true },
   { path: '/projects/create', element: DetailProject, layout: true },
   { path: '/projects/detail/:_id', element: DetailProject, layout: true },
+
+  // ==================== Cấu hình ====================
+  { path: '/templates', element: Templates, layout: true },
 
   // ==================== Kế toán ====================
   { path: '/prices', element: Prices, layout: true },
@@ -50,13 +59,16 @@ const routes = [
   { path: '/vehicles/detail/:_id', element: DetailVehicle, layout: true },
 
   { path: '/electric-waters', element: ElectricWater, layout: true },
-  { path: '/debts', element: Debts, layout: true },
+  { path: '/calculator', element: Calculator, layout: true },
 
   { path: '/bills', element: Bills, layout: true },
   { path: '/data-browses', element: DataBrowses, layout: true },
   { path: '/notifications', element: Notifications, layout: true },
+  { path: '/bill-print/:_id', element: PrintBill, layout: true },
 
-  // ==================== Căn hộ, cư dân ====================
+  { path: '/receipts', element: Receipts, layout: true },
+
+  // ==================== Căn hộ ====================
   { path: '/apartment-groups', element: ApartmentGroup, layout: true },
   { path: '/apartment-groups/create', element: DetailApartmentGroup, layout: true },
   { path: '/apartment-groups/detail/:_id', element: DetailApartmentGroup, layout: true },
@@ -66,8 +78,18 @@ const routes = [
   { path: '/apartments/detail/:_id', element: DetailApartment, layout: true },
 
   { path: '/residents', element: Residents, layout: true },
-  // { path: '/apartments/create', element: DetailApartment, layout: true },
-  // { path: '/apartments/detail/:_id', element: DetailApartment, layout: true }
+  { path: '/residents/create', element: DetailResident, layout: true },
+  { path: '/residents/detail/:_id', element: DetailResident, layout: true },
+
+  // ==================== Cư dân ====================
+  { path: '/options', element: Options, layout: true },
+  { path: '/news', element: News, layout: true },
+  { path: '/logs', element: Logs, layout: true },
+
+  // ==================== Công nợ ====================
+  { path: '/debits', element: Debits, layout: true },
+  { path: '/debts', element: Debts, layout: true },
+  { path: '/coins', element: Coins, layout: true },
 ];
 
 export default routes;

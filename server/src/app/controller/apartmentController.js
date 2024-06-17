@@ -1,10 +1,5 @@
-import {
-  addApartmentValid,
-  detailApartmentValid,
-  listApartmentValid,
-  updateApartmentValid,
-  updateStatusApartmentValid
-} from '@lib/validation';
+import { uploadFileToFirebase } from '@lib/firebase';
+import { addApartmentValid, detailApartmentValid, listApartmentValid, updateApartmentValid } from '@lib/validation';
 import { countApartmentMd, createApartmentMd, deleteApartmentMd, detailApartmentMd, listApartmentMd, updateApartmentMd } from '@models';
 import { validateData } from '@utils';
 
@@ -13,7 +8,7 @@ export const getListApartment = async (req, res) => {
     const { error, value } = validateData(listApartmentValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { page, limit, keySearch, status } = value;
-    const where = {};
+    const where = { project: req.project?._id };
     if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }, { code: { $regex: keySearch, $options: 'i' } }];
     if (status) where.status = status;
     const documents = await listApartmentMd(where, page, limit, [{ path: 'owner', select: 'fullName' }]);
@@ -62,33 +57,28 @@ export const updateApartment = async (req, res) => {
   try {
     const { error, value } = validateData(updateApartmentValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { _id, name, description, code, area, owner } = value;
+    const { _id, name, code, images } = value;
+
     const apartment = await detailApartmentMd({ _id });
     if (!apartment) return res.status(400).json({ status: false, mess: 'Căn hộ không tồn tại!' });
+
     if (name) {
-      const checkName = await detailApartmentMd({ name });
+      const checkName = await detailApartmentMd({ name, project: req.project?._id });
       if (checkName) return res.status(400).json({ status: false, mess: 'Căn hộ đã tồn tại!' });
     }
 
     if (code) {
-      const checkCode = await detailApartmentMd({ code });
+      const checkCode = await detailApartmentMd({ code, project: req.project?._id });
       if (checkCode) return res.status(400).json({ status: false, mess: 'Mã căn hộ đã tồn tại!' });
     }
-    const data = await updateApartmentMd({ _id }, { updateBy: req.userInfo._id, ...value });
-    res.status(201).json({ status: true, data });
-  } catch (error) {
-    res.status(500).json({ status: false, mess: error.toString() });
-  }
-};
 
-export const updateStatusApartment = async (req, res) => {
-  try {
-    const { error, value } = validateData(updateStatusApartmentValid, req.body);
-    if (error) return res.status(400).json({ status: false, mess: error });
-    const { _id, status } = value;
+    if (req.files?.['images']?.[0]) {
+      value.images = images ? (typeof images === 'object' ? images : [images]) : [];
+      for (const file of req.files['images']) {
+        value.images.push(await uploadFileToFirebase(file));
+      }
+    }
 
-    const apartment = await detailApartmentMd({ _id });
-    if (!apartment) return res.status(400).json({ status: false, mess: 'Căn hộ không tồn tại!' });
     const data = await updateApartmentMd({ _id }, { updateBy: req.userInfo._id, ...value });
     res.status(201).json({ status: true, data });
   } catch (error) {
@@ -100,16 +90,24 @@ export const addApartment = async (req, res) => {
   try {
     const { error, value } = validateData(addApartmentValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { name, description, code, area, owner, floor, status } = value;
+    const { name, code } = value;
     if (name) {
-      const checkName = await detailApartmentMd({ name });
+      const checkName = await detailApartmentMd({ name, project: req.project?._id });
       if (checkName) return res.status(400).json({ status: false, mess: 'Căn hộ đã tồn tại!' });
     }
 
     if (code) {
-      const checkCode = await detailApartmentMd({ code });
+      const checkCode = await detailApartmentMd({ code, project: req.project?._id });
       if (checkCode) return res.status(400).json({ status: false, mess: 'Mã căn hộ đã tồn tại!' });
     }
+
+    value.images = [];
+    if (req.files?.['images']?.[0]) {
+      for (const file of req.files['images']) {
+        value.images.push(await uploadFileToFirebase(file));
+      }
+    }
+
     value.project = req.project?._id;
     const data = await createApartmentMd({ by: req.userInfo._id, ...value });
     res.status(201).json({ status: true, data });

@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 class UserMd extends ModelBase {
+  project;
+  apartment;
   fullName;
   username;
   email;
@@ -27,6 +29,8 @@ class UserMd extends ModelBase {
 }
 
 UserMd.init('User', {
+  project: { type: String },
+  apartment: { _id: { type: String }, type: { type: Number } },
   fullName: { type: String, required: true },
   username: { type: String },
   email: { type: String },

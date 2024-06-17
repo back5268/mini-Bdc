@@ -14,6 +14,9 @@ class ApartmentMd extends ModelBase {
   description;
   status;
   owner;
+  numberResident;
+  numberVehicle;
+  images;
   deletedAt;
 }
 
@@ -28,6 +31,9 @@ ApartmentMd.init('Apartment', {
   description: { type: String },
   status: { type: Number, enum: [1, 2, 3], required: true, description: '1: Trống, 2: Đang cho thuê, 3: Đang cải tạo' },
   owner: { type: ObjectId, ref: 'User' },
+  numberResident: { type: Number, default: 0 },
+  numberVehicle: { type: Number, default: 0 },
+  images: [{ type: String }],
   deletedAt: { type: Date }
 });
 

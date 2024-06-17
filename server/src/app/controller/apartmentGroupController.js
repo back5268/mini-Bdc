@@ -64,10 +64,12 @@ export const updateApartmentGroup = async (req, res) => {
     const { error, value } = validateData(updateApartmentGroupValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id, name } = value;
+
     const apartmentGroup = await detailApartmentGroupMd({ _id });
     if (!apartmentGroup) return res.status(400).json({ status: false, mess: 'Nhóm căn hộ không tồn tại!' });
+
     if (name) {
-      const checkName = await detailApartmentGroupMd({ name });
+      const checkName = await detailApartmentGroupMd({ name, project: req.project?._id });
       if (checkName) return res.status(400).json({ status: false, mess: 'Tên nhóm căn hộ đã tồn tại!' });
     }
     const data = await updateApartmentGroupMd({ _id }, { updateBy: req.userInfo._id, ...value });
@@ -82,10 +84,12 @@ export const addApartmentGroup = async (req, res) => {
     const { error, value } = validateData(addApartmentGroupValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { name } = value;
+
     if (name) {
-      const checkName = await detailApartmentGroupMd({ name });
+      const checkName = await detailApartmentGroupMd({ name, project: req.project?._id });
       if (checkName) return res.status(400).json({ status: false, mess: 'Tên nhóm căn hộ đã tồn tại!' });
     }
+    
     value.project = req.project?._id;
     const data = await createApartmentGroupMd({ by: req.userInfo._id, ...value });
     res.status(201).json({ status: true, data });
