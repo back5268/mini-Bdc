@@ -14,10 +14,11 @@ import { newsRouter } from './news';
 import { optionRouter } from './option';
 import { receiptRouter } from './receipt';
 import { coinRouter } from './coin';
+import { debitRouter } from './debit';
 
 export const projectRouter = express.Router();
 
-projectRouter.use(projectMiddleware);
+// projectRouter.use(projectMiddleware);
 projectRouter.use('/prices', priceRouter);
 projectRouter.use('/services', serviceRouter);
 projectRouter.use('/vehicles', vehicleRouter);
@@ -32,3 +33,4 @@ projectRouter.use('/options', optionRouter);
 projectRouter.use('/residents', residentRouter);
 projectRouter.use('/receipts', receiptRouter);
 projectRouter.use('/coins', coinRouter);
+projectRouter.use('/debits', debitRouter);

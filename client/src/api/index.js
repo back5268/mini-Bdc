@@ -21,3 +21,4 @@ export * from './log';
 export * from './option';
 export * from './receipt';
 export * from './coin';
+export * from './debit';

@@ -1,4 +1,4 @@
-import { getListBillApi, getListMonthApi, renderBillApi, sendBillApi, updateStatusBillApi } from '@api';
+import { deleteBillApi, getListBillApi, getListMonthApi, renderBillApi, sendBillApi, updateStatusBillApi } from '@api';
 import { Body, DataTable, FormList, NumberBody, TimeBody, DataFilter } from '@components/base';
 import { Dropdownz, Hrz, InputCalendarz, Inputz } from '@components/core';
 import { useGetParams } from '@hook';
@@ -101,9 +101,10 @@ const Billz = ({ type = 'bill' }) => {
         columns={columns}
         params={params}
         setParams={setParams}
-        baseActions={['detail']}
+        baseActions={['detail', 'delete']}
         headerInfo={{ items: type === 'bill' ? billItems : type === 'dataBrowses' ? dataBrowsItems : notificationItems }}
         actionsInfo={{
+          deleteApi: deleteBillApi,
           onViewDetail: (item) => setOpen(item._id),
           moreActions: [
             {

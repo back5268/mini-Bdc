@@ -6,6 +6,8 @@ import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
 import React, { useState } from 'react';
 import DetailNews from './Detail';
+import { PrinterIcon } from '@heroicons/react/24/outline';
+import { useToastState } from '@store';
 
 const News = () => {
   const initParams = useGetParams();
@@ -13,6 +15,15 @@ const News = () => {
   const [filter, setFilter] = useState({});
   const [open, setOpen] = useState(false);
   const { isLoading, data } = useGetApi(getListNewsApi, params, 'news');
+  const { showToast } = useToastState();
+
+  const onSendNews = async (item) => {
+    const response = await sendNewsApi({ _ids: item._id });
+    if (response) {
+      showToast({ title: 'Gửi thông báo thành công', severity: 'success' });
+      setParams((pre) => ({ ...pre, render: !pre.render }));
+    }
+  };
 
   const columns = [
     { label: 'Tiêu đề', field: 'subject' },
@@ -20,9 +31,7 @@ const News = () => {
       label: 'Hastag',
       body: (e) => (
         <div className="flex gap-1">
-          {typeof e.hashtag === 'object' && e.hashtag?.map((item, index) => (
-            <Chipz key={index} className="text-center" value={item} />
-          ))}
+          {typeof e.hashtag === 'object' && e.hashtag?.map((item, index) => <Chipz key={index} className="text-center" value={item} />)}
         </div>
       )
     },
@@ -52,7 +61,13 @@ const News = () => {
         baseActions={['create', 'detail']}
         setShow={setOpen}
         actionsInfo={{
-          onViewDetail: (item) => setOpen(item._id)
+          onViewDetail: (item) => setOpen(item._id),
+          moreActions: [
+            {
+              icon: PrinterIcon,
+              onClick: (item) => onSendNews(item)
+            }
+          ]
         }}
         statusInfo={{ changeStatusApi: updateNewsApi }}
         headerInfo={{ onCreate: () => setOpen(true) }}

@@ -1,11 +1,20 @@
-import { renderBillApi } from '@api';
+import { renderBillApi, renderReceiptApi } from '@api';
 import { useGetApi } from '@lib/react-query';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 const PrintBill = () => {
   const { _id } = useParams();
-  const { data } = useGetApi(renderBillApi, { _id }, 'bill', Boolean(_id));
+  const { search } = useLocation();
+  let type = 'bill';
+  const queryParams = new URLSearchParams(search);
+  for (let [key, value] of queryParams.entries()) {
+    if (key === 'type' && value === 'receipt') type = 'receipt';
+  }
+  const { data } =
+    type === 'bill'
+      ? useGetApi(renderBillApi, { _id }, 'bill', Boolean(_id))
+      : useGetApi(renderReceiptApi, { _id }, 'receipt', Boolean(_id));
 
   useEffect(() => {
     const handleKeyPress = (event) => {

@@ -26,7 +26,7 @@ DebitMd.init('Debit', {
   project: { type: String, required: true },
   apartment: { type: ObjectId, ref: 'Apartment', required: true },
   serviceName: { type: String, required: true },
-  bill: { type: ObjectId, ref: 'Bill', required: true },
+  bill: { type: String, required: true },
   serviceType: {
     type: Number,
     enum: [1, 2, 3, 4, 5],

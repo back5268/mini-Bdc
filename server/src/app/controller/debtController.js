@@ -1,6 +1,6 @@
 import { debtQueue } from '@lib/node-cron';
 import { calculatorDebtValid, listDebtLogValid, listDebitValid, listDebtValid } from '@lib/validation';
-import { countDebitMd, countDebtLogMd, createDebtLogMd, listBillMd, listDebitMd, listDebtLogMd } from '@models';
+import { countDebitMd, countDebtLogMd, createDebtLogMd, deleteBillMd, deleteDebitMd, detailBillMd, detailDebitMd, listBillMd, listDebitMd, listDebtLogMd, updateBillMd } from '@models';
 import { validateData } from '@utils';
 import moment from 'moment';
 
@@ -65,6 +65,25 @@ export const getListDebit = async (req, res) => {
     ]);
     const total = await countDebitMd(where);
     res.json({ status: true, data: { documents, total } });
+  } catch (error) {
+    res.status(500).json({ status: false, mess: error.toString() });
+  }
+};
+
+export const deleteDebit = async (req, res) => {
+  try {
+    const { error, value } = validateData({ _id: 'string' }, req.body);
+    if (error) return res.status(400).json({ status: false, mess: error });
+    const { _id } = value;
+    const debit = await detailDebitMd({ _id })
+    if (!debit) return res.status(404).json({ status: false, mess: 'Không tìm thấy bảng kê dịch vụ' });
+    const bill = await detailBillMd({ _id: debit.bill })
+    if (!(bill && [1,2].includes(bill.status))) return res.status(404).json({ status: false, mess: 'Bảng kê đã được gửi không thể xóa' });
+    const newAmount = bill.amount - debit.summary
+    if (newAmount <= 0) await deleteBillMd({ _id: bill._id })
+    else await updateBillMd({ _id: bill._id }, { amount: newAmount })
+
+    res.json({ status: true, data: await deleteDebitMd({ _id }) });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }

@@ -1,5 +1,5 @@
 import { detailBillValid, listBillValid, updateStatusBillValid } from '@lib/validation';
-import { countBillMd, detailBillMd, listBillMd, updateBillMd } from '@models';
+import { countBillMd, deleteBillMd, detailBillMd, listBillMd, updateBillMd, updateManyDebitMd } from '@models';
 import { renderBillRp } from '@repository';
 import { validateData } from '@utils';
 
@@ -48,6 +48,23 @@ export const detailBill = async (req, res) => {
     const { _id } = value;
     const where = { project: req.project?._id, _id };
     res.json({ status: true, data: await detailBillMd(where, [{ path: 'apartment', select: 'name code' }, { path: 'debits' }]) });
+  } catch (error) {
+    res.status(500).json({ status: false, mess: error.toString() });
+  }
+};
+
+export const deleteBill = async (req, res) => {
+  try {
+    const { error, value } = validateData(detailBillValid, req.body);
+    if (error) return res.status(400).json({ status: false, mess: error });
+    const { _id } = value;
+    const where = { project: req.project?._id, _id };
+    const bill = await detailBillMd(where);
+    if (!bill) return res.status(404).json({ status: false, mess: 'Không tìm thấy bảng kê' });
+    if (bill.status > 2) return res.status(404).json({ status: false, mess: 'Bảng kê đã được gửi không thể xóa' });
+    await deleteBillMd({ _id });
+    await updateManyDebitMd({ bill: _id }, { deletedAt: new Date() });
+    res.json({ status: true, data: {} });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }

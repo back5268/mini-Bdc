@@ -1,6 +1,7 @@
-import { detailBillMd, detailTemplateMd, listBillMd, listDebitMd } from '@models';
+import { detailApartmentMd, detailBillMd, detailProjectMd, detailTemplateMd, listBillMd, listDebitMd } from '@models';
 import { formatNumber, ghepGiaTri, replaceFistText } from '@utils';
 import { JSDOM } from 'jsdom';
+import moment from 'moment';
 
 export const renderBillRp = async (_id) => {
   const template = await detailTemplateMd({ type: 3, status: 1 });
@@ -10,19 +11,27 @@ export const renderBillRp = async (_id) => {
 
   const bill = await detailBillMd({ _id });
   if (!bill) return { mess: 'Không tìm thấy bảng kê!' };
-  const debits = await listDebitMd({ bill: _id });
+  const debits = await listDebitMd({ bill: bill._id });
+
+  const project = await detailProjectMd({ _id: bill.project });
+  const apartment = await detailApartmentMd({ _id: bill.apartment }, [{ path: 'owner', select: 'fullName' }]);
 
   const bills = await listBillMd({ month: { $lt: bill.month }, apartment: bill.apartment });
-  let no_ky_truoc = 0;
+  let no_ky_truoc = 0,
+    tong_phai_thu = 0,
+    da_thanh_toan = 0,
+    tong_phat_sinh = 0,
+    tong_thanh_tien = 0,
+    tong_giam_tru = 0;
   bills.forEach((d) => (no_ky_truoc += d.amount - d.paid));
 
   const services = [
     {
-      id: 0,
+      id: 5,
       name: 'Phí khác/ <i style="color:gray">Other Fee</i>'
     },
     {
-      id: 2,
+      id: 1,
       name: 'Phí quản lý/ <i style="color:gray">Management Fee</i>'
     },
     {
@@ -34,7 +43,7 @@ export const renderBillRp = async (_id) => {
       name: 'Phí ô tô, Xe máy, Xe đạp/ <i style="color:gray">Parking Fee</i>'
     },
     {
-      id: 5,
+      id: 2,
       name: 'Phí điện/ <i style="color:gray">Electric Fee</i>'
     }
   ];
@@ -48,76 +57,85 @@ export const renderBillRp = async (_id) => {
   let newtbody4 = tbodys[3].querySelectorAll('tr')[0].outerHTML;
   let newtbody5 = tbodys[4].querySelectorAll('tr')[0].outerHTML;
 
-  let tong_phai_thu = 0;
   debits.forEach((debt, index) => {
-    if (Array.isArray(debt.data) && debt.data?.[0]) {
+    const name = services.find((s) => s.id === debt.serviceType)?.name;
+    tong_thanh_tien += debt.cost;
+    tong_phat_sinh += debt.summary;
+    tong_giam_tru += debt.discount;
+    if (debt.serviceType === 4) {
       newtbody1 += replaceFistText(
         ghepGiaTri({
           obj: {
-            $stt: `<b>1.${index + 1}</b>`,
-            $dich_vu_can_ho: `<b>${debt.serviceName}</b>`,
-            $thanh_tien: `<b>${formatNumber(debt.cost)}</b>`,
-            $phat_sinh: `<b>${formatNumber(debt.summary)}</b>`
+            $stt: `1.${index + 1}`,
+            $dich_vu_can_ho: `${name}`,
+            $thanh_tien: `${formatNumber(debt.cost)}`,
+            $giam_tru: `${formatNumber(debt.discount)}`,
+            $phat_sinh: `${formatNumber(debt.summary)}`
           },
           html: tbodys[0].querySelectorAll('tr')[1].outerHTML,
           format: true
         })
       );
-      debt.data.forEach((datum, i) => {
+      debt.detail?.forEach((datum) => {
         newtbody1 += ghepGiaTri({
           obj: {
             $stt: `1.${index + 1}.${i + 1}`,
-            $dich_vu_can_ho: `${datum.service_name}`,
-            $date: `${moment(datum.from_date).format('DD/MM/YYYY')} - ${moment(datum.to_date).format('DD/MM/YYYY')}`,
+            $dich_vu_can_ho: `${debt.serviceName}`,
+            $date: `${moment(datum.fromDate).format('DD/MM/YYYY')} - ${moment(datum.toDate).format('DD/MM/YYYY')}`,
             $so_luong: `${formatNumber(datum.quantity)}`,
             $don_gia: `${formatNumber(datum.price)}`,
-            $thanh_tien: `${formatNumber(datum.thanh_tien)}`,
-            $phat_sinh: `${formatNumber(datum.phat_sinh)}`
+            $thanh_tien: `${formatNumber(datum.cost)}`,
+            $phat_sinh: `${formatNumber(datum.summary)}`
           },
           html: tbodys[0].querySelectorAll('tr')[1].outerHTML,
           format: true
         });
       });
+    } else {
+      newtbody1 += replaceFistText(
+        ghepGiaTri({
+          obj: {
+            $stt: `1.${index + 1}`,
+            $dich_vu_can_ho: `${name}`,
+            $date: `${moment(debt.from_date).format('DD/MM/YYYY')} - ${moment(debt.to_date).format('DD/MM/YYYY')}`,
+            $thanh_tien: `${formatNumber(debt.cost)}`,
+            $phat_sinh: `${formatNumber(debt.summary)}`,
+            $so_luong: `${formatNumber(debt.quantity)}`,
+            $don_gia: `${formatNumber(debt.price)}`,
+            $giam_tru: `${formatNumber(debt.discount)}`,
+          },
+          html: tbodys[0].querySelectorAll('tr')[1].outerHTML,
+          format: true
+        })
+      );
     }
-    if (debt.paid)
-      newtbody3 += ghepGiaTri({
-        obj: {
-          $stt: `<b>3.${index + 1}</b>`,
-          $dich_vu_can_ho: `<b>${debt.service_name}</b>`,
-          $da_thanh_toan: `<b>${formatNumber(debt.paid)}</b>`
-        },
-        html: tbodys[2].querySelectorAll('tr')[1].outerHTML,
-        format: true
-      });
-    const phai_thu = debt.summary - debt.paid;
+    const phai_thu = debt.summary;
     tong_phai_thu += phai_thu;
-    newtbody4 += ghepGiaTri({
-      obj: {
-        $stt: `<b>4.${index + 1}</b>`,
-        $dich_vu_can_ho: `<b>${debt.service_name}</b>`,
-        $phai_thu: `<b>${formatNumber(phai_thu)}</b>`
-      },
-      html: tbodys[3].querySelectorAll('tr')[1].outerHTML,
-      format: true
-    });
   });
 
   table.innerHTML = table.querySelector('thead').outerHTML + newtbody1 + newtbody2 + newtbody3 + newtbody4 + newtbody5;
   let html = templateHtml.window.document.querySelector('body').outerHTML;
 
-  const newParams = {
-    $don_gia: formatNumber(
-      don_gia.data?.[0]?.vat ? (don_gia.data?.[0]?.price * (100 + don_gia.data?.[0]?.vat)) / 100 : don_gia.data?.[0]?.price
-    ),
-    $vat_dich_vu: don_gia.data?.[0]?.vat || 0,
-    $dien_tich: don_gia.data?.[0]?.quantity || 0,
-    $ten_toa_nha: building_place.code,
-    $tong_phai_thu: formatNumber(tong_phai_thu + no_ky_truoc),
-    $chu_ky_truong_ban: chu_ky_truong_ban,
-    $ten_truong_ban: ten_truong_ban
+  const service = debits.find((d) => d.serviceType === 1);
+  const params = {
+    $apartmentCode: apartment.name,
+    $owner: apartment.owner?.fullName,
+    $price: formatNumber(service?.price),
+    $area: formatNumber(service?.quantity),
+    $ten_du_an: project.name,
+    $tong_no_ky_truoc: formatNumber(no_ky_truoc),
+    $tong_da_thanh_toan: formatNumber(da_thanh_toan),
+    $tong_thanh_tien: formatNumber(tong_thanh_tien),
+    $tong_phat_sinh: formatNumber(tong_phat_sinh),
+    $tong_giam_tru: formatNumber(tong_giam_tru),
+    $logo1: project.avatar,
+    $month: bill.month,
+    $ngay_tao: moment(bill.createdAt).format('DD/MM/YYYY'),
+    $tong_phai_thu: formatNumber(tong_phai_thu + no_ky_truoc - da_thanh_toan)
   };
 
-  html = ghepGiaTri({ obj: { ...params, ...newParams }, html });
-  html = replaceFistText(html);
-  return { data: html };
+  html = ghepGiaTri({ obj: { ...params }, html });
+  // html = replaceFistText(html);
+  console.log(html);
+  return { data: { content: html, subject } };
 };

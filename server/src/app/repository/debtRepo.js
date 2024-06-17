@@ -158,7 +158,7 @@ export class Debt {
     else if ([2, 3].includes(this.serviceType)) value = await this.calcElectricWaterFees();
     else if (this.serviceType === 4) value = await this.calcVehicleFees();
     else value = await this.calcOtherFees();
-    const { mess, quantity, price, cost } = value;
+    const { mess, quantity, price, cost, data } = value;
     if (mess) return { status: false, mess };
     if (cost < this.discount) return { status: false, mess: `Giảm trừ không thể lớn hơn thành tiền` };
     const summary = cost - this.discount;
@@ -174,7 +174,7 @@ export class Debt {
         customerInfo: { name: this.apartment.owner?.fullName }
       });
     } else await updateBillMd({ _id: this.bill._id }, { amount: this.bill.amount + summary });
-    await createDebitMd({ ...object, quantity, price, cost, summary, bill: this.bill?._id });
+    await createDebitMd({ ...object, quantity, price, cost, summary, data, bill: this.bill?._id });
     return { status: true };
   }
 }
