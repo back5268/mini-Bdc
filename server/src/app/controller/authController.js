@@ -73,16 +73,14 @@ export const confirmPassword = async (req, res) => {
   try {
     const { error, value } = validateData(confirmPasswordValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { username, email, otp, password } = value;
-    const checkUser = await detailUserMd({ username, email });
-    if (!checkUser)
-      return res.status(400).json({ status: false, mess: `Không tìm thấy người dùng có tài khoản ${username} và email ${email}!` });
-    const checkOtp = await getDetailUserVerifyMd({ type: 2, otp, email, username, expiredAt: { $gte: new Date() } });
-    if (!checkOtp) return res.status(400).json({ status: false, mess: 'Mã xác nhận không đúng hoặc đã hết hạn!' });
+    const { username, otp, password } = value;
+    const checkUser = await detailUserMd({ username });
+    if (!checkUser) return res.status(400).json({ status: false, mess: `Không tìm thấy người dùng có tài khoản ${username}!` });
+    if (!(checkUser.otp === otp))
+      return res.status(400).json({ status: false, mess: 'Mã xác nhận không đúng hoặc đã hết hạn!' });
     const salt = await bcrypt.genSalt(10);
     const newPassword = await bcrypt.hash(password, salt);
-    const data = await updateUserMd({ _id: checkUser._id }, { password: newPassword, token: '' });
-    await deleteUserVerifyMd({ _id: checkOtp._id });
+    const data = await updateUserMd({ _id: checkUser._id }, { password: newPassword, token: '', otp: '' });
     res.status(201).json({ status: true, data });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });

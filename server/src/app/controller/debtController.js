@@ -60,7 +60,6 @@ export const getListDebit = async (req, res) => {
       if (!where.createdAt) where.createdAt.$lte = to;
     }
     const documents = await listDebitMd(where, page, limit, [
-      { path: 'bill', select: 'code' },
       { path: 'apartment', select: 'name owner' }
     ]);
     const total = await countDebitMd(where);

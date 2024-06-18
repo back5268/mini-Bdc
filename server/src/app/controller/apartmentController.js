@@ -4,19 +4,15 @@ import { countApartmentMd, createApartmentMd, deleteApartmentMd, detailApartment
 import { validateData } from '@utils';
 
 export const getListApartment = async (req, res) => {
-  try {
-    const { error, value } = validateData(listApartmentValid, req.query);
-    if (error) return res.status(400).json({ status: false, mess: error });
-    const { page, limit, keySearch, status } = value;
-    const where = { project: req.project?._id };
-    if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }, { code: { $regex: keySearch, $options: 'i' } }];
-    if (status) where.status = status;
-    const documents = await listApartmentMd(where, page, limit, [{ path: 'owner', select: 'fullName' }]);
-    const total = await countApartmentMd(where);
-    res.json({ status: true, data: { documents, total } });
-  } catch (error) {
-    res.status(500).json({ status: false, mess: error.toString() });
-  }
+  const { error, value } = validateData(listApartmentValid, req.query);
+  if (error) return res.status(400).json({ status: false, mess: error });
+  const { page, limit, keySearch, status } = value;
+  const where = { project: req.project?._id };
+  if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }, { code: { $regex: keySearch, $options: 'i' } }];
+  if (status) where.status = status;
+  const documents = await listApartmentMd(where, page, limit, [{ path: 'owner', select: 'fullName' }]);
+  const total = await countApartmentMd(where);
+  res.json({ status: true, data: { documents, total } });
 };
 
 export const getListApartmentInfo = async (req, res) => {

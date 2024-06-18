@@ -1,5 +1,6 @@
+import { convertParams, sendMail } from '@lib/node-mailer';
 import { addNewsValid, listNewsValid, updateNewsValid, detailNewsValid } from '@lib/validation';
-import { countNewMd, createNewMd, deleteNewMd, detailNewMd, listNewMd, updateNewMd } from '@models';
+import { countNewMd, createNewMd, deleteNewMd, detailNewMd, detailTemplateMd, listNewMd, listUserMd, updateNewMd } from '@models';
 import { validateData } from '@utils';
 
 export const getListNews = async (req, res) => {
@@ -74,7 +75,30 @@ export const updateNews = async (req, res) => {
     const news = await detailNewMd({ _id });
     if (!news) return res.status(400).json({ status: false, mess: 'Tin tức không tồn tại!' });
 
-    const data = await updateNewMd({ _id }, { subject, status, content, time, hashtag });
+    const data = await updateNewMd({ _id }, { subject, status, content, hashtag });
+    res.status(201).json({ status: true, data });
+  } catch (error) {
+    res.status(500).json({ status: false, mess: error.toString() });
+  }
+};
+
+export const sendNews = async (req, res) => {
+  try {
+    const { error, value } = validateData(detailNewsValid, req.body);
+    if (error) return res.status(400).json({ status: false, mess: error });
+    const { _id } = value;
+
+    const data = await detailNewMd({ _id });
+    if (!data) return res.status(400).json({ status: false, mess: 'Tin tức không tồn tại!' });
+    const template = await detailTemplateMd({ type: 2, status: 1 });
+    if (!template) return res.status(400).json({ status: false, mess: 'Chưa có mẫu gửi thông báo!' });
+
+    const residents = await listUserMd({ type: 'resident', project: req.project?._id, status: 1 }, false, false, false, 'fullName email');
+    for (const resident of residents) {
+      const html = convertParams({ $ten_cu_dan: resident.fullName, $noi_dung: data.content }, template.content);
+      await sendMail({ to: resident.email, subject: data.subject, html, project: req.project?._id, type: 2 });
+    }
+
     res.status(201).json({ status: true, data });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });

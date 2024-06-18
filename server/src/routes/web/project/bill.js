@@ -7,5 +7,5 @@ billRouter.get('/getListBill', getListBill);
 billRouter.put('/updateStatusBill', updateStatusBill);
 billRouter.get('/detailBill', detailBill);
 billRouter.get('/renderBill', renderBill);
-billRouter.get('/sendBill', sendBill);
+billRouter.post('/sendBill', sendBill);
 billRouter.delete('/deleteBill', deleteBill);

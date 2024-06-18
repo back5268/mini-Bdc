@@ -64,7 +64,7 @@ const routes = [
   { path: '/bills', element: Bills, layout: true },
   { path: '/data-browses', element: DataBrowses, layout: true },
   { path: '/notifications', element: Notifications, layout: true },
-  { path: '/bill-print/:_id', element: PrintBill, layout: true },
+  { path: '/print/:_id', element: PrintBill },
 
   { path: '/receipts', element: Receipts, layout: true },
 

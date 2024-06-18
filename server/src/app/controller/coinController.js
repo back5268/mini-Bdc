@@ -16,8 +16,8 @@ export const getListCoin = async (req, res) => {
 
     const newData = [];
     apartments.forEach((a) => {
-      const item = data.find((d) => d.apartment === a._id);
-      if (!newData.find((n) => n._id === a._id)) newData.push({ _id: a._id, name: a.name, code: a.code, coin: item?.coin || 0 });
+      const item = data.find((d) => String(d.apartment) === String(a._id));
+      if (!newData.find((n) => n._id === a._id)) newData.push({ _id: a._id, name: a.name, code: a.code, coin: item?.coinAfter || 0 });
     });
 
     res.json({ status: true, data: newData });

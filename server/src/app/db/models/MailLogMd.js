@@ -12,7 +12,7 @@ class MailLogMd extends ModelBase {
 }
 
 MailLogMd.init('MailLog', {
-  project: { type: String, required: true },
+  project: { type: String },
   to: { type: String, required: true },
   subject: { type: String, required: true },
   content: { type: String, required: true },
@@ -20,7 +20,7 @@ MailLogMd.init('MailLog', {
     type: Number,
     enum: [1, 2, 3, 4, 5, 6],
     required: true,
-    description: '1: Quên mật khẩu, 2: Thêm mới người dùng, 3: Thông báo, 4: Bảng kê, 5: Phiếu thu, 6: Phiếu chi'
+    description: '1: Quên mật khẩu, 2: Thông báo, 3: Bảng kê, 4: Phiếu'
   },
   status: {
     type: Number,

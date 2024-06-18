@@ -14,11 +14,12 @@ export const convertParams = (params, html) => {
 };
 
 export const sendMailUse = async ({ type, params, to }) => {
-  const template = await detailTemplateMd({ type, status: 1 }) || { subject: "[Mini BDC] - Quên mật khẩu!", content: "[Decor Star] - Quên mật khẩu!" }
+  const template = await detailTemplateMd({ type, status: 1 })
   if (template) {
     const subject = convertParams(params, template.subject);
     const html = convertParams(params, template.content);
-    return await sendMail({ to, subject, html });
+    console.log(html);
+    return await sendMail({ to, subject, html, type });
   } else return { status: false, mess: "Chưa có mẫu gửi thông báo!" }
 };
 
@@ -27,5 +28,5 @@ export const sendMailSignup = ({ to, username, otp }) => {
 };
 
 export const sendMailForgotPassword = ({ to, username, otp }) => {
-  return sendMailUse({ to, type: 2, params: { $username: username, $otp: otp } });
+  return sendMailUse({ to, type: 1, params: { $username: username, $otp: otp } });
 };

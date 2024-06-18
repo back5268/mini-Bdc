@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { DataFilter } from '@components/base';
+import { Cardz, Hrz, Imagez, InputCalendarz } from '@components/core';
+import { useState } from 'react';
 import BarChart from './BarChart';
 import LineChart from './LineChart';
 import PieChart from './PieChart';
-import { Cardz, Hrz, Imagez, InputCalendarz } from '@components/core';
-import { DataFilter } from '@components/base';
 
 const Ticket = (props) => {
   const { image, amount, label } = props;
@@ -22,10 +22,10 @@ const Ticket = (props) => {
 };
 
 const items = [
-  { image: '/images/logo.png', amount: 10, label: 'Đơn hàng' },
-  { image: '/images/logo.png', amount: 10, label: 'Đèn ngủ DIY' },
-  { image: '/images/logo.png', amount: 10, label: 'Đèn ngủ 3D' },
-  { image: '/images/logo.png', amount: 10, label: 'Tranh DIY' }
+  { image: '/images/logo.png', amount: 10, label: 'Dự án' },
+  { image: '/images/logo.png', amount: 10, label: 'Căn hộ' },
+  { image: '/images/logo.png', amount: 10, label: 'Cư dân' },
+  { image: '/images/logo.png', amount: 10, label: 'Phương tiện' }
 ];
 
 const Dashboard = () => {

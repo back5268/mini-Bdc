@@ -30,8 +30,8 @@ const PrintBill = () => {
 
   return (
     <div
-      className="flex justify-content-center align-items-center "
-      style={{ pageBreakInside: 'avoid', backgroundColor: '#FFF', fontFamily: 'sans-serif !important', fontSize: '14px', color: 'black' }}
+      className="flex justify-center items-center"
+      style={{ pageBreakInside: 'avoid', backgroundColor: '#FFF', fontFamily: 'sans-serif !important' }}
     >
       {data && typeof data === 'string' && <div style={{ pageBreakAfter: 'always' }} dangerouslySetInnerHTML={{ __html: data }} />}
     </div>

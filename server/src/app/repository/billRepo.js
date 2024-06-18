@@ -14,7 +14,7 @@ export const renderBillRp = async (_id) => {
   const debits = await listDebitMd({ bill: bill._id });
 
   const project = await detailProjectMd({ _id: bill.project });
-  const apartment = await detailApartmentMd({ _id: bill.apartment }, [{ path: 'owner', select: 'fullName' }]);
+  const apartment = await detailApartmentMd({ _id: bill.apartment }, [{ path: 'owner', select: 'fullName email' }]);
 
   const bills = await listBillMd({ month: { $lt: bill.month }, apartment: bill.apartment });
   let no_ky_truoc = 0,
@@ -76,16 +76,15 @@ export const renderBillRp = async (_id) => {
           format: true
         })
       );
-      debt.detail?.forEach((datum) => {
+      debt.data?.forEach((datum, i) => {
         newtbody1 += ghepGiaTri({
           obj: {
             $stt: `1.${index + 1}.${i + 1}`,
-            $dich_vu_can_ho: `${debt.serviceName}`,
-            $date: `${moment(datum.fromDate).format('DD/MM/YYYY')} - ${moment(datum.toDate).format('DD/MM/YYYY')}`,
-            $so_luong: `${formatNumber(datum.quantity)}`,
-            $don_gia: `${formatNumber(datum.price)}`,
-            $thanh_tien: `${formatNumber(datum.cost)}`,
-            $phat_sinh: `${formatNumber(datum.summary)}`
+            $dich_vu_can_ho: `${datum.name}`,
+            $date: `${moment(debt.fromDate).format('DD/MM/YYYY')} - ${moment(debt.toDate).format('DD/MM/YYYY')}`,
+            $so_luong: `${formatNumber(1)}`,
+            $don_gia: `${formatNumber(datum.amount)}`,
+            $thanh_tien: `${formatNumber(datum.amount)}`,
           },
           html: tbodys[0].querySelectorAll('tr')[1].outerHTML,
           format: true
@@ -97,7 +96,7 @@ export const renderBillRp = async (_id) => {
           obj: {
             $stt: `1.${index + 1}`,
             $dich_vu_can_ho: `${name}`,
-            $date: `${moment(debt.from_date).format('DD/MM/YYYY')} - ${moment(debt.to_date).format('DD/MM/YYYY')}`,
+            $date: `${moment(debt.fromDate).format('DD/MM/YYYY')} - ${moment(debt.toDate).format('DD/MM/YYYY')}`,
             $thanh_tien: `${formatNumber(debt.cost)}`,
             $phat_sinh: `${formatNumber(debt.summary)}`,
             $so_luong: `${formatNumber(debt.quantity)}`,
@@ -135,7 +134,6 @@ export const renderBillRp = async (_id) => {
   };
 
   html = ghepGiaTri({ obj: { ...params }, html });
-  // html = replaceFistText(html);
-  console.log(html);
-  return { data: { content: html, subject } };
+  html = replaceFistText(html);
+  return { data: { content: html, subject, apartment } };
 };

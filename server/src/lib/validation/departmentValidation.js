@@ -1,7 +1,8 @@
 export const listDepartmentValid = {
   page: 'number',
   limit: 'number',
-  keySearch: { type: 'string', allowNull: true }
+  keySearch: { type: 'string', allowNull: true },
+  status: { type: 'number', allowNull: true },
 };
 
 export const detailDepartmentValid = {

@@ -1,5 +1,6 @@
+import { sendMail } from '@lib/node-mailer';
 import { detailBillValid, listBillValid, updateStatusBillValid } from '@lib/validation';
-import { countBillMd, deleteBillMd, detailBillMd, listBillMd, updateBillMd, updateManyDebitMd } from '@models';
+import { countBillMd, deleteBillMd, detailBillMd, listBillMd, listDebitMd, updateBillMd, updateManyDebitMd } from '@models';
 import { renderBillRp } from '@repository';
 import { validateData } from '@utils';
 
@@ -47,7 +48,9 @@ export const detailBill = async (req, res) => {
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id } = value;
     const where = { project: req.project?._id, _id };
-    res.json({ status: true, data: await detailBillMd(where, [{ path: 'apartment', select: 'name code' }, { path: 'debits' }]) });
+    const bill = await detailBillMd(where, [{ path: 'apartment', select: 'name code' }]);
+    const debits = await listDebitMd({ bill: bill._id });
+    res.json({ status: true, data: { ...bill._doc, debits } });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }
@@ -77,7 +80,7 @@ export const renderBill = async (req, res) => {
     const { _id } = value;
     const { mess, data } = await renderBillRp(_id);
     if (mess) return res.status(400).json({ status: false, mess });
-    res.json({ status: true, data });
+    res.json({ status: true, data: data?.content });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }
@@ -85,12 +88,16 @@ export const renderBill = async (req, res) => {
 
 export const sendBill = async (req, res) => {
   try {
-    const { error, value } = validateData(detailBillValid, req.query);
+    const { error, value } = validateData(detailBillValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id } = value;
     const { mess, data } = await renderBillRp(_id);
     if (mess) return res.status(400).json({ status: false, mess });
-    res.json({ status: true, data });
+    const { subject, content, apartment } = data;
+    console.log(apartment);
+    await sendMail({ to: apartment?.owner?.email, subject, html: content, project: req.project?._id, type: 4 });
+    await updateBillMd({ _id }, { status: 3 });
+    res.json({ status: true, data: {} });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }

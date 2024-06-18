@@ -1,4 +1,4 @@
-import { deleteResidentApi, getListResidentApi, updateResidentApi } from '@api';
+import { deleteResidentApi, getListResidentApi, getListResidentInfoApi, updateResidentApi } from '@api';
 import { DataTable, FormList, TimeBody, DataFilter, Body } from '@components/base';
 import { Dropdownz, Hrz, Inputz } from '@components/core';
 import { genders, statuses } from '@constant';
@@ -13,7 +13,7 @@ const Resindents = () => {
   const [params, setParams] = useState(initParams);
   const [filter, setFilter] = useState({});
   const { isLoading, data } = useGetApi(getListResidentApi, params, 'residents');
-  const { apartments } = useDataState();
+  const { apartments, setResidents } = useDataState();
   const navigate = useNavigate();
 
   const columns = [
@@ -25,6 +25,13 @@ const Resindents = () => {
     { label: 'Ngày sinh', body: (e) => TimeBody(e.birthday, 'date') },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) }
   ];
+
+  const onSuccess = async () => {
+    const response = await getListResidentInfoApi();
+    if (response) {
+      setResidents(response);
+    }
+  };
 
   return (
     <FormList title="Danh sách cư dân">
@@ -65,6 +72,7 @@ const Resindents = () => {
             navigate('/residents/create');
           }
         }}
+        onSuccess={onSuccess}
       />
     </FormList>
   );

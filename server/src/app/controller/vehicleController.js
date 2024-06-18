@@ -1,14 +1,14 @@
 import { uploadFileToFirebase } from '@lib/firebase';
 import { addVehicleValid, detailVehicleValid, listVehicleValid, updateVehicleValid } from '@lib/validation';
 import {
-  createVehicleMd,
   countVehicleMd,
+  createVehicleMd,
   deleteVehicleMd,
+  detailApartmentMd,
   detailVehicleMd,
   listVehicleMd,
-  updateVehicleMd,
   updateApartmentMd,
-  detailApartmentMd
+  updateVehicleMd
 } from '@models';
 import { validateData } from '@utils';
 
@@ -65,6 +65,7 @@ export const deleteVehicle = async (req, res) => {
 
 export const addVehicle = async (req, res) => {
   try {
+    console.log(req.body);
     const { error, value } = validateData(addVehicleValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { licensePlate, apartment } = value;

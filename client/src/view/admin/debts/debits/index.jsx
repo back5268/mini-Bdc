@@ -1,12 +1,11 @@
-import { deleteDebitApi, getListDebitApi, getListMonthApi, renderReceiptApi, sendReceiptApi } from '@api';
+import { deleteDebitApi, getListDebitApi, getListMonthApi } from '@api';
 import { DataTable, FormList, NumberBody, DataFilter, Body } from '@components/base';
 import { Dropdownz, Hrz, InputCalendarz } from '@components/core';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
 import { useState } from 'react';
 import { serviceType } from '@constant';
-import { useDataState, useToastState } from '@store';
-import { PrinterIcon } from '@heroicons/react/24/outline';
+import { useDataState } from '@store';
 
 const Debits = () => {
   const initParams = useGetParams();
@@ -15,10 +14,9 @@ const Debits = () => {
   const { isLoading, data } = useGetApi(getListDebitApi, params, 'debits');
   const { data: months } = useGetApi(getListMonthApi, {}, 'months');
   const { apartments } = useDataState();
-  const { showToast } = useToastState();
 
   const columns = [
-    { label: 'Bảng kê', body: (e) => e.bill?.code },
+    { label: 'Bảng kê', field: 'bill' },
     { label: 'Tên dịch vụ', field: 'serviceName' },
     { label: 'Loại dịch vụ', body: (e) => Body(serviceType, e.serviceType) },
     { label: 'Tháng', field: 'month' },
@@ -27,21 +25,6 @@ const Debits = () => {
     { label: 'Số lượng', body: (e) => NumberBody(e.quantity) },
     { label: 'Thành tiền', body: (e) => NumberBody(e.summary) }
   ];
-
-  const onSendReceipt = async (item) => {
-    const response = await sendReceiptApi({ _ids: item._id });
-    if (response) {
-      showToast({ title: 'Gửi thông báo thành công', severity: 'success' });
-      setParams((pre) => ({ ...pre, render: !pre.render }));
-    }
-  };
-
-  const onRenderReceipt = async (item) => {
-    const response = await renderReceiptApi({ _id: item._id });
-    if (response) {
-      window.open(`/print/detail/${item._id}?type=receipt`, '_blank');
-    }
-  };
 
   return (
     <FormList title="Danh sách bảng kê dịch vụ">
@@ -75,17 +58,7 @@ const Debits = () => {
         setParams={setParams}
         baseActions={['delete']}
         actionsInfo={{
-          deleteApi: deleteDebitApi,
-          moreActions: [
-            {
-              icon: PrinterIcon,
-              onClick: (item) => onRenderReceipt(item)
-            },
-            {
-              icon: PrinterIcon,
-              onClick: (item) => onSendReceipt(item)
-            }
-          ]
+          deleteApi: deleteDebitApi
         }}
       />
     </FormList>
