@@ -39,7 +39,7 @@ export const permissionMiddleware = async (req, res, next) => {
     const method = req.method;
     const action = method === 'GET' ? 'read' : method === 'POST' ? 'create' : method === 'PUT' ? 'update' : 'delete';
     const checkPath = permissionz.find((p) => p.route === '/' + path.split('/')?.[1]);
-    if (!baseUrl.includes('/auth') && (!checkPath || !checkPath.actions.includes(action)))
+    if (!baseUrl.includes('/auth') && !path.includes('/tools') && (!checkPath || !checkPath.actions.includes(action)))
       return res.status(400).json({ status: false, mess: 'Bạn không có quyền thực hiện tác vụ này!' });
     next();
   } catch (error) {
