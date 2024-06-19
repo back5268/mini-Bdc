@@ -10,7 +10,6 @@ import {
   countServiceMd,
   createServiceMd,
   deleteServiceMd,
-  detailPriceMd,
   detailServiceMd,
   listApartmentMd,
   listServiceMd,
@@ -22,11 +21,12 @@ export const getListService = async (req, res) => {
   try {
     const { error, value } = validateData(listServiceValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { page, limit, keySearch, type, status } = value;
+    const { page, limit, keySearch, type, status, apartment } = value;
     const where = { project: req.project?._id };
     if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }, { code: { $regex: keySearch, $options: 'i' } }];
     if (type) where.type = type;
     if (status || status === 0) where.status = status;
+    if (apartment) where.apartments = { $elemMatch: { $eq: apartment } }
     const documents = await listServiceMd(where, page, limit);
     const total = await countServiceMd(where);
     res.json({ status: true, data: { documents, total } });

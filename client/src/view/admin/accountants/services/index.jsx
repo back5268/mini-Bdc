@@ -8,12 +8,12 @@ import { useDataState } from '@store';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Services = () => {
+const Services = ({ apartment }) => {
   const navigate = useNavigate();
   const initParams = useGetParams();
   const [params, setParams] = useState(initParams);
   const [filter, setFilter] = useState({});
-  const { isLoading, data } = useGetApi(getListServiceApi, params, 'services');
+  const { isLoading, data } = useGetApi(getListServiceApi, { apartment, ...params }, 'services');
   const { apartments, setServices } = useDataState();
 
   const columns = [
@@ -46,27 +46,38 @@ const Services = () => {
   };
 
   return (
-    <FormList title="Danh sách dịch vụ">
-      <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="md:w-6/12">
-        <Inputz
-          value={filter.keySearch}
-          onChange={(e) => setFilter({ ...filter, keySearch: e.target.value })}
-          label="Tìm kiếm theo tên, mã dịch vụ"
-        />
-        <Dropdownz value={filter.type} onChange={(e) => setFilter({ ...filter, type: e })} options={serviceType} label="Loại dịch vụ" />
-        <Dropdownz value={filter.status} onChange={(e) => setFilter({ ...filter, status: e })} options={statuses} label="Trạng thái" />
-      </DataFilter>
+    <FormList title={apartment ? '' : 'Danh sách dịch vụ'}>
+      {!apartment && (
+        <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="!w-full">
+          <Inputz
+            value={filter.keySearch}
+            onChange={(e) => setFilter({ ...filter, keySearch: e.target.value })}
+            label="Tìm kiếm theo tên, mã dịch vụ"
+          />
+          <Dropdownz value={filter.type} onChange={(e) => setFilter({ ...filter, type: e })} options={serviceType} label="Loại dịch vụ" />
+          <Dropdownz
+            value={filter.apartment}
+            onChange={(e) => setFilter({ ...filter, apartment: e })}
+            options={apartments}
+            optionLabel="name"
+            optionValue="_id"
+            label="Căn hộ"
+          />
+          <Dropdownz value={filter.status} onChange={(e) => setFilter({ ...filter, status: e })} options={statuses} label="Trạng thái" />
+        </DataFilter>
+      )}
       <Hrz />
       <DataTable
+        hideParams={Boolean(apartment)}
         isLoading={isLoading}
         data={data?.documents}
         total={data?.total}
         columns={columns}
         params={params}
         setParams={setParams}
-        baseActions={['create', 'detail', 'delete']}
+        baseActions={apartment ? ['create', 'detail'] : ['create', 'detail', 'delete']}
         actionsInfo={{ onViewDetail: (item) => navigate(`/services/detail/${item._id}`), deleteApi: deleteServiceApi }}
-        statusInfo={{ changeStatusApi: updateStatusServiceApi }}
+        statusInfo={{ changeStatusApi: apartment ? false : updateStatusServiceApi }}
         headerInfo={{
           onCreate: () => navigate('/services/create')
         }}

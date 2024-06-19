@@ -3,6 +3,7 @@ export const listServiceValid = {
   limit: 'number',
   keySearch: { type: 'string', allowNull: true },
   type: { type: 'number', allowNull: true },
+  apartment: { type: 'string', allowNull: true },
   status: { type: 'number', allowNull: true }
 };
 

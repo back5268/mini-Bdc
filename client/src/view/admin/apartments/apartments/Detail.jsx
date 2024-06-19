@@ -1,6 +1,6 @@
 import { addApartmentApi, detailApartmentApi, getListApartmentInfoApi, updateApartmentApi } from '@api';
 import { FormDetail } from '@components/base';
-import { DropdownForm, InputForm, TextAreaz } from '@components/core';
+import { DropdownForm, Hrz, InputForm, Tabz, TextAreaz } from '@components/core';
 import { UploadFiles } from '@components/shared';
 import { apartmentStatus } from '@constant';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,6 +11,8 @@ import { useDataState } from '@store';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import { Residents } from '..';
+import { ElectricWater, Services, Vehicles } from '@view/admin/accountants';
 
 const defaultValues = {
   name: '',
@@ -29,6 +31,7 @@ const DetailApartment = () => {
   const { data: item } = useGetApi(detailApartmentApi, { _id }, 'apartment', isUpdate);
   const [images, setImages] = useState([]);
   const { setApartments } = useDataState();
+  const [activeTab, setActiveTab] = useState('residents');
 
   const {
     register,
@@ -73,6 +76,13 @@ const DetailApartment = () => {
     if (apartments) setApartments(apartments);
   };
 
+  const data = [
+    { label: 'Danh sách cư dân', value: 'residents', children: () => Residents({ apartment: _id }) },
+    { label: 'Danh sách phương tiện', value: 'vehicles', children: () => Vehicles({ apartment: _id }) },
+    { label: 'Chỉ số điện nước', value: 'electricWater', children: () => ElectricWater({ apartment: _id }) },
+    { label: 'Dịch vụ sử dụng', value: 'services', children: () => Services({ apartment: _id }) }
+  ];
+
   return (
     <FormDetail
       type="nomal"
@@ -107,6 +117,15 @@ const DetailApartment = () => {
         <TextAreaz id="description" label="Mô tả" value={watch('description')} setValue={(e) => setValue('description', e)} />
         <UploadFiles label="Hình ảnh căn hộ" type="image" files={images} setFiles={setImages} />
       </div>
+      {Boolean(_id) && (
+        <div className="flex flex-col gap-2 m-2 w-full mt-16">
+          <h2 className="font-semibold uppercase leading-normal mb-2">Thông tin căn hộ</h2>
+          <Hrz />
+          <div className="card">
+            <Tabz data={data} activeTab={activeTab} setActiveTab={setActiveTab} />
+          </div>
+        </div>
+      )}
     </FormDetail>
   );
 };

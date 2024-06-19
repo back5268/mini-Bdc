@@ -26,7 +26,7 @@ const routes = [
   { path: '/auth/signin', element: SignIn, public: true },
   { path: '/auth/forgot-password', element: ForgotPassword, public: true },
 
-  { path: '/', element: Report, layout: true },
+  { path: '/', element: Project, layout: true },
   { path: '/project-info', element: Project, layout: true },
 
   // ==================== Phân quền ====================
