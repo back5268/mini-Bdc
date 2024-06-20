@@ -1,3 +1,4 @@
+import { serviceType } from '@constant';
 import {
   addServiceValid,
   checkApartmentValid,
@@ -21,12 +22,11 @@ export const getListService = async (req, res) => {
   try {
     const { error, value } = validateData(listServiceValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { page, limit, keySearch, type, status, apartment } = value;
+    const { page, limit, type, status, apartment } = value;
     const where = { project: req.project?._id };
-    if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }, { code: { $regex: keySearch, $options: 'i' } }];
     if (type) where.type = type;
     if (status || status === 0) where.status = status;
-    if (apartment) where.apartments = { $elemMatch: { $eq: apartment } }
+    if (apartment) where.apartments = { $elemMatch: { $eq: apartment } };
     const documents = await listServiceMd(where, page, limit);
     const total = await countServiceMd(where);
     res.json({ status: true, data: { documents, total } });
@@ -106,17 +106,11 @@ export const addService = async (req, res) => {
   try {
     const { error, value } = validateData(addServiceValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { name, code, type, vehicleType } = value;
-
-    const checkName = await detailServiceMd({ name });
-    if (checkName) return res.status(400).json({ status: false, mess: 'Tên dịch vụ đã tồn tại!' });
-
-    const checkCode = await detailServiceMd({ code });
-    if (checkCode) return res.status(400).json({ status: false, mess: 'Mã dịch vụ đã tồn tại!' });
+    const { type, vehicleType } = value;
     if (type === 4 && !vehicleType) res.status(400).json({ status: false, mess: 'Loại phương tiện không được bỏ trống!' });
 
     value.project = req.project?._id;
-    const data = await createServiceMd({ by: req.userInfo._id, ...value });
+    const data = await createServiceMd({ by: req.userInfo._id, ...value, name: serviceType.find((s) => s.key === type)?.name });
     res.status(201).json({ status: true, data });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
@@ -127,20 +121,10 @@ export const updateService = async (req, res) => {
   try {
     const { error, value } = validateData(updateServiceValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { _id, name, code, type, vehicleType } = value;
+    const { _id, type, vehicleType } = value;
 
     const service = await detailServiceMd({ _id });
     if (!service) return res.status(400).json({ status: false, mess: 'Dịch vụ không tồn tại!' });
-
-    if (name) {
-      const checkName = await detailServiceMd({ name });
-      if (checkName) return res.status(400).json({ status: false, mess: 'Tên dịch vụ đã tồn tại!' });
-    }
-
-    if (code) {
-      const checkCode = await detailServiceMd({ code });
-      if (checkCode) return res.status(400).json({ status: false, mess: 'Mã dịch vụ đã tồn tại!' });
-    }
 
     if (type === 4 && !vehicleType) res.status(400).json({ status: false, mess: 'Loại phương tiện không được bỏ trống!' });
     const data = await updateServiceMd({ _id }, { updateBy: req.userInfo._id, ...value });

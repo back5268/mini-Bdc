@@ -1,7 +1,6 @@
 export const listServiceValid = {
   page: 'number',
   limit: 'number',
-  keySearch: { type: 'string', allowNull: true },
   type: { type: 'number', allowNull: true },
   apartment: { type: 'string', allowNull: true },
   status: { type: 'number', allowNull: true }
@@ -12,8 +11,6 @@ export const detailServiceValid = {
 };
 
 export const addServiceValid = {
-  name: 'string',
-  code: 'string',
   type: 'number',
   prices: 'json',
   recipe: 'number',

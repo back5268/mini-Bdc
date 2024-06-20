@@ -2,18 +2,16 @@ import { ServiceValidation } from '@lib/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { addServiceApi, checkApartmentApi, detailServiceApi, getListPriceInfoApi, updateServiceApi } from '@api';
+import { addServiceApi, checkApartmentApi, detailServiceApi, updateServiceApi } from '@api';
 import { DataTable, FormDetail } from '@components/base';
 import { checkEqualProp } from '@lib/helper';
-import { Buttonz, DropdownForm, Hrz, InputForm, Inputz, MultiSelectz } from '@components/core';
+import { Buttonz, DropdownForm, Hrz, InputForm, MultiSelectz } from '@components/core';
 import { useParams } from 'react-router-dom';
 import { useGetApi } from '@lib/react-query';
 import { priceType, serviceType, vehicleType } from '@constant';
 import Price from '../prices/Price';
 
 const defaultValues = {
-  name: '',
-  code: '',
   type: '',
   price: '',
   vehicleType: '',
@@ -114,8 +112,6 @@ const DetailService = () => {
       handleSubmit={handleSubmit}
     >
       <div className="flex flex-wrap w-full">
-        <InputForm id="name" label="Tên dịch vụ (*)" errors={errors} register={register} />
-        <InputForm id="code" label="Mã dịch vụ (*)" errors={errors} register={register} />
         <DropdownForm
           id="type"
           label="Loại dịch vụ (*)"

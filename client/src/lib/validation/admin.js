@@ -47,8 +47,6 @@ export const ApartmentValidation = yup.object({
   floor: yup.number().required('Tầng không được bỏ trống!')
 });
 export const ServiceValidation = yup.object({
-  name: yup.string().required('Tên dịch vụ không được bỏ trống!'),
-  code: yup.string().required('Mã dịch vụ không được bỏ trống!'),
   type: yup.string().required('Loại dịch vụ không được bỏ trống!'),
   recipe: yup.string().required('Loại bảng giá không được bỏ trống!')
 });

@@ -24,7 +24,7 @@ ServiceMd.init('Service', {
   by: { type: ObjectId, ref: 'User', required: true },
   updateBy: { type: ObjectId, ref: 'User' },
   name: { type: String, required: true },
-  code: { type: String, required: true },
+  code: { type: String },
   type: {
     type: Number,
     enum: [1, 2, 3, 4, 5],

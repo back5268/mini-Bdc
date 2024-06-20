@@ -17,8 +17,6 @@ const Services = ({ apartment }) => {
   const { apartments, setServices } = useDataState();
 
   const columns = [
-    { label: 'Tên dịch vụ', field: 'name' },
-    { label: 'Mã dịch vụ', field: 'code' },
     { label: 'Loại dịch vụ', body: (e) => Body(serviceType, e.type) },
     { label: 'Loại phương tiện', body: (e) => Body(vehicleType, e.vehicleType) },
     {
@@ -48,12 +46,7 @@ const Services = ({ apartment }) => {
   return (
     <FormList title={apartment ? '' : 'Danh sách dịch vụ'}>
       {!apartment && (
-        <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="!w-full">
-          <Inputz
-            value={filter.keySearch}
-            onChange={(e) => setFilter({ ...filter, keySearch: e.target.value })}
-            label="Tìm kiếm theo tên, mã dịch vụ"
-          />
+        <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="md:w-6/12">
           <Dropdownz value={filter.type} onChange={(e) => setFilter({ ...filter, type: e })} options={serviceType} label="Loại dịch vụ" />
           <Dropdownz
             value={filter.apartment}
