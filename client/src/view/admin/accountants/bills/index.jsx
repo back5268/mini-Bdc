@@ -9,17 +9,17 @@ import { useDataState, useToastState } from '@store';
 import DetaiBill from './Detail';
 import { PrinterIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
-const Billz = ({ type = 'bill' }) => {
+const Billz = ({ type = 'bill', apartment }) => {
   const initParams = useGetParams();
   const [params, setParams] = useState(initParams);
   const [filter, setFilter] = useState({});
   const [select, setSelect] = useState([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const title = type === 'bill' ? 'bảng kê' : type === 'dataBrowses' ? 'duyệt số liệu' : 'gửi thông báo';
-  const status = type === 'bill' ? [3, 4, 5] : type === 'dataBrowses' ? [1] : [2];
+  const title = type ? (type === 'bill' ? 'bảng kê' : type === 'dataBrowses' ? 'duyệt số liệu' : 'gửi thông báo') : 'bảng kê';
+  const status = type ? (type === 'bill' ? [3, 4, 5] : type === 'dataBrowses' ? [1] : [2]) : [1, 2, 3, 4, 5];
   const className = type === 'bill' ? 'md:w-full lg:w-6/12' : 'md:w-6/12 lg:w-9/12';
-  const { isLoading, data } = useGetApi(getListBillApi, { ...params, status }, 'bills');
+  const { isLoading, data } = useGetApi(getListBillApi, { apartment, ...params, status }, 'bills');
   const { data: months } = useGetApi(getListMonthApi, {}, 'months');
   const { apartments } = useDataState();
   const { showToast } = useToastState();
@@ -71,31 +71,39 @@ const Billz = ({ type = 'bill' }) => {
   };
 
   return (
-    <FormList title={`Danh sách ${title}`}>
+    <FormList title={apartment ? '' : `Danh sách ${title}`}>
       <DetaiBill open={open} setOpen={setOpen} setParams={setParams} data={data?.documents} />
-      <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className={className}>
-        <Inputz
-          value={filter.keySearch}
-          onChange={(e) => setFilter({ ...filter, keySearch: e.target.value })}
-          label="Tìm kiếm theo mã bảng kê"
-        />
-        <Dropdownz
-          value={filter.apartment}
-          onChange={(e) => setFilter({ ...filter, apartment: e })}
-          options={apartments}
-          optionLabel="name"
-          optionValue="_id"
-          label="Căn hộ"
-        />
-        <InputCalendarz value={filter.from} onChange={(e) => setFilter({ ...filter, from: e })} label="Từ ngày" />
-        <InputCalendarz value={filter.to} onChange={(e) => setFilter({ ...filter, to: e })} label="Đến ngày" />
-        <Dropdownz value={filter.month} onChange={(e) => setFilter({ ...filter, month: e })} options={months} label="Tháng" />
-        {type === 'bill' && (
-          <Dropdownz value={filter.status} onChange={(e) => setFilter({ ...filter, status: e })} options={billStatus} label="Trạng thái" />
-        )}
-      </DataFilter>
+      {!apartment && (
+        <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className={className}>
+          <Inputz
+            value={filter.keySearch}
+            onChange={(e) => setFilter({ ...filter, keySearch: e.target.value })}
+            label="Tìm kiếm theo mã bảng kê"
+          />
+          <Dropdownz
+            value={filter.apartment}
+            onChange={(e) => setFilter({ ...filter, apartment: e })}
+            options={apartments}
+            optionLabel="name"
+            optionValue="_id"
+            label="Căn hộ"
+          />
+          <InputCalendarz value={filter.from} onChange={(e) => setFilter({ ...filter, from: e })} label="Từ ngày" />
+          <InputCalendarz value={filter.to} onChange={(e) => setFilter({ ...filter, to: e })} label="Đến ngày" />
+          <Dropdownz value={filter.month} onChange={(e) => setFilter({ ...filter, month: e })} options={months} label="Tháng" />
+          {type === 'bill' && (
+            <Dropdownz
+              value={filter.status}
+              onChange={(e) => setFilter({ ...filter, status: e })}
+              options={billStatus}
+              label="Trạng thái"
+            />
+          )}
+        </DataFilter>
+      )}
       <Hrz />
       <DataTable
+        hideParams={apartment}
         title="bảng kê"
         select={select}
         setSelect={setSelect}
@@ -106,7 +114,7 @@ const Billz = ({ type = 'bill' }) => {
         params={params}
         setParams={setParams}
         baseActions={['detail', 'delete']}
-        headerInfo={{ items: type === 'bill' ? billItems : type === 'dataBrowses' ? dataBrowsItems : notificationItems }}
+        headerInfo={{ items: type ? (type === 'bill' ? billItems : type === 'dataBrowses' ? dataBrowsItems : notificationItems) : [] }}
         actionsInfo={{
           deleteApi: deleteBillApi,
           onViewDetail: (item) => setOpen(item._id),
@@ -117,7 +125,7 @@ const Billz = ({ type = 'bill' }) => {
             },
             {
               icon: PaperAirplaneIcon,
-              isHide: type === 'notifications' ? false : true,
+              isHide: type === 2 ? false : true,
               onClick: (item) => onSendBill(item)
             }
           ]

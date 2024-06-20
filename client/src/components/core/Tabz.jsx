@@ -12,7 +12,7 @@ const Tabz = (props) => {
         }}
       >
         {data.map(({ label, value }) => (
-          <Tab key={value} value={value} onClick={() => setActiveTab(value)} className={`font-medium ${value === activeTab ? 'text-primary' : ''}`}>
+          <Tab key={value} value={value} onClick={() => setActiveTab(value)} className={`font-medium z-0 ${value === activeTab ? 'text-primary' : ''}`}>
             {label}
           </Tab>
         ))}

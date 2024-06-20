@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { Residents } from '..';
 import { ElectricWater, Services, Vehicles } from '@view/admin/accountants';
+import Billz from '@view/admin/accountants/bills';
 
 const defaultValues = {
   name: '',
@@ -80,7 +81,8 @@ const DetailApartment = () => {
     { label: 'Danh sách cư dân', value: 'residents', children: () => Residents({ apartment: _id }) },
     { label: 'Danh sách phương tiện', value: 'vehicles', children: () => Vehicles({ apartment: _id }) },
     { label: 'Chỉ số điện nước', value: 'electricWater', children: () => ElectricWater({ apartment: _id }) },
-    { label: 'Dịch vụ sử dụng', value: 'services', children: () => Services({ apartment: _id }) }
+    { label: 'Dịch vụ sử dụng', value: 'services', children: () => Services({ apartment: _id }) },
+    { label: 'Danh sách bảng kê', value: 'bills', children: () => Billz({ apartment: _id, type: false }) }
   ];
 
   return (
@@ -121,7 +123,7 @@ const DetailApartment = () => {
         <div className="flex flex-col gap-2 m-2 w-full mt-16">
           <h2 className="font-semibold uppercase leading-normal mb-2">Thông tin căn hộ</h2>
           <Hrz />
-          <div className="card">
+          <div className="card relative z-50">
             <Tabz data={data} activeTab={activeTab} setActiveTab={setActiveTab} />
           </div>
         </div>
