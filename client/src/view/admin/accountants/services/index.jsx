@@ -3,6 +3,7 @@ import { Body, DataTable, FormList, TimeBody, DataFilter } from '@components/bas
 import { Chipz, Dropdownz, Hrz, Inputz } from '@components/core';
 import { serviceType, statuses, vehicleType } from '@constant';
 import { useGetParams } from '@hook';
+import { formatNumber } from '@lib/helper';
 import { useGetApi } from '@lib/react-query';
 import { useDataState } from '@store';
 import React, { useState } from 'react';
@@ -19,17 +20,38 @@ const Services = ({ apartment }) => {
   const columns = [
     { label: 'Loại dịch vụ', body: (e) => Body(serviceType, e.type) },
     { label: 'Loại phương tiện', body: (e) => Body(vehicleType, e.vehicleType) },
+    // {
+    //   label: 'Căn hộ áp dụng',
+    //   body: (e) => {
+    //     return (
+    //       <div className="flex flex-wrap gap-2 w-full">
+    //         {e.apartments?.map((a, index) => {
+    //           const label = apartments?.find((u) => u._id === a)?.name;
+    //           return <Chipz key={index} value={label} className="text-center" />;
+    //         })}
+    //       </div>
+    //     );
+    //   }
+    // },
     {
-      label: 'Căn hộ áp dụng',
+      name: 'Giá tiền',
       body: (e) => {
-        return (
-          <div className="flex flex-wrap gap-2 w-full">
-            {e.apartments?.map((a, index) => {
-              const label = apartments?.find((u) => u._id === a)?.name;
-              return <Chipz key={index} value={label} className="text-center" />;
-            })}
-          </div>
-        );
+        const prices = e.prices;
+        if (prices.length === 1) return <span className='font-medium uppercase'>Đơn giá: {formatNumber(prices[0]?.amount)}</span>;
+        else
+          return (
+            <div className="flex flex-col gap-2">
+              <span className='font-medium uppercase'>Lũy tiến:</span>
+              <Hrz/>
+              {prices.map((p, index) => (
+                <div key={index} className="flex justify-between font-medium">
+                  <span>Từ: {p.from}</span>
+                  <span>Đến: {p.to}</span>
+                  <span>Giá: {formatNumber(p.amount)}</span>
+                </div>
+              ))}
+            </div>
+          );
       }
     },
     { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },

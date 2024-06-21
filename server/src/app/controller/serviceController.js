@@ -108,9 +108,8 @@ export const addService = async (req, res) => {
     if (error) return res.status(400).json({ status: false, mess: error });
     const { type, vehicleType } = value;
     if (type === 4 && !vehicleType) res.status(400).json({ status: false, mess: 'Loại phương tiện không được bỏ trống!' });
-
     value.project = req.project?._id;
-    const data = await createServiceMd({ by: req.userInfo._id, ...value, name: serviceType.find((s) => s.key === type)?.name });
+    const data = await createServiceMd({ by: req.userInfo._id, ...value, name: serviceType.find((s) => s.key === type)?.label });
     res.status(201).json({ status: true, data });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });

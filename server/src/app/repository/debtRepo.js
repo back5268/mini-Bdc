@@ -67,7 +67,6 @@ export class Debt {
 
   async calcElectricWaterFees() {
     const type = this.serviceType === 2 ? 1 : 2;
-    console.log(type);
     const electricWater = await detailElectricWaterMd({
       project: this.projectId,
       apartment: this.apartment._id,
@@ -82,7 +81,7 @@ export class Debt {
       return { quantity, price, cost };
     } else {
       let cost = 0;
-      const number = electricWater.afterNumber - electricWater.beforeNumber;
+      const number = electricWater.afterNumber - electricWater.beforeNumber + 1;
       const prices = [];
       let check = false;
       this.prices.forEach((p, index) => {

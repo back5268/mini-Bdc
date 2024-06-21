@@ -68,7 +68,7 @@ export const updateDebitMd = (where, attr) => {
 };
 
 export const updateManyDebitMd = (where, attr) => {
-  return DebitMd.update({ where, attr });
+  return DebitMd.updateMany({ where, attr });
 };
 
 export const deleteDebitMd = (where) => {
