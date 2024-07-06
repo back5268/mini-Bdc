@@ -18,7 +18,7 @@ export const getListResident = async (req, res) => {
     if (error) return res.status(400).json({ status: false, mess: error });
     const { page, limit, keySearch, status, email, apartment } = value;
     const where = { project: req.project?._id, type: 'resident' };
-    if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }];
+    if (keySearch) where.$or = [{ fullName: { $regex: keySearch, $options: 'i' } }];
     if (email) where.$or = [{ email: { $regex: email, $options: 'i' } }, { phone: { $regex: email, $options: 'i' } }];
     if (status || status === 0) where.status = status;
     if (apartment) where['apartment._id'] = apartment;

@@ -6,13 +6,22 @@ import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
 import React, { useState } from 'react';
 import DetailLog from './Detail';
+import { databseDate } from '@lib/helper';
 
 const Logs = () => {
   const initParams = useGetParams();
   const [params, setParams] = useState(initParams);
   const [filter, setFilter] = useState({});
   const [open, setOpen] = useState(false);
-  const { isLoading, data } = useGetApi(getListLogApi, params, 'logs');
+  const { isLoading, data } = useGetApi(
+    getListLogApi,
+    {
+      ...params,
+      fromDate: params.fromDate ? databseDate(params.fromDate) : undefined,
+      toDate: params.toDate ? databseDate(params.toDate) : undefined
+    },
+    'logs'
+  );
 
   const columns = [
     { label: 'Địa chỉ nhận', field: 'to' },
@@ -35,7 +44,7 @@ const Logs = () => {
       <DataTable
         isLoading={isLoading}
         data={data?.documents}
-        totalRecord={data?.total}
+        total={data?.total}
         columns={columns}
         params={params}
         setParams={setParams}

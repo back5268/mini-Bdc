@@ -20,21 +20,8 @@ const Services = ({ apartment }) => {
   const columns = [
     { label: 'Loại dịch vụ', body: (e) => Body(serviceType, e.type) },
     { label: 'Loại phương tiện', body: (e) => Body(vehicleType, e.vehicleType) },
-    // {
-    //   label: 'Căn hộ áp dụng',
-    //   body: (e) => {
-    //     return (
-    //       <div className="flex flex-wrap gap-2 w-full">
-    //         {e.apartments?.map((a, index) => {
-    //           const label = apartments?.find((u) => u._id === a)?.name;
-    //           return <Chipz key={index} value={label} className="text-center" />;
-    //         })}
-    //       </div>
-    //     );
-    //   }
-    // },
     {
-      name: 'Giá tiền',
+      label: 'Giá tiền',
       body: (e) => {
         const prices = e.prices;
         if (prices.length === 1) return <span className='font-medium uppercase'>Đơn giá: {formatNumber(prices[0]?.amount)}</span>;
@@ -54,8 +41,19 @@ const Services = ({ apartment }) => {
           );
       }
     },
-    { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
-    { label: 'Thời gian cập nhật', body: (e) => TimeBody(e.updatedAt) }
+    {
+      label: 'Căn hộ áp dụng',
+      body: (e) => {
+        return (
+          <div className="flex flex-wrap gap-2 w-full">
+            {e.apartments?.map((a, index) => {
+              const label = apartments?.find((u) => u._id === a)?.name;
+              return <Chipz key={index} value={label} className="text-center" />;
+            })}
+          </div>
+        );
+      }
+    },
   ];
 
   const onSuccess = async () => {
@@ -87,7 +85,7 @@ const Services = ({ apartment }) => {
         isLoading={isLoading}
         data={data?.documents}
         total={data?.total}
-        columns={columns}
+        columns={Boolean(apartment) ? columns.filter(c => c.label !== "Căn hộ áp dụng") : columns}
         params={params}
         setParams={setParams}
         baseActions={apartment ? ['create', 'detail'] : ['create', 'detail', 'delete']}

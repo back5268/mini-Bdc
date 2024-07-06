@@ -2,12 +2,14 @@ import { detailProjectApi } from '@api';
 import { Cardz, Hrz, Imagez, Inputz, TextAreaz } from '@components/core';
 import { useGetApi } from '@lib/react-query';
 import { Carousel, IconButton } from '@material-tailwind/react';
-import { useUserState } from '@store';
+import { useDataState, useUserState } from '@store';
 import React from 'react';
 
 const Project = () => {
   const { project: _id } = useUserState();
   const { data: project } = useGetApi(detailProjectApi, { _id }, 'project');
+  const { departments } = useDataState();
+  console.log(departments);
 
   return (
     <Cardz className="p-4">
@@ -21,7 +23,7 @@ const Project = () => {
             <Inputz label="Địa chỉ" className="!w-full" value={project?.address} />
             <Inputz label="Số điện thoại BQL" className="!w-full" value={project?.phone} />
             <Inputz label="Email BQL" className="!w-full" value={project?.email} />
-            <Inputz label="Phòng ban quản lý" className="!w-full" value={project?.department?.name} />
+            <Inputz label="Phòng ban quản lý" className="!w-full" value={departments?.find(d => d._id === project?.department)?.name} />
             <TextAreaz label="Mô tả" value={project?.description} />
           </div>
         </div>

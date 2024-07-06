@@ -54,7 +54,7 @@ const DetailElectricWater = (props) => {
     else if (item?.avatar) newData.avatar = '';
     if (newData.dateUpdate && newData.dateUpdate !== new Date(item?.dateUpdate)) newData.dateUpdate = databseDate(newData.dateUpdate);
     else newData.dateUpdate = undefined;
-    if (newData.beforeNumber > newData.afterNumber) return "Chỉ số đầu không thể lớn hơn chỉ số cuối!"
+    if (Number(newData.beforeNumber) > Number(newData.afterNumber)) return "Chỉ số đầu không thể lớn hơn chỉ số cuối!"
     if (isUpdate) return { ...checkEqualProp(newData, item), _id: open };
     else return newData;
   };
@@ -99,8 +99,8 @@ const DetailElectricWater = (props) => {
               setValue={setValue}
             />
             <DropdownForm id="month" label="Kỳ tháng (*)" options={months} errors={errors} watch={watch} setValue={setValue} />
-            <InputForm type="number" id="beforeNumber" label="Chỉ số đầu (*)" errors={errors} register={register} />
-            <InputForm type="number" id="afterNumber" label="Chỉ số cuối (*)" errors={errors} register={register} />
+            <InputForm min="0" type="number" id="beforeNumber" label="Chỉ số đầu (*)" errors={errors} register={register} />
+            <InputForm min="0" type="number" id="afterNumber" label="Chỉ số cuối (*)" errors={errors} register={register} />
             <InputCalendarForm id="dateUpdate" label="Ngày chốt số" errors={errors} setValue={setValue} watch={watch} />
           </div>
         </div>

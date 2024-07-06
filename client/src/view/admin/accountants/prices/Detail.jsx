@@ -108,7 +108,7 @@ const DetailPrice = () => {
             <Hrz />
           </div>
           {Number(watch('recipe')) === 1 ? (
-            <InputForm type="number" id="prices" label="Giá tiền (*)" errors={errors} register={register} />
+            <InputForm min="1" type="number" id="prices" label="Giá tiền (*)" errors={errors} register={register} />
           ) : (
             prices.map((price, index) => <Price key={index} price={price} setPrices={setPrices} disabled={prices.length <= 1} />)
           )}

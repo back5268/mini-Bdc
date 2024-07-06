@@ -15,7 +15,7 @@ export const getListApartmentGroup = async (req, res) => {
     if (error) return res.status(400).json({ status: false, mess: error });
     const { page, limit, keySearch, status } = value;
     const where = { project: req.project?._id };
-    if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }, { description: { $regex: keySearch, $options: 'i' } }];
+    if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }];
     if (status || status === 0) where.status = status;
     const documents = await listApartmentGroupMd(where, page, limit);
     const total = await countApartmentGroupMd(where);

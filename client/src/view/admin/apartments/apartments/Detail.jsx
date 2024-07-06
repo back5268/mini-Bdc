@@ -18,8 +18,8 @@ import Billz from '@view/admin/accountants/bills';
 const defaultValues = {
   name: '',
   code: '',
-  area: 0,
-  floor: 0,
+  area: 1,
+  floor: 1,
   description: '',
   status: 1,
   numberResident: 0,
@@ -99,8 +99,8 @@ const DetailApartment = () => {
       <div className="flex flex-wrap w-full">
         <InputForm id="name" label="Tên căn hộ (*)" errors={errors} register={register} />
         <InputForm id="code" label="Mã căn hộ (*)" errors={errors} register={register} />
-        <InputForm id="area" label="Diện tích căn hộ (m2) (*)" errors={errors} register={register} />
-        <InputForm id="floor" label="Tầng (*)" errors={errors} register={register} />
+        <InputForm id="area" type="number" min="1" label="Diện tích căn hộ (m2) (*)" errors={errors} register={register} />
+        <InputForm id="floor" type="number" min="1" label="Tầng (*)" errors={errors} register={register} />
         {isUpdate && (
           <>
             <InputForm id="numberResident" label="Số người" register={register} />

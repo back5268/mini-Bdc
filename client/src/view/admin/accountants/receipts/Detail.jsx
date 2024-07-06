@@ -16,7 +16,7 @@ const defaultValues = {
   bill: '',
   type: '',
   paymentType: '',
-  amount: 0,
+  amount: 1,
   note: ''
 };
 
@@ -111,7 +111,7 @@ const DetailReceipt = (props) => {
           setValue={setValue}
         />
         <DropdownForm id="paymentType" label="Hình thức (*)" options={paymentType} errors={errors} watch={watch} setValue={setValue} />
-        <InputForm id="amount" type="number" label="Số tiền (*)" errors={errors} register={register} />
+        <InputForm min="1" id="amount" type="number" label="Số tiền (*)" errors={errors} register={register} />
         <TextAreaz id="note" label="Ghi chú" value={watch('note')} setValue={(e) => setValue('note', e)} />
       </div>
     </FormDetail>

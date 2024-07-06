@@ -16,7 +16,7 @@ const defaultValues = {
   price: '',
   vehicleType: '',
   recipe: 1,
-  prices: 0
+  prices: 1
 };
 
 const Apartments = (props) => {
@@ -31,7 +31,7 @@ const Apartments = (props) => {
   return (
     <div className="flex flex-col">
       <MultiSelectz
-        label="Chọn căn hộ áp dụng (*)"
+        label="Chọn căn hộ áp dụng"
         value={apartments}
         onChange={setApartments}
         options={apartmentData.map((u) => ({ key: u._id, label: `${u.name} - ${u.code}` }))}
@@ -159,7 +159,7 @@ const DetailService = () => {
             <Hrz />
           </div>
           {Number(watch('recipe')) === 1 ? (
-            <InputForm type="number" id="prices" label="Giá tiền (*)" errors={errors} register={register} />
+            <InputForm type="number" min="1" id="prices" label="Giá tiền (*)" errors={errors} register={register} />
           ) : (
             prices.map((price, index) => <Price key={index} price={price} setPrices={setPrices} disabled={prices.length <= 1} />)
           )}

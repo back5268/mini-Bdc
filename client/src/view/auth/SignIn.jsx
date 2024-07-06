@@ -37,10 +37,6 @@ const SignIn = () => {
         <InputForm id="username" label="Tài khoản (*)" register={register} errors={errors} className="!w-full" />
         <InputPassword id="password" label="Mật khẩu (*)" register={register} errors={errors} className="!w-full" />
         <div className="flex flex-col gap-2 px-2 mb-4">
-          <div className="flex items-center justify-between">
-            <CheckBoxz id="remember" label="Nhớ mật khẩu" />
-            <Linkz to="/auth/forgot-password" label="Quên mật khẩu?" className="text-sm" />
-          </div>
           <Buttonz type="submit" loading={isPending} label="Đăng nhập" />
         </div>
       </form>

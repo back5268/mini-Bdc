@@ -58,6 +58,7 @@ const DetailResident = () => {
     const newData = { ...data, apartment: undefined, type: undefined };
     if (avatar) newData.formData = { avatar };
     else if (item?.avatar) newData.avatar = '';
+    if (newData.birthday && new Date(newData.birthday) > new Date()) return "Ngày sinh không được lớn hơn ngày hiện tại"
     if (newData.birthday && newData.birthday !== new Date(item?.birthday)) newData.birthday = databseDate(newData.birthday);
     else newData.birthday = undefined;
     newData.apartment = { _id: data.apartment, type: Number(data.type) };

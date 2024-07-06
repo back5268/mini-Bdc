@@ -114,7 +114,7 @@ export const NewsValidation = yup.object({
 export const ResidentValidation = yup.object({
   fullName: yup.string().required('Họ tên không được bỏ trống!'),
   email: yup.string().email('Email không đúng định dạng!').required('Email không được bỏ trống!'),
-  phone: yup.string().required('Số điện thoại không được bỏ trống!'),
+  phone: yup.string().matches(REGEX.C_PHONE, 'Số điện thoại không đúng định dạng!').required('Mật khẩu không được bỏ trống!'),
   apartment: yup.string().required('Căn hộ không được bỏ trống!'),
   type: yup.string().required('Quan hệ với chủ hộ không được bỏ trống!')
 });

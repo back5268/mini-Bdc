@@ -55,9 +55,10 @@ export const deleteProject = async (req, res) => {
     const { error, value } = validateData(detailProjectValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id } = value;
-    const data = await deleteProjectMd({ _id });
-    if (!data) return res.status(400).json({ status: false, mess: 'Dự án không tồn tại!' });
-    res.status(201).json({ status: true, data });
+    const project = await detailProjectMd({ _id });
+    if (!project) return res.status(400).json({ status: false, mess: 'Dự án không tồn tại!' });
+    await updateDepartmentMd({ _id: project.department }, { $pull: { projects: _id } });
+    res.status(201).json({ status: true, data: await deleteProjectMd({ _id }) });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }
@@ -119,7 +120,7 @@ export const updateProject = async (req, res) => {
     if (department) {
       const checkDepartment = await detailDepartmentMd({ id: department });
       if (!checkDepartment) return res.status(400).json({ status: false, mess: 'Phòng ban không tồn tại!' });
-      await updateDepartmentMd({ _id: checkDepartment._id }, { $addToSet: { projects: _id } });
+      await updateDepartmentMd({ _id: department }, { $addToSet: { projects: _id } });
       await updateDepartmentMd({ _id: project.department }, { $pull: { projects: _id } });
     }
 

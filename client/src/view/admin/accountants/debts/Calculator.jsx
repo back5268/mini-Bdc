@@ -116,6 +116,7 @@ const Calculator = (props) => {
       label: 'Giảm trừ',
       body: (item) => (
         <Inputz
+          min="0"
           type="number"
           className="!w-full"
           label="Giảm trừ"

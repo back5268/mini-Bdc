@@ -151,7 +151,7 @@ export const resetPassword = async (req, res) => {
     const { error, value } = validateData(resetPasswordValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
 
-    const newPassword = generateRandomString();
+    const newPassword = generateRandomString(8);
     const salt = await bcrypt.genSalt(10);
     const password = await bcrypt.hash(newPassword, salt);
 

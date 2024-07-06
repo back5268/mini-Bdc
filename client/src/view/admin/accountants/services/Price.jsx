@@ -20,6 +20,7 @@ const Price = ({ price = {}, setPrices = () => {}, disabled, isView, index }) =>
         </div>
       )}
       <Inputz
+        min="0"
         type="number"
         label="Từ (*)"
         value={price.from}
@@ -27,6 +28,7 @@ const Price = ({ price = {}, setPrices = () => {}, disabled, isView, index }) =>
         className="w-full md:w-6/12 lg:w-3/12"
       />
       <Inputz
+        min="1"
         type="number"
         label="Đến (*)"
         value={price.to}
@@ -34,6 +36,7 @@ const Price = ({ price = {}, setPrices = () => {}, disabled, isView, index }) =>
         className="w-full md:w-6/12 lg:w-3/12"
       />
       <Inputz
+        min="1"
         type="number"
         label="Giá tiền (*)"
         value={price.amount}

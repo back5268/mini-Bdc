@@ -11,7 +11,7 @@ export const getListLog = async (req, res) => {
     if (keySearch) where.title = { $regex: keySearch, $options: 'i' };
     if (to) where.to = { $regex: to, $options: 'i' };
 
-    if (fromDate && toDate) where.$and = [{ time: { $gte: fromDate } }, { time: { $lt: toDate } }];
+    if (fromDate && toDate) where.$and = [{ createdAt: { $gte: fromDate } }, { createdAt: { $lt: toDate } }];
     else if (fromDate && !toDate) where.createdAt = { $gte: fromDate };
     else if (toDate && !fromDate) where.createdAt = { $lte: toDate };
 
