@@ -16,7 +16,7 @@ const defaultValues = {
   price: '',
   vehicleType: '',
   recipe: 1,
-  prices: 1
+  prices: ""
 };
 
 const Apartments = (props) => {

@@ -16,7 +16,7 @@ const defaultValues = {
   bill: '',
   type: '',
   paymentType: '',
-  amount: 1,
+  amount: "",
   note: ''
 };
 

@@ -18,8 +18,8 @@ import Billz from '@view/admin/accountants/bills';
 const defaultValues = {
   name: '',
   code: '',
-  area: 1,
-  floor: 1,
+  area: "",
+  floor: "",
   description: '',
   status: 1,
   numberResident: 0,

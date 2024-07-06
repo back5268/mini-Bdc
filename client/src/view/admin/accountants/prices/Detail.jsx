@@ -15,7 +15,7 @@ const defaultValues = {
   name: '',
   code: '',
   recipe: 1,
-  prices: 0,
+  prices: "",
   serviceType: '',
   description: ''
 };
