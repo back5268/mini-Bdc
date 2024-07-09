@@ -125,7 +125,7 @@ const Billz = ({ type = 'bill', apartment }) => {
             },
             {
               icon: PaperAirplaneIcon,
-              isHide: type === 2 ? false : true,
+              isHide: type === 'notifications' ? false : true,
               onClick: (item) => onSendBill(item)
             }
           ]
