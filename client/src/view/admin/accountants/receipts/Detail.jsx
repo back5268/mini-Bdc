@@ -16,7 +16,7 @@ const defaultValues = {
   bill: '',
   type: '',
   paymentType: '',
-  amount: "",
+  amount: '',
   note: ''
 };
 
@@ -41,6 +41,7 @@ const DetailReceipt = (props) => {
 
   const { data: bills } = useGetApi(getListBillByApartmentApi, { _id: watch('apartment') }, 'bills', Boolean(watch('apartment')));
   const { data: coin } = useGetApi(getCoinByApartmentApi, { _id: watch('apartment') }, 'coin', Boolean(watch('apartment')));
+  const bill = bills?.find((b) => b._id === watch('bill'));
 
   useEffect(() => {
     if (isUpdate) {
@@ -84,6 +85,7 @@ const DetailReceipt = (props) => {
           />
           <div className="w-full lg:w-6/12 flex flex-col justify-center items-center">
             <span className="text-xl font-bold text-red-400">Tiền thừa căn hộ: {formatNumber(coin)}</span>
+            <span className="text-xl font-bold text-red-400">Tiền nợ hóa đơn {bill?.code}: {formatNumber(bill?.amount - bill?.paid)}</span>
             {!watch('apartment') && <i>Vui lòng chọn căn hộ</i>}
           </div>
         </div>

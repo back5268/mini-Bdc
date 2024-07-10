@@ -77,9 +77,9 @@ export const addReceipt = async (req, res) => {
   if (type === 1) {
     if (!billz) billz = { amount: 0 };
     if (amount > billz.amount) {
-      if (billz._id) await updateBillMd({ _id: bill }, { paid: billz.amount });
+      if (billz._id) await updateBillMd({ _id: bill, status: 4 }, { paid: billz.amount });
       params = { type: 2, amount: amount - billz.amount, coinAfter: coinBefore + amount - billz.amount };
-    } else if (billz._id) await updateBillMd({ _id: bill }, { paid: amount });
+    } else if (billz._id) await updateBillMd({ _id: bill, status: amount === billz.amount ? 4 : undefined }, { paid: amount });
   } else if (type === 2) {
     params = { type: 1, amount, coinAfter: coinBefore - amount };
   } else if (type === 3) {
@@ -126,7 +126,7 @@ export const cancelReceipt = async (req, res) => {
     }
     if (data.bill) {
       const bill = detailBillMd({ _id: data.bill });
-      if (bill) await updateBillMd({ _id: bill._id }, { paid: bill.paid - (data.amount - coinz), $pull: { receipts: _id } });
+      if (bill) await updateBillMd({ _id: bill._id }, { paid: bill.paid - (data.amount - coinz), $pull: { receipts: _id }, status: 3 });
     }
     res.status(201).json({ status: true, data: await updateReceiptMd({ _id }, { status: 0 }) });
   } catch (error) {
@@ -139,7 +139,7 @@ export const getListBillByApartment = async (req, res) => {
     const { error, value } = validateData(detailReceiptValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id } = value;
-    const data = await listBillMd({ apartment: _id, status: { $in: [3, 4, 5] } }, false, false, false, 'code _id');
+    const data = await listBillMd({ apartment: _id, status: { $in: [3, 4, 5] } }, false, false, false, 'code _id paid amount');
     res.json({ status: true, data });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
