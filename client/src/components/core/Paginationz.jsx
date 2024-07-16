@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Dropdownz } from '.';
 import { ListItem } from '@material-tailwind/react';
 
-const ButtonPagination = ({ content, onClick = () => {}, active, className = "" }) => {
+const ButtonPagination = ({ content, onClick = () => {}, active, className = '' }) => {
   return (
     <ListItem className="p-0">
       <button
@@ -20,7 +20,7 @@ const Paginationz = (props) => {
   const { total = 0, params = {}, setParams = () => {}, rows = [] } = props;
 
   const renderPageLinks = useCallback(() => {
-    if (!params.limit) return 
+    if (!params.limit) return;
     const currentPage = params.page;
     const pageCount = Math.ceil(total / params.limit);
     const pages = [];
@@ -53,7 +53,8 @@ const Paginationz = (props) => {
                 clipRule="evenodd"
               />
             </svg>
-          } className="!px-2"
+          }
+          className="!px-2"
           onClick={() => setParams({ ...params, page: 1 })}
         />
         {renderPageLinks()}
@@ -66,12 +67,20 @@ const Paginationz = (props) => {
                 clipRule="evenodd"
               />
             </svg>
-          } className="!px-2"
+          }
+          className="!px-2"
           onClick={() => setParams({ ...params, page: Math.ceil(total / params.limit) || 1 })}
         />
       </ul>
       <div className="min-w-20">
-        <Dropdownz size="md" options={rows} value={params.limit} onChange={e => setParams({ ...params, limit: Number(e) })} label="rows" className="!w-24" />
+        <Dropdownz
+          size="md"
+          options={rows}
+          value={params.limit}
+          onChange={(e) => setParams({ ...params, limit: Number(e) })}
+          label="rows"
+          className="!w-24"
+        />
       </div>
       <span className="text-sm bg-transparent">Tổng số: {total} bản ghi</span>
     </nav>

@@ -48,7 +48,7 @@ const Services = ({ apartment }) => {
           <div className="flex flex-wrap gap-2 w-full">
             {e.apartments?.map((a, index) => {
               const label = apartments?.find((u) => u._id === a)?.name;
-              return <Chipz key={index} value={label} className="text-center" />;
+              return label && <Chipz key={index} value={label} className="text-center" />;
             })}
           </div>
         );

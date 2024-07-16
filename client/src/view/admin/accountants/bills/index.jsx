@@ -8,6 +8,7 @@ import { billStatus } from '@constant';
 import { useDataState, useToastState } from '@store';
 import DetaiBill from './Detail';
 import { PrinterIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import { databseDate } from '@lib/helper';
 
 const Billz = ({ type = 'bill', apartment }) => {
   const initParams = useGetParams();
@@ -19,7 +20,17 @@ const Billz = ({ type = 'bill', apartment }) => {
   const title = type ? (type === 'bill' ? 'bảng kê' : type === 'dataBrowses' ? 'duyệt số liệu' : 'gửi thông báo') : 'bảng kê';
   const status = type ? (type === 'bill' ? [3, 4, 5] : type === 'dataBrowses' ? [1] : [2]) : [1, 2, 3, 4, 5];
   const className = type === 'bill' ? 'md:w-full lg:w-6/12' : 'md:w-6/12 lg:w-9/12';
-  const { isLoading, data } = useGetApi(getListBillApi, { apartment, ...params, status }, 'bills');
+  const { isLoading, data } = useGetApi(
+    getListBillApi,
+    {
+      apartment,
+      status,
+      ...params,
+      from: params.from ? databseDate(params.from) : undefined,
+      to: params.to ? databseDate(params.to) : undefined
+    },
+    'bills'
+  );
   const { data: months } = useGetApi(getListMonthApi, {}, 'months');
   const { apartments } = useDataState();
   const { showToast } = useToastState();
@@ -95,7 +106,7 @@ const Billz = ({ type = 'bill', apartment }) => {
             <Dropdownz
               value={filter.status}
               onChange={(e) => setFilter({ ...filter, status: e })}
-              options={billStatus}
+              options={billStatus.filter((b) => ![1, 2].includes(b.key))}
               label="Trạng thái"
             />
           )}

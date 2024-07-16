@@ -68,6 +68,7 @@ const Calculator = (props) => {
     if (!(newData.services?.length > 0)) return 'Vui lòng chọn dịch vụ tính phí!';
     newData.deadline = moment(newData.deadline).format('YYYY-MM-DD');
     newData.type = undefined;
+    newData.groupApartmens = undefined
     return newData;
   };
 

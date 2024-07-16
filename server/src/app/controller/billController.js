@@ -14,10 +14,9 @@ export const getListBill = async (req, res) => {
     if (status) where.status = { $in: status };
     if (apartment) where.apartment = apartment;
     if (month) where.month = month;
-    if (from) where.createdAt = { $gte: from };
-    if (to) {
-      if (!where.createdAt) where.createdAt.$lte = to;
-    }
+    if (from && to) where.$and = [{ createdAt: { $gte: from } }, { createdAt: { $lte: to } }];
+    else if (from && !to) where.createdAt = { $gte: from };
+    else if (to && !from) where.createdAt = { $lte: to };
     const documents = await listBillMd(where, page, limit, [{ path: 'apartment', select: 'name code' }]);
     const total = await countBillMd(where);
     res.json({ status: true, data: { documents, total } });
