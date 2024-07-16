@@ -77,9 +77,9 @@ export const addReceipt = async (req, res) => {
   if (type === 1) {
     if (!billz) billz = { amount: 0 };
     if (amount > billz.amount) {
-      if (billz._id) await updateBillMd({ _id: bill, status: 4 }, { paid: billz.amount });
+      if (billz._id) await updateBillMd({ _id: bill }, { paid: billz.amount, status: 4 });
       params = { type: 2, amount: amount - billz.amount, coinAfter: coinBefore + amount - billz.amount };
-    } else if (billz._id) await updateBillMd({ _id: bill, status: amount === billz.amount ? 4 : undefined }, { paid: amount });
+    } else if (billz._id) await updateBillMd({ _id: bill }, { paid: amount, status: amount === billz.amount ? 4 : undefined });
   } else if (type === 2) {
     params = { type: 1, amount, coinAfter: coinBefore - amount };
   } else if (type === 3) {
