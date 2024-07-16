@@ -54,6 +54,8 @@ const DetailElectricWater = (props) => {
     else if (item?.avatar) newData.avatar = '';
     if (newData.dateUpdate && newData.dateUpdate !== new Date(item?.dateUpdate)) newData.dateUpdate = databseDate(newData.dateUpdate);
     else newData.dateUpdate = undefined;
+    if (Number(newData.beforeNumber) < 0) return "Chỉ số đầu không thể nhỏ hơn 0!"
+    if (Number(newData.afterNumber) < 0) return "Chỉ số cuối không thể nhỏ hơn 0!"
     if (Number(newData.beforeNumber) > Number(newData.afterNumber)) return "Chỉ số đầu không thể lớn hơn chỉ số cuối!"
     if (isUpdate) return { ...checkEqualProp(newData, item), _id: open };
     else return newData;

@@ -26,7 +26,7 @@ const Permissions = () => {
           <div className="flex flex-wrap gap-2 w-full">
             {e.users?.map((user, index) => {
               const label = users?.find((u) => u._id === user)?.fullName;
-              return <Chipz key={index} value={label} className="text-center" />;
+              return label && <Chipz key={index} value={label} className="text-center" />;
             })}
           </div>
         );

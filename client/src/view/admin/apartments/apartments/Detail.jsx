@@ -69,6 +69,8 @@ const DetailApartment = () => {
         if (formData.length > 0) newData.formData = { images: formData };
       }
     } else if (item?.images?.length > 0) newData.images = [];
+    if (Number(newData.area) < 0) return "Diện tích căn hộ phải lớn hơn 0"
+    if (Number(newData.floor) < 0) return "Tầng căn hộ phải lớn hơn 0"
     return { ...newData, numberResident: undefined, numberVehicle: undefined };
   };
 
@@ -103,8 +105,8 @@ const DetailApartment = () => {
         <InputForm id="floor" type="number" min="1" label="Tầng (*)" errors={errors} register={register} />
         {isUpdate && (
           <>
-            <InputForm id="numberResident" label="Số người" register={register} />
-            <InputForm id="numberVehicle" label="Số phương tiện" register={register} />
+            <InputForm id="numberResident" label="Số người" register={register} disabled />
+            <InputForm id="numberVehicle" label="Số phương tiện" register={register} disabled />
           </>
         )}
         <DropdownForm

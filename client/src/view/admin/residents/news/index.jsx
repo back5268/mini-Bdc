@@ -34,7 +34,7 @@ const News = () => {
       label: 'Hastag',
       body: (e) => (
         <div className="flex gap-1">
-          {typeof e.hashtag === 'object' && e.hashtag?.map((item, index) => <Chipz key={index} className="text-center" value={item} />)}
+          {typeof e.hashtag === 'object' && e.hashtag?.map((item, index) => item && <Chipz key={index} className="text-center" value={item} />)}
         </div>
       )
     },

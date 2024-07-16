@@ -51,7 +51,10 @@ const DetailPrice = () => {
     let newData = { ...data };
     if (Number(newData.recipe) === 1) {
       if (!newData.prices) return 'Vui lòng nhập giá tiền';
-      else newData.prices = [{ from: 0, to: 0, amount: newData.prices }];
+      else {
+        if (Number(newData.prices) < 0) return "Giá tiền phải lớn hơn 0"
+        newData.prices = [{ from: 0, to: 0, amount: newData.prices }];
+      }
     } else newData.prices = prices.map((p) => ({ ...p, key: undefined }));
     if (isUpdate) newData = { ...checkEqualProp(newData, item), _id };
     return newData;

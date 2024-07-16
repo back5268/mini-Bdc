@@ -28,7 +28,7 @@ const Departments = () => {
           <div className="flex flex-wrap gap-2 w-full">
             {e.projects?.map((user, index) => {
               const label = projects?.find((u) => u._id === user)?.name;
-              return <Chipz key={index} value={label} className="text-center" />;
+              return label && <Chipz key={index} value={label} className="text-center" />;
             })}
           </div>
         );
