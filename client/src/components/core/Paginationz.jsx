@@ -45,9 +45,6 @@ const Paginationz = (props) => {
     if (total) {
       const currentPage = params.page;
       const pageCount = Math.ceil(total / params.limit);
-      console.log(currentPage);
-      console.log(pageCount);
-      console.log(total);
       if (currentPage > pageCount) setParams(pre => ({ ...pre, page: pageCount > 0 ? pageCount : 1 }))
     }
   }, [params.limit, params.page, total])

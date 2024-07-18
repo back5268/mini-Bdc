@@ -9,7 +9,6 @@ const Project = () => {
   const { project: _id } = useUserState();
   const { data: project } = useGetApi(detailProjectApi, { _id }, 'project');
   const { departments } = useDataState();
-  console.log(departments);
 
   return (
     <Cardz className="p-4">

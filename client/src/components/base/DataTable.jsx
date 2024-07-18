@@ -218,7 +218,7 @@ const DataTable = (props) => {
                                   const color = action.color || 'cyan';
                                   const variant = action.variant || 'outlined';
                                   const Icon = action.icon;
-                                  const isHide = action.isHide;
+                                  const isHide = action.isHide && action.isHide(item);
 
                                   return (
                                     !isHide && (

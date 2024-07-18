@@ -37,7 +37,6 @@ const Header = ({ item = {} }) => {
 const DetaiBill = (props) => {
   const { open, setOpen } = props;
   const { data: item } = useGetApi(detailBillApi, { _id: open }, 'bill', Boolean(open));
-  console.log(item);
 
   const columns = [
     { label: 'Loại dịch vụ', body: (e) => Body(serviceType, e.serviceType) },

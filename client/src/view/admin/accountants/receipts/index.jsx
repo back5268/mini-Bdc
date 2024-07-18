@@ -7,6 +7,7 @@ import { useGetApi } from '@lib/react-query';
 import { useConfirmState, useDataState, useToastState } from '@store';
 import React, { useState } from 'react';
 import DetailReceipt from './Detail';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 const Receipts = () => {
   const initParams = useGetParams();
@@ -47,21 +48,6 @@ const Receipts = () => {
     });
   };
 
-  const onSendReceipt = async (item) => {
-    const response = await sendReceiptApi({ _ids: item._id });
-    if (response) {
-      showToast({ title: 'Gửi thông báo thành công', severity: 'success' });
-      setParams((pre) => ({ ...pre, render: !pre.render }));
-    }
-  };
-
-  const onRenderReceipt = async (item) => {
-    const response = await renderReceiptApi({ _id: item._id });
-    if (response) {
-      window.open(`/print/${item._id}?type=receipt`, '_blank');
-    }
-  };
-
   const onOpen = (type, item) => {
     setType(type);
     setOpen(item || true);
@@ -99,25 +85,22 @@ const Receipts = () => {
       <Hrz />
       <DataTable
         isLoading={isLoading}
-        data={data?.documents?.map((d) => ({ ...d, className: d.status === 0 ? '!bg-red' : '' }))}
+        data={data?.documents?.map((d) => ({ ...d, className: d.status === 0 ? 'bg-red-100 line-through' : '' }))}
         total={data?.total}
         columns={columns}
         params={params}
         setParams={setParams}
-        baseActions={['delete']}
+        baseActions={['detail']}
         actionsInfo={{
-          onDelete,
-          onViewDetail: (e) => onOpen(e.type, e)
-          // moreActions: [
-          //   {
-          //     icon: PrinterIcon,
-          //     onClick: (item) => onRenderReceipt(item)
-          //   },
-          //   {
-          //     icon: PaperAirplaneIcon,
-          //     onClick: (item) => onSendReceipt(item)
-          //   }
-          // ]
+          onViewDetail: (e) => onOpen(e.type, e._id),
+          moreActions: [
+            {
+              icon: TrashIcon,
+              color: 'red',
+              isHide: (item) => item.status === 0,
+              onClick: (item) => onDelete(item)
+            }
+          ]
         }}
         headerInfo={{
           moreHeader: [

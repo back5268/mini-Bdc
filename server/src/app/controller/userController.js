@@ -35,7 +35,7 @@ export const getListUser = async (req, res) => {
 
 export const getListUserInfo = async (req, res) => {
   try {
-    const data = await listUserMd();
+    const data = await listUserMd({ type: { $in: ['user', 'admin'] } });
     res.json({ status: true, data });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });

@@ -6,7 +6,7 @@ const ConfirmDialog = () => {
   const { confirmInfo = {}, open, hideConfirm } = useConfirmState();
 
   return (
-    <Dialogz title="Decor Shop" open={open} setOpen={hideConfirm} className="w-[500px]" z={60}>
+    <Dialogz title="Mini BDC" open={open} setOpen={hideConfirm} className="w-[500px]" z={60}>
       <div className="p-6 text-left">{confirmInfo.title || 'Bạn có chắc chắn muốn tiếp tục?'}</div>
       <Hrz/>
       <div className="flex gap-4 justify-end mt-4">

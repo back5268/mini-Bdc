@@ -45,6 +45,8 @@ const DetailReceipt = (props) => {
 
   useEffect(() => {
     if (isUpdate) {
+      item.apartment = item.apartment?._id;
+      item.payer = item.payer?._id;
       for (const key in defaultValues) {
         setValue(key, item[key]);
       }
@@ -82,12 +84,15 @@ const DetailReceipt = (props) => {
             errors={errors}
             watch={watch}
             setValue={setValue}
+            disabled={isUpdate}
           />
           <div className="w-full lg:w-6/12 flex flex-col justify-center items-center">
             <span className="text-xl font-bold text-red-400">Tiền thừa căn hộ: {formatNumber(coin)}</span>
-            <span className="text-xl font-bold text-red-400">
-              Tiền nợ hóa đơn {bill?.code}: {formatNumber(bill?.amount - bill?.paid)}
-            </span>
+            {!isUpdate && (
+              <span className="text-xl font-bold text-red-400">
+                Tiền nợ hóa đơn {bill?.code}: {formatNumber(bill?.amount - bill?.paid)}
+              </span>
+            )}
             {!watch('apartment') && <i>Vui lòng chọn căn hộ</i>}
           </div>
         </div>
@@ -101,6 +106,7 @@ const DetailReceipt = (props) => {
             errors={errors}
             watch={watch}
             setValue={setValue}
+            disabled={isUpdate}
             emptyMessage={watch('apartment') ? 'Căn hộ không có hóa đơn cần thanh toán' : 'Vui lòng chọn căn hộ'}
           />
         )}
@@ -113,10 +119,19 @@ const DetailReceipt = (props) => {
           errors={errors}
           watch={watch}
           setValue={setValue}
+          disabled={isUpdate}
         />
-        <DropdownForm id="paymentType" label="Hình thức (*)" options={paymentType} errors={errors} watch={watch} setValue={setValue} />
-        <InputForm min="1" id="amount" type="number" label="Số tiền (*)" errors={errors} register={register} />
-        <TextAreaz id="note" label="Ghi chú" value={watch('note')} setValue={(e) => setValue('note', e)} />
+        <DropdownForm
+          id="paymentType"
+          label="Hình thức (*)"
+          disabled={isUpdate}
+          options={paymentType}
+          errors={errors}
+          watch={watch}
+          setValue={setValue}
+        />
+        <InputForm min="1" id="amount" type="number" label="Số tiền (*)" disabled={isUpdate} errors={errors} register={register} />
+        <TextAreaz id="note" label="Ghi chú" value={watch('note')} setValue={(e) => setValue('note', e)} disabled={isUpdate} />
       </div>
     </FormDetail>
   );

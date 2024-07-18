@@ -64,7 +64,7 @@ export const addReceipt = async (req, res) => {
   const checkCoin = await detailCoinMd({ apartment });
   const coinBefore = checkCoin?.coinAfter || 0;
   if ([2, 3].includes(type)) if (coinBefore < amount) res.status(400).json({ status: false, mess: 'Tiền thừa căn hộ không đủ!' });
-  if (type === 3 && !billz) res.status(400).json({ status: false, mess: 'Không tìm thấy tiền thừa để hạch toán!' });
+  if (type === 3 && !billz) res.status(400).json({ status: false, mess: 'Không tìm thấy bảng kê để hạch toán!' });
 
   value.files = [];
   if (req.files?.['files']?.[0]) {
@@ -75,16 +75,24 @@ export const addReceipt = async (req, res) => {
 
   let params;
   if (type === 1) {
-    if (!billz) billz = { amountz: 0 };
-    else billz.amountz = billz.amount - billz.paid
+    if (!billz) billz = { amountz: 0, paid: 0 };
+    else billz.amountz = billz.amount - billz.paid;
     if (amount > billz.amountz) {
       if (billz._id) await updateBillMd({ _id: bill }, { paid: billz.amount, status: 4 });
       params = { type: 2, amount: amount - billz.amountz, coinAfter: coinBefore + amount - billz.amountz };
-    } else if (billz._id) await updateBillMd({ _id: bill }, { paid: amount, status: amount === billz.amountz ? 4 : undefined });
+    } else if (billz._id)
+      await updateBillMd({ _id: bill }, { paid: amount + billz.paid, status: amount === billz.amountz ? 4 : undefined });
   } else if (type === 2) {
     params = { type: 1, amount, coinAfter: coinBefore - amount };
   } else if (type === 3) {
-    params = { type: 1, amount, coinAfter: coinBefore - amount };
+    billz.amountz = billz.amount - billz.paid;
+    if (amount > billz.amountz) {
+      await updateBillMd({ _id: bill }, { paid: billz.amount, status: 4 });
+      params = { type: 1, amount: billz.amountz, coinAfter: coinBefore - billz.amountz };
+    } else {
+      await updateBillMd({ _id: bill }, { paid: amount + billz.paid, status: amount === billz.amountz ? 4 : undefined });
+      params = { type: 1, amount, coinAfter: 0 };
+    }
   }
 
   if (params) {
@@ -102,7 +110,7 @@ export const addReceipt = async (req, res) => {
 
 export const cancelReceipt = async (req, res) => {
   try {
-    const { error, value } = validateData(detailReceiptValid, req.query);
+    const { error, value } = validateData(detailReceiptValid, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id } = value;
     const data = await detailReceiptMd({ _id });
@@ -121,16 +129,21 @@ export const cancelReceipt = async (req, res) => {
           _id: undefined,
           type,
           coinBefore: lastCoin.coinAfter,
-          coinAfter: lastCoin.coinAfter + (type === 1 ? -coin.amount : coin.amount)
+          coinAfter: lastCoin.coinAfter + (type === 1 ? - coin.amount : coin.amount)
         });
       }
     }
     if (data.bill) {
-      const bill = detailBillMd({ _id: data.bill });
-      if (bill) await updateBillMd({ _id: bill._id }, { paid: bill.paid - (data.amount - coinz), $pull: { receipts: _id }, status: 3 });
+      const bill = await detailBillMd({ _id: data.bill });
+      if (bill)
+        await updateBillMd(
+          { _id: bill._id },
+          { paid: bill.paid - (data.amount - coinz), $pull: { receipts: _id }, status: bill.status === 4 ? 3 : undefined }
+        );
     }
     res.status(201).json({ status: true, data: await updateReceiptMd({ _id }, { status: 0 }) });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ status: false, mess: error.toString() });
   }
 };
@@ -140,7 +153,7 @@ export const getListBillByApartment = async (req, res) => {
     const { error, value } = validateData(detailReceiptValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id } = value;
-    const data = await listBillMd({ apartment: _id, status: { $in: [3, 4, 5] } }, false, false, false, 'code _id paid amount');
+    const data = await listBillMd({ apartment: _id, status: 3 }, false, false, false, 'code _id paid amount');
     res.json({ status: true, data });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
