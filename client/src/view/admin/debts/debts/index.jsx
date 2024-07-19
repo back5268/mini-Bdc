@@ -17,7 +17,6 @@ const Debts = () => {
   const columns = [
     { label: 'Căn hộ', body: (e) => Body(apartments, e.apartment, '_id', 'name') },
     { label: 'Mã căn hộ', body: (e) => Body(apartments, e.apartment, '_id', 'code') },
-    { label: 'Tháng', field: 'month' },
     { label: 'Số dư đầu kỳ', body: (e) => NumberBody(e.before) },
     { label: 'Phát sinh trong tháng', body: (e) => NumberBody(e.amount) },
     { label: 'Thanh toán', body: (e) => NumberBody(e.paid) },
@@ -26,7 +25,7 @@ const Debts = () => {
 
   return (
     <FormList title="Danh sách công nợ">
-      <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="lg:w-6/12">
+      <DataFilter setParams={setParams} filter={filter} setFilter={setFilter} className="lg:w-9/12">
         <Dropdownz
           value={filter.apartment}
           onChange={(e) => setFilter({ ...filter, apartment: e })}
@@ -35,7 +34,6 @@ const Debts = () => {
           optionValue="_id"
           label="Căn hộ"
         />
-        <Dropdownz value={filter.month} onChange={(e) => setFilter({ ...filter, month: e })} options={months} label="Tháng" />
       </DataFilter>
       <Hrz />
       <DataTable
@@ -46,6 +44,7 @@ const Debts = () => {
         columns={columns}
         params={params}
         setParams={setParams}
+        rows={[]}
       />
     </FormList>
   );

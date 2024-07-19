@@ -16,7 +16,7 @@ const defaultValues = {
   price: '',
   vehicleType: '',
   recipe: 1,
-  prices: ""
+  prices: ''
 };
 
 const Apartments = (props) => {
@@ -96,7 +96,12 @@ const DetailService = () => {
     if (Number(newData.recipe) === 1) {
       if (!newData.prices) return 'Vui lòng nhập giá tiền';
       else newData.prices = [{ from: 0, to: 0, amount: newData.prices }];
-    } else newData.prices = prices.map((p) => ({ ...p, key: undefined }));
+    } else {
+      newData.prices = prices
+        .filter((p) => Number(p.from) > 0 && Number(p.to) > 0 && Number(p.amount) > 0)
+        .map((p) => ({ ...p, key: undefined }));
+      if (newData.prices.length < prices.length) return 'Vui lòng nhập đủ các thông tin về giá, các giá trị phải lớn hơn 0';
+    }
     if (isUpdate) newData = { ...checkEqualProp(newData, item), _id };
     return newData;
   };

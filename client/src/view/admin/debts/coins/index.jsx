@@ -40,6 +40,7 @@ const Coins = () => {
         columns={columns}
         params={params}
         setParams={setParams}
+        rows={[]}
       />
     </FormList>
   );

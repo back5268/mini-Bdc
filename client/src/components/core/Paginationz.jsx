@@ -45,9 +45,9 @@ const Paginationz = (props) => {
     if (total) {
       const currentPage = params.page;
       const pageCount = Math.ceil(total / params.limit);
-      if (currentPage > pageCount) setParams(pre => ({ ...pre, page: pageCount > 0 ? pageCount : 1 }))
+      if (currentPage > pageCount) setParams((pre) => ({ ...pre, page: pageCount > 0 ? pageCount : 1 }));
     }
-  }, [params.limit, params.page, total])
+  }, [params.limit, params.page, total]);
 
   return (
     <nav aria-label="Page navigation example" className="flex items-center gap-4">
@@ -80,16 +80,18 @@ const Paginationz = (props) => {
           onClick={() => setParams({ ...params, page: Math.ceil(total / params.limit) || 1 })}
         />
       </ul>
-      <div className="min-w-20">
-        <Dropdownz
-          size="md"
-          options={rows}
-          value={params.limit}
-          onChange={(e) => setParams({ ...params, limit: Number(e) })}
-          label="rows"
-          className="!w-24"
-        />
-      </div>
+      {rows.length > 0 && (
+        <div className="min-w-20">
+          <Dropdownz
+            size="md"
+            options={rows}
+            value={params.limit}
+            onChange={(e) => setParams({ ...params, limit: Number(e) })}
+            label="rows"
+            className="!w-24"
+          />
+        </div>
+      )}
       <span className="text-sm bg-transparent">Tổng số: {total} bản ghi</span>
     </nav>
   );
