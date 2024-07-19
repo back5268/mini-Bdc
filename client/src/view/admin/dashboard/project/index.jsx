@@ -7,7 +7,7 @@ import React from 'react';
 
 const Project = () => {
   const { project: _id } = useUserState();
-  const { data: project } = useGetApi(detailProjectApi, { _id }, 'project');
+  const { data: project } = useGetApi(detailProjectApi, { _id }, 'project', Boolean(_id));
   const { departments } = useDataState();
 
   return (

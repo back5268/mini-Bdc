@@ -96,7 +96,8 @@ export const sendNews = async (req, res) => {
     const residents = await listUserMd({ type: 'resident', project: req.project?._id, status: 1 }, false, false, false, 'fullName email');
     for (const resident of residents) {
       const html = convertParams({ $ten_cu_dan: resident.fullName, $noi_dung: data.content }, template.content);
-      await sendMail({ to: resident.email, subject: data.subject, html, project: req.project?._id, type: 2 });
+      const subject = convertParams({ $subject: data.subject }, template.subject);
+      await sendMail({ to: resident.email, subject, html, project: req.project?._id, type: 2 });
     }
 
     res.status(201).json({ status: true, data });

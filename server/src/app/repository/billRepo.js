@@ -1,3 +1,4 @@
+import { generateVietQrLink } from '@lib/viet-qr';
 import { detailApartmentMd, detailBillMd, detailProjectMd, detailTemplateMd, listBillMd, listDebitMd } from '@models';
 import { formatNumber, ghepGiaTri, replaceFistText } from '@utils';
 import { JSDOM } from 'jsdom';
@@ -115,6 +116,8 @@ export const renderBillRp = async (_id) => {
   table.innerHTML = table.querySelector('thead').outerHTML + newtbody1 + newtbody2 + newtbody3 + newtbody4 + newtbody5;
   let html = templateHtml.window.document.querySelector('body').outerHTML;
 
+  console.log(project);
+
   const service = debits.find((d) => d.serviceType === 1);
   const params = {
     $apartmentCode: apartment.name,
@@ -127,7 +130,8 @@ export const renderBillRp = async (_id) => {
     $tong_thanh_tien: formatNumber(tong_thanh_tien),
     $tong_phat_sinh: formatNumber(tong_phat_sinh),
     $tong_giam_tru: formatNumber(tong_giam_tru),
-    $logo1: project.avatar,
+    $logo: project.avatar,
+    $qrCode: generateVietQrLink(tong_phai_thu + no_ky_truoc - da_thanh_toan, 'Thanh toan phi can ho ' + apartment.code),
     $month: bill.month,
     $ngay_tao: moment(bill.createdAt).format('DD/MM/YYYY'),
     $tong_phai_thu: formatNumber(tong_phai_thu + no_ky_truoc - da_thanh_toan)

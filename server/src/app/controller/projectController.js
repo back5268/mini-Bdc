@@ -76,8 +76,8 @@ export const addProject = async (req, res) => {
     const checkCode = await detailProjectMd({ code });
     if (checkCode) return res.status(400).json({ status: false, mess: 'Mã dự án đã tồn tại!' });
 
-    if (req.avatar) {
-      value.avatar = await uploadFileToFirebase(req.avatar);
+    if (req.files?.['avatar']?.[0]) {
+      value.avatar = await uploadFileToFirebase(req.files?.['avatar']?.[0]);
     }
 
     const checkDepartment = await detailDepartmentMd({ id: department });
@@ -124,8 +124,8 @@ export const updateProject = async (req, res) => {
       await updateDepartmentMd({ _id: project.department }, { $pull: { projects: _id } });
     }
 
-    if (req.avatar) {
-      value.avatar = await uploadFileToFirebase(req.avatar);
+    if (req.files?.['avatar']?.[0]) {
+      value.avatar = await uploadFileToFirebase(req.files?.['avatar']?.[0]);
     }
 
     if (req.files?.['images']?.[0]) {

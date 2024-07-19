@@ -18,7 +18,6 @@ export const sendMailUse = async ({ type, params, to }) => {
   if (template) {
     const subject = convertParams(params, template.subject);
     const html = convertParams(params, template.content);
-    console.log(html);
     return await sendMail({ to, subject, html, type });
   } else return { status: false, mess: "Chưa có mẫu gửi thông báo!" }
 };

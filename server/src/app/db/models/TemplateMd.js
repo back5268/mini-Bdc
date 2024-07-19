@@ -16,13 +16,13 @@ class TemplateMd extends ModelBase {
 }
 
 TemplateMd.init('Template', {
-  by: { type: ObjectId, ref: 'User', required: true },
+  by: { type: ObjectId, ref: 'User' },
   updateBy: { type: ObjectId, ref: 'User' },
   type: {
     type: Number,
-    enum: [1, 2, 3, 4],
+    enum: [1, 2, 3],
     required: true,
-    description: '1: Quên mật khẩu, 2: Thông báo, 3: Bảng kê, 4: Phiếu'
+    description: '1: Quên mật khẩu, 2: Thông báo, 3: Bảng kê'
   },
   code: { type: String, required: true },
   subject: { type: String, required: true },

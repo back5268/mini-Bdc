@@ -143,7 +143,6 @@ export const cancelReceipt = async (req, res) => {
     }
     res.status(201).json({ status: true, data: await updateReceiptMd({ _id }, { status: 0 }) });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ status: false, mess: error.toString() });
   }
 };

@@ -87,7 +87,6 @@ export const addVehicle = async (req, res) => {
     await updateApartmentMd({ _id: checkApartment._id }, { numberVehicle: checkApartment.numberVehicle + 1 });
     res.status(201).json({ status: true, data });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ status: false, mess: error.toString() });
   }
 };

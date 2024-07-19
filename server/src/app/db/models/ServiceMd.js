@@ -39,9 +39,9 @@ ServiceMd.init('Service', {
   recipe: { type: Number, enum: [1, 2], required: true, description: '1: 1 giá, 2: Lũy tiến' },
   prices: [
     {
-      from: { type: Number, required: true, min: 1 },
-      to: { type: Number, required: true, min: 1 },
-      amount: { type: Number, required: true, min: 1 }
+      from: { type: Number, required: true, min: 0 },
+      to: { type: Number, required: true, min: 0 },
+      amount: { type: Number, required: true, min: 0 }
     }
   ],
   description: { type: String },

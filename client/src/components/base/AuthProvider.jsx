@@ -38,10 +38,12 @@ const AuthProvider = ({ children }) => {
       if (users) setUsers(users);
       const departements = await getListDepartmentInfoApi();
       if (departements) setDepartments(departements);
-      const apartments = await getListApartmentInfoApi();
-      if (apartments) setApartments(apartments);
-      const residents = await getListResidentInfoApi();
-      if (residents) setResidents(residents);
+      if (project) {
+        const apartments = await getListApartmentInfoApi();
+        if (apartments) setApartments(apartments);
+        const residents = await getListResidentInfoApi();
+        if (residents) setResidents(residents);
+      }
     } catch (error) {
       navigate('/auth/signin');
       return false;

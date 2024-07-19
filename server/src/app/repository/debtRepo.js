@@ -5,6 +5,7 @@ import {
   detailBillMd,
   detailDebitMd,
   detailElectricWaterMd,
+  detailProjectMd,
   detailServiceMd,
   listServiceMd,
   listVehicleMd,
@@ -74,8 +75,8 @@ export class Debt {
       type
     });
     if (!electricWater) return { mess: `Căn hộ chưa chốt ${type === 1 ? 'điện' : 'nước'} tháng ${this.month}` };
+    const quantity = electricWater.afterNumber - electricWater.beforeNumber;
     if (this.service.price?.recipe === 1) {
-      const quantity = electricWater.afterNumber - electricWater.beforeNumber;
       const price = this.prices[0]?.amount;
       const cost = price * quantity;
       return { quantity, price, cost };
@@ -99,7 +100,7 @@ export class Debt {
         }
       });
       const data = { beforeNumber: electricWater.beforeNumber, afterNumber: electricWater.afterNumber, prices };
-      return { quantity: 1, price: cost, cost, data };
+      return { quantity, price: cost, cost, data };
     }
   }
 
@@ -162,12 +163,13 @@ export class Debt {
     if (cost < this.discount) return { status: false, mess: `Giảm trừ không thể lớn hơn thành tiền` };
     const summary = cost - this.discount;
     if (!this.bill) {
+      const project = await detailProjectMd({ id: this.projectId })
       this.bill = await createBillMd({
         project: this.projectId,
         apartment: this.apartment._id,
         month: this.month,
         amount: summary,
-        code: `${this.month}_${generateRandomString(4)}_${Date.now()}`,
+        code: `${project?.code}_${this.apartment?.code}_${this.month}}`,
         deadline: moment(this.deadline).format('YYYY-MM-DD'),
         status: 1,
         customerInfo: { name: this.apartment.owner?.fullName }
