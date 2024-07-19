@@ -92,7 +92,7 @@ export class Debt {
             if (index === this.prices.length - 1) total = p.amount * (number - p.from);
             else total = p.amount * (p.to - p.from);
           } else {
-            total = p.amount * (number - p.from);
+            total = p.amount * (number - p.from + 1);
             check = true;
           }
           cost += total;
