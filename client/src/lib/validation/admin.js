@@ -136,4 +136,5 @@ export const ReceiptValidation = yup.object({
   apartment: yup.string().required('Căn hộ không được bỏ trống!'),
   payer: yup.string().required('Người tạo không được bỏ trống!'),
   paymentType: yup.string().required('Loại thanh toán không được bỏ trống!'),
+  amount: yup.string().required('Số Tiền không được bỏ trống!'),
 });
