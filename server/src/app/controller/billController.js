@@ -93,7 +93,7 @@ export const sendBill = async (req, res) => {
     const { mess, data } = await renderBillRp(_id);
     if (mess) return res.status(400).json({ status: false, mess });
     const { subject, content, apartment } = data;
-    await sendMail({ to: apartment?.owner?.email, subject, html: content, project: req.project?._id, type: 4 });
+    await sendMail({ to: apartment?.owner?.email, subject, html: content, project: req.project?._id, type: 3 });
     await updateBillMd({ _id }, { status: 3 });
     res.json({ status: true, data: {} });
   } catch (error) {

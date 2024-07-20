@@ -25,5 +25,9 @@ export const listDebitValid = {
 };
 
 export const listDebtValid = {
-  apartment: { type: 'string', allowNull: true },
+  apartment: { type: 'string', allowNull: true }
+};
+
+export const debtRemindValid = {
+  _ids: 'json'
 };

@@ -6,6 +6,7 @@ import { useGetApi } from '@lib/react-query';
 import { useState } from 'react';
 import { useDataState, useToastState } from '@store';
 import { formatNumber } from '@lib/helper';
+import { CalculatorIcon } from '@heroicons/react/24/outline';
 
 const Coins = () => {
   const initParams = useGetParams();
@@ -21,12 +22,14 @@ const Coins = () => {
   const columns = [
     { label: 'Căn hộ', field: 'name' },
     { label: 'Mã căn hộ', field: 'code' },
-    { label: 'Tổng tiền thừa', body: (e) => formatNumber(e.coin) }
+    { label: 'Tiền thừa', body: (e) => formatNumber(e.coin) }
   ];
 
   const autoAccouting = async () => {
+    const checkCoin = data.filter(d => select.includes(d._id) && Number(d.coin) > 0)
+    if (checkCoin.length === 0) return showToast({ title: 'Không có căn hộ có tiền thừa hạch toán', severity: 'warning' });
     setLoading(true)
-    const response = await autoAccountingApi({ _ids: select });
+    const response = await autoAccountingApi({ _ids: checkCoin.map(c => c._id) });
     if (response) {
       showToast({ title: 'Hạch toán tự động thành công', severity: 'success' });
       setParams((pre) => ({ ...pre, render: !pre.render }));
@@ -65,7 +68,10 @@ const Coins = () => {
         select={select}
         setSelect={setSelect}
         headerInfo={{
-          moreHeader: [{ children: () => 'Hạch toán tự động', onClick: () => autoAccouting() }]
+          moreHeader: [{ children: () => <div className='flex gap-2 items-center'>
+            <CalculatorIcon className='h-5 w-5 stroke-2' />
+            Hạch toán tự động
+          </div>, onClick: () => autoAccouting() }]
         }}
       />
     </FormList>

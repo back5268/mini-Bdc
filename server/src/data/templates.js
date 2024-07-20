@@ -9,8 +9,8 @@ export const templates = [
             <p>Vui lòng không cung cấp mã xác nhận trên cho bất kỳ ai.</p>
             <p>Trân trọng cảm ơn,</p> <br />
             <p>------------------------------------------------------------</p>
-            <p>Thanks and best regards,</p>
-            <p><i>Development</i></p>
+            <p>PHẦN MỀM TIỆN ÍCH CHUNG CƯ MINI BDC</p>
+            <p>Trân trọng thông báo!</p>
             `
   },
   {
@@ -19,6 +19,21 @@ export const templates = [
     subject: '[Mini BDC] - Thông báo: $subject',
     content: `<p>Kính gửi Quý cư dân $ten_cu_dan,</p>
             <p>Nội dung: $noi_dung</p>
+            <p>------------------------------------------------------------</p>
+            <p>PHẦN MỀM TIỆN ÍCH CHUNG CƯ MINI BDC</p>
+            <p>Trân trọng thông báo!</p>
+            `
+  },
+  {
+    type: 4,
+    code: 'DEBT_REMIND',
+    subject: '[Mini BDC] - Nhắc nợ ngày $ngay',
+    content: `<p>Kính gửi Quý cư dân $ten_cu_dan</p>
+            <p>Ban quản lý tòa nhà $ten_toa_nha trân trọng gửi Quý cư dân Dư nợ hiện tại của căn hộ $ten_can_ho</p>
+            <h3>Tổng dư nợ: <b>$tong_no</b></h3>
+            <p>Vui lòng bỏ qua nếu đã thanh toán</p>
+            <p>Hỗ trợ liên hệ: [Email] $email hoặc [Hotline BQL] $phone</p>
+            <p>------------------------------------------------------------</p>
             <p>PHẦN MỀM TIỆN ÍCH CHUNG CƯ MINI BDC</p>
             <p>Trân trọng thông báo!</p>
             `

@@ -1,20 +1,23 @@
 import { debtQueue } from '@lib/node-cron';
-import { calculatorDebtValid, listDebtLogValid, listDebitValid, listDebtValid } from '@lib/validation';
+import { sendMail } from '@lib/node-mailer';
+import { calculatorDebtValid, listDebtLogValid, listDebitValid, listDebtValid, debtRemindValid } from '@lib/validation';
 import {
   countDebitMd,
   countDebtLogMd,
   createDebtLogMd,
   deleteBillMd,
   deleteDebitMd,
+  detailApartmentMd,
   detailBillMd,
   detailDebitMd,
+  detailTemplateMd,
   listApartmentMd,
   listBillMd,
   listDebitMd,
   listDebtLogMd,
   updateBillMd
 } from '@models';
-import { validateData } from '@utils';
+import { formatNumber, ghepGiaTri, replaceFistText, validateData } from '@utils';
 import moment from 'moment';
 
 export const getListDebtLog = async (req, res) => {
@@ -104,7 +107,7 @@ export const getListDebt = async (req, res) => {
     const { error, value } = validateData(listDebtValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { apartment } = value;
-    const where = { project: req.project?._id };
+    const where = { project: req.project?._id, status: 3 };
     if (apartment) where.apartment = apartment;
     const whereApartment = { project: req.project?._id };
     if (apartment) whereApartment._id = apartment;
@@ -125,6 +128,48 @@ export const getListDebt = async (req, res) => {
     });
 
     res.json({ status: true, data: newData });
+  } catch (error) {
+    res.status(500).json({ status: false, mess: error.toString() });
+  }
+};
+
+export const debtRemind = async (req, res) => {
+  try {
+    const { error, value } = validateData(debtRemindValid, req.body);
+    if (error) return res.status(400).json({ status: false, mess: error });
+    const { _ids } = value;
+    const template = await detailTemplateMd({ type: 4, status: 1 });
+    if (!template) return { mess: 'Chưa thiết lập mẫu nhắc nợ!' };
+    const content = template.content;
+    const subjectz = template.subject;
+    const data = await listBillMd({ project: req.project?._id, status: 3, apartment: { $in: _ids } });
+    for (const _id of _ids) {
+      const apartment = await detailApartmentMd({ project: req.project?._id, _id }, [{ path: 'owner', select: 'email fullName' }]);
+      if (!apartment || !apartment.owner || !apartment.owner.email) continue;
+      const dataz = data.filter((d) => String(d.apartment) === String(_id));
+      let amount = 0;
+      dataz.forEach((d) => {
+        amount += d.amount - d.paid;
+      });
+      if (Number(amount) > 0) {
+        let html = ghepGiaTri({
+          obj: {
+            $ten_cu_dan: apartment.owner.fullName,
+            $ten_toa_nha: req.project?.name,
+            $ten_can_ho: apartment.name,
+            $tong_no: formatNumber(amount),
+            $email: req.project?.email,
+            $phone: req.project?.phone
+          },
+          html: content
+        });
+        html = replaceFistText(html);
+        let subject = ghepGiaTri({ obj: { $ngay: moment().format('DD/MM/YYYY') }, html: subjectz });
+        await sendMail({ to: apartment?.owner?.email, subject, html, project: req.project?._id, type: 4 });
+      }
+    }
+
+    res.json({ status: true, data: {} });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }

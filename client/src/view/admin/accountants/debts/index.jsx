@@ -9,6 +9,7 @@ import Calculator from './Calculator';
 import DetaiDebt from './Detail';
 import { socket } from '@lib/socket-io';
 import { useUserState } from '@store';
+import { CalculatorIcon } from '@heroicons/react/24/outline';
 
 const Calculatorz = () => {
   const initParams = useGetParams();
@@ -85,7 +86,19 @@ const Calculatorz = () => {
         params={params}
         setParams={setParams}
         baseActions={['detail']}
-        headerInfo={{ moreHeader: [{ children: () => 'Tính toán công nợ', onClick: () => setOpen(true) }] }}
+        headerInfo={{
+          moreHeader: [
+            {
+              children: () => (
+                <div className="flex gap-2 items-center">
+                  <CalculatorIcon className="h-5 w-5 stroke-2" />
+                  Tính toán công nợ
+                </div>
+              ),
+              onClick: () => setOpen(true)
+            }
+          ]
+        }}
         actionsInfo={{
           onViewDetail: (item) => setOpenDetail(item._id)
         }}
