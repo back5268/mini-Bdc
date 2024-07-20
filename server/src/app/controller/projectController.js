@@ -8,7 +8,10 @@ import {
   listProjectMd,
   updateProjectMd,
   detailDepartmentMd,
-  updateDepartmentMd
+  updateDepartmentMd,
+  countApartmentMd,
+  countUserMd,
+  countVehicleMd
 } from '@models';
 import { validateData } from '@utils';
 
@@ -45,6 +48,25 @@ export const detailProject = async (req, res) => {
     const data = await detailProjectMd({ _id });
     if (!data) return res.status(400).json({ status: false, mess: 'Dự án không tồn tại!' });
     res.json({ status: true, data });
+  } catch (error) {
+    res.status(500).json({ status: false, mess: error.toString() });
+  }
+};
+
+export const informationProject = async (req, res) => {
+  try {
+    const { error, value } = validateData(detailProjectValid, req.query);
+    if (error) return res.status(400).json({ status: false, mess: error });
+    const { _id } = value;
+    res.json({
+      status: true,
+      data: {
+        apartment: await countApartmentMd({ project: _id }),
+        resident: await countUserMd({ status: 1, project: _id, type: 'resident' }),
+        vehicle: await countVehicleMd({ project: _id, status: 1 }),
+        user: await countUserMd({ type: { $in: ['user', 'admin'] }, status: 1 })
+      }
+    });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }

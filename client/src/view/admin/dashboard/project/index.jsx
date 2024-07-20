@@ -1,17 +1,64 @@
-import { detailProjectApi } from '@api';
+import { detailProjectApi, informationProjectApi } from '@api';
 import { Cardz, Hrz, Imagez, Inputz, TextAreaz } from '@components/core';
 import { useGetApi } from '@lib/react-query';
 import { Carousel, IconButton } from '@material-tailwind/react';
 import { useDataState, useUserState } from '@store';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+const Ticket = (props) => {
+  const { image, amount, label } = props;
+
+  return (
+    <div className="card flex gap-8 items-center justify-center">
+      <Imagez src={image} className="w-16 h-16" />
+      <div className="flex flex-col">
+        <h2 className="font-bold text-3xl">{amount}</h2>
+        <span className="font-medium">{label}</span>
+      </div>
+    </div>
+  );
+};
 
 const Project = () => {
   const { project: _id } = useUserState();
   const { data: project } = useGetApi(detailProjectApi, { _id }, 'project', Boolean(_id));
+  const { data: infomation } = useGetApi(informationProjectApi, { _id }, 'informationProject', Boolean(_id));
   const { departments } = useDataState();
+
+  const [items, setItems] = useState([
+    { image: '/images/apartment.png', amount: 0, label: 'Căn hộ' },
+    { image: '/images/resident.png', amount: 0, label: 'Cư dân' },
+    { image: '/images/vehicle.png', amount: 0, label: 'Phương tiện' },
+    { image: '/images/account.png', amount: 0, label: 'Tài khoản' }
+  ]);
+
+  useEffect(() => {
+    if (infomation) {
+      setItems((pre) =>
+        pre.map((p, index) => {
+          if (index === 0) p.amount = infomation.apartment;
+          if (index === 1) p.amount = infomation.resident;
+          if (index === 2) p.amount = infomation.vehicle;
+          if (index === 3) p.amount = infomation.user;
+          return p;
+        })
+      );
+    }
+  }, [JSON.stringify(infomation)]);
 
   return (
     <Cardz className="p-4">
+      <div className="px-8 mb-8">
+        <h2 className="font-semibold uppercase leading-normal mb-2">Báo cáo tổng hợp</h2>
+        <Hrz />
+        <div className="flex flex-wrap p-4">
+          {items?.map((item, index) => (
+            <div key={index} className="lg:w-3/12 md:w-6/12 p-2">
+              <Ticket image={item.image} amount={item.amount} label={item.label} />
+            </div>
+          ))}
+        </div>
+      </div>
       <div className="flex flex-wrap">
         <div className="w-full lg:w-7/12 p-4 px-8">
           <div className="flex flex-col gap-2">
@@ -22,7 +69,7 @@ const Project = () => {
             <Inputz label="Địa chỉ" className="!w-full" value={project?.address} />
             <Inputz label="Số điện thoại BQL" className="!w-full" value={project?.phone} />
             <Inputz label="Email BQL" className="!w-full" value={project?.email} />
-            <Inputz label="Phòng ban quản lý" className="!w-full" value={departments?.find(d => d._id === project?.department)?.name} />
+            <Inputz label="Phòng ban quản lý" className="!w-full" value={departments?.find((d) => d._id === project?.department)?.name} />
             <TextAreaz label="Mô tả" value={project?.description} />
           </div>
         </div>
