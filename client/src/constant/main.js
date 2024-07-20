@@ -93,7 +93,7 @@ export const logType = [
   { label: 'Quên mật khẩu', key: 1 },
   { label: 'Gửi thông báo tin tức', key: 2 },
   { label: 'Gửi thông báo phí', key: 3 },
-  { label: 'Gửi phiếu', key: 4 },
+  { label: 'Gửi thông báo phí', key: 4 },
 ];
 
 export const logStatus = [
@@ -118,7 +118,8 @@ export const receiptType = [
 
 export const paymentType = [
   { label: 'Chuyển khoản', key: 1 },
-  { label: 'Tiền mặt', key: 2 }
+  { label: 'Tiền mặt', key: 2 },
+  { label: 'Hạch toán tự động', key: 3 }
 ];
 
 export const residentType = [

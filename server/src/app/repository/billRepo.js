@@ -85,13 +85,23 @@ export const renderBillRp = async (_id) => {
             $date: `${moment(debt.fromDate).format('DD/MM/YYYY')} - ${moment(debt.toDate).format('DD/MM/YYYY')}`,
             $so_luong: `${formatNumber(1)}`,
             $don_gia: `${formatNumber(datum.amount)}`,
-            $thanh_tien: `${formatNumber(datum.amount)}`,
+            $thanh_tien: `${formatNumber(datum.amount)}`
           },
           html: tbodys[0].querySelectorAll('tr')[1].outerHTML,
           format: true
         });
       });
     } else {
+      let don_gia = '';
+      const prices = debt.prices;
+      if (prices.length === 1 && prices[0].from === 0 && prices[0].to === 0) don_gia = formatNumber(prices[0]?.amount);
+      else if (prices.length > 1) {
+        prices.forEach((p) => {
+          don_gia += `<p style="white-space: nowrap;"><span>Từ: ${p.from}</span>
+          <span>Đến: ${p.to}</span>
+          <span>Giá: ${formatNumber(p.amount)}</span></p>`;
+        });
+      } else don_gia = formatNumber(e.price);
       newtbody1 += replaceFistText(
         ghepGiaTri({
           obj: {
@@ -101,8 +111,8 @@ export const renderBillRp = async (_id) => {
             $thanh_tien: `${formatNumber(debt.cost)}`,
             $phat_sinh: `${formatNumber(debt.summary)}`,
             $so_luong: `${formatNumber(debt.quantity)}`,
-            $don_gia: `${formatNumber(debt.price)}`,
-            $giam_tru: `${formatNumber(debt.discount)}`,
+            $don_gia: don_gia,
+            $giam_tru: `${formatNumber(debt.discount)}`
           },
           html: tbodys[0].querySelectorAll('tr')[1].outerHTML,
           format: true
@@ -115,8 +125,6 @@ export const renderBillRp = async (_id) => {
 
   table.innerHTML = table.querySelector('thead').outerHTML + newtbody1 + newtbody2 + newtbody3 + newtbody4 + newtbody5;
   let html = templateHtml.window.document.querySelector('body').outerHTML;
-
-  console.log(project);
 
   const service = debits.find((d) => d.serviceType === 1);
   const params = {

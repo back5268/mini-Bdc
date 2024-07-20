@@ -86,12 +86,11 @@ export const addReceipt = async (req, res) => {
     params = { type: 1, amount, coinAfter: coinBefore - amount };
   } else if (type === 3) {
     billz.amountz = billz.amount - billz.paid;
-    if (amount > billz.amountz) {
-      await updateBillMd({ _id: bill }, { paid: billz.amount, status: 4 });
-      params = { type: 1, amount: billz.amountz, coinAfter: coinBefore - billz.amountz };
-    } else {
-      await updateBillMd({ _id: bill }, { paid: amount + billz.paid, status: amount === billz.amountz ? 4 : undefined });
-      params = { type: 1, amount, coinAfter: 0 };
+    if (amount > billz.amountz)
+      return res.status(400).json({ status: false, mess: 'Số tiền hạch toán không thể lớn hơn số tiền nợ hóa đơn!' });
+    else {
+      await updateBillMd({ _id: bill }, { paid: amount + billz.paid, status: amount + billz.paid === billz.amount ? 4 : undefined });
+      params = { type: 1, amount, coinAfter: coinBefore - amount };
     }
   }
 
@@ -118,21 +117,22 @@ export const cancelReceipt = async (req, res) => {
 
     let coinz = 0;
     if (data.coin) {
-      const coins = await listCoinMd({ apartment: data.apartment });
-      if (coins?.length > 0) {
-        const lastCoin = coins[0];
-        const coin = coins.find((c) => c._id === data.coin);
-        coinz = coin.amount || 0;
+      const lastCoin = await detailCoinMd({ apartment: data.apartment })
+      const coin = await detailCoinMd({ _id: data.coin, apartment: data.apartment })
+      if (coin) {
+        coinz = (coin.type === 2 ? coin.amount : 0) || 0;
         const type = coin.type === 1 ? 2 : 1;
         await createCoinMd({
-          ...coin,
-          _id: undefined,
+          project: coin.project,
+          apartment: coin.apartment,
+          amount: coin.amount,
           type,
           coinBefore: lastCoin.coinAfter,
-          coinAfter: lastCoin.coinAfter + (type === 1 ? - coin.amount : coin.amount)
+          coinAfter: lastCoin.coinAfter + (type === 1 ? -coin.amount : coin.amount)
         });
       }
     }
+
     if (data.bill) {
       const bill = await detailBillMd({ _id: data.bill });
       if (bill)
@@ -164,8 +164,8 @@ export const getCoinByApartment = async (req, res) => {
     const { error, value } = validateData(detailReceiptValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id } = value;
-    const data = await listCoinMd({ apartment: _id });
-    res.json({ status: true, data: data[0]?.coinAfter });
+    const data = await detailCoinMd({ apartment: _id });
+    res.json({ status: true, data: data?.coinAfter });
   } catch (error) {
     res.status(500).json({ status: false, mess: error.toString() });
   }

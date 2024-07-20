@@ -24,12 +24,13 @@ const Services = ({ apartment }) => {
       label: 'Giá tiền',
       body: (e) => {
         const prices = e.prices;
-        if (prices.length === 1) return <span className='font-medium uppercase'>Đơn giá: {formatNumber(prices[0]?.amount)}</span>;
+        if (prices.length === 1 && prices[0].from === 0 && prices[0].to === 0)
+          return <span className="font-medium uppercase">Đơn giá: {formatNumber(prices[0]?.amount)}</span>;
         else
           return (
             <div className="flex flex-col gap-2">
-              <span className='font-medium uppercase'>Lũy tiến:</span>
-              <Hrz/>
+              <span className="font-medium uppercase">Lũy tiến:</span>
+              <Hrz />
               {prices.map((p, index) => (
                 <div key={index} className="flex justify-between font-medium">
                   <span>Từ: {p.from}</span>
@@ -53,7 +54,7 @@ const Services = ({ apartment }) => {
           </div>
         );
       }
-    },
+    }
   ];
 
   const onSuccess = async () => {
@@ -85,7 +86,7 @@ const Services = ({ apartment }) => {
         isLoading={isLoading}
         data={data?.documents}
         total={data?.total}
-        columns={Boolean(apartment) ? columns.filter(c => c.label !== "Căn hộ áp dụng") : columns}
+        columns={Boolean(apartment) ? columns.filter((c) => c.label !== 'Căn hộ áp dụng') : columns}
         params={params}
         setParams={setParams}
         baseActions={apartment ? ['create', 'detail'] : ['create', 'detail', 'delete']}

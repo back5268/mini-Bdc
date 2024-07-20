@@ -1,26 +1,24 @@
-import { getListDebtApi, getListMonthApi } from '@api';
-import { DataTable, FormList, NumberBody, DataFilter, Body } from '@components/base';
+import { getListDebtApi } from '@api';
+import { DataTable, FormList, DataFilter } from '@components/base';
 import { Dropdownz, Hrz } from '@components/core';
 import { useGetParams } from '@hook';
 import { useGetApi } from '@lib/react-query';
 import { useState } from 'react';
 import { useDataState } from '@store';
+import { formatNumber } from '@lib/helper';
 
 const Debts = () => {
   const initParams = useGetParams();
   const [params, setParams] = useState({ ...initParams, page: 1, limit: 100 });
   const [filter, setFilter] = useState({});
   const { isLoading, data } = useGetApi(getListDebtApi, { ...params, limit: undefined, page: undefined }, 'debts');
-  const { data: months } = useGetApi(getListMonthApi, {}, 'months');
   const { apartments } = useDataState();
+  const amount = data?.reduce((a, b) => a + b.amount, 0);
 
   const columns = [
-    { label: 'Căn hộ', body: (e) => Body(apartments, e.apartment, '_id', 'name') },
-    { label: 'Mã căn hộ', body: (e) => Body(apartments, e.apartment, '_id', 'code') },
-    { label: 'Số dư đầu kỳ', body: (e) => NumberBody(e.before) },
-    { label: 'Phát sinh trong tháng', body: (e) => NumberBody(e.amount) },
-    { label: 'Thanh toán', body: (e) => NumberBody(e.paid) },
-    { label: 'Số dư cuối kỳ', body: (e) => NumberBody(e.before + e.amount - e.paid) }
+    { label: 'Căn hộ', field: 'name' },
+    { label: 'Mã căn hộ', field: 'code' },
+    { label: 'Còn nợ', body: (e) => formatNumber(e.amount) }
   ];
 
   return (
@@ -36,6 +34,11 @@ const Debts = () => {
         />
       </DataFilter>
       <Hrz />
+      <div className="w-full text-center mt-4">
+        <span className="font-medium">
+          Tổng tiền nợ: <span className="text-red-600 text-xl font-semibold">{formatNumber(amount)}</span>
+        </span>
+      </div>
       <DataTable
         title="công nợ"
         isLoading={isLoading}

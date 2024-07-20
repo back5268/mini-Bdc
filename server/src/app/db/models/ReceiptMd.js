@@ -25,7 +25,7 @@ ReceiptMd.init('Receipt', {
   apartment: { type: ObjectId, ref: 'Apartment', required: true },
   bill: { type: ObjectId },
   type: { type: Number, enum: [1, 2, 3], description: '1: Phiếu thu, 2: Phiếu hoàn tiền, 3: Phiếu hạch toán', required: true },
-  paymentType: { type: Number, enum: [1, 2], description: '1: Chuyển khoản, 2: Tiền mặt', required: true },
+  paymentType: { type: Number, enum: [1, 2, 3], description: '1: Chuyển khoản, 2: Tiền mặt, 3: Hạch toán tự động', required: true },
   amount: { type: Number, required: true },
   note: { type: String },
   coin: { type: ObjectId },

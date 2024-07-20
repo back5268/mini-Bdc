@@ -28,9 +28,9 @@ export const templates = [
     code: 'SEND_BILL',
     subject: '[Mini BDC] - Gửi thông báo phí',
     content: `<main style="max-width: 1200px; margin: 0 auto;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; align-items: center;">
         <img src="https://mini-bdc.vercel.app/images/logo.png" height="100px" width="100px" />
-        <div>
+        <div style="width: 100%; text-align: center;">
             <h3 style="text-align: center; margin: 8px; font-weight: 700;">TH&Ocirc;NG B&Aacute;O PH&Iacute; - KỲ
                 $month
             </h3>
@@ -39,28 +39,27 @@ export const templates = [
             <p style="margin-left: 20%;">Ng&agrave;y ph&aacute;t h&agrave;nh/ <em style="color: gray;"> Issue date:</em>
                 $ngay_tao</p>
         </div>
-        <img src="$logo" height="100px" width="100px" />
+        <img src="$logo" height="100px" width="100px"/>
     </div>
 
-    <div style="display: flex; justify-content: space-between; margin-top: 24px;">
-        <div>
-            <p style="margin: 4px; line-height: 22px;">M&atilde; căn hộ/ <em style="color: gray;"> Unit code:</em>
-                <strong>$apartmentCode</strong>
-            </p>
-            <p style="margin: 4px; line-height: 22px;">Họ t&ecirc;n chủ hộ/ <em style="color: gray;"> Owner name:</em>
-                <strong>$owner</strong>
-            </p>
-        </div>
-        <div style="margin-right: 2%;">
-            <p style="margin: 4px; line-height: 22px;">Diện t&iacute;ch/ <em style="color: gray;"> Area:</em>
-                <strong>$area</strong> m2
-            </p>
-            <p style="margin: 4px; line-height: 22px;">Đơn gi&aacute;/ <em style="color: gray;"> Unit Price:</em>
-                <strong>$price</strong> đồng (VNĐ/m2)
-            </p>
-        </div>
+    <div style="margin-top: 24px;"></div>
+    <div style="float: left;">
+        <p style="margin: 4px; line-height: 22px;">M&atilde; căn hộ/ <em style="color: gray;"> Unit code:</em>
+            <strong>$apartmentCode</strong>
+        </p>
+        <p style="margin: 4px; line-height: 22px;">Họ t&ecirc;n chủ hộ/ <em style="color: gray;"> Owner name:</em>
+            <strong>$owner</strong>
+        </p>
     </div>
-    <table style="border-collapse: collapse; width: 100%; margin: 8px 0;">
+    <div style="margin-right: 2%; float: right; margin-bottom: 24px;">
+        <p style="margin: 4px; line-height: 22px;">Diện t&iacute;ch/ <em style="color: gray;"> Area:</em>
+            <strong>$area</strong> m2
+        </p>
+        <p style="margin: 4px; line-height: 22px;">Đơn gi&aacute;/ <em style="color: gray;"> Unit Price:</em>
+            <strong>$price</strong> đồng (VNĐ/m2)
+        </p>
+    </div>
+    <table style="border-collapse: collapse; width: 100%; margin: 8px 0; margin-top: 24px;">
         <thead>
             <tr>
                 <td style="border: 1px solid black; padding: 8px 4px; text-align: center; width: 4.58015%;">
@@ -230,7 +229,7 @@ export const templates = [
                     this fee
                     notice if this amount was be paid. </em></p>
         </div>
-        <div style="float: right; margin-right: 32px; margin-top: 32px;">
+        <div style="float: right; margin-right: 128px; margin-top: 32px;">
             <div style="height: 200px;"><img src="$qrCode" height="200px" style="height: 200px" /></div>
         </div>
     </div>

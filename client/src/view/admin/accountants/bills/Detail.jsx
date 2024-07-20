@@ -10,25 +10,35 @@ import { formatNumber } from '@lib/helper';
 const Header = ({ item = {} }) => {
   return (
     <div className="flex flex-wrap items-center justify-evenly text-center">
-      <div className="w-full md:w-6/12 lg:w-4/12 my-2">
+      <div className="w-full md:w-6/12 lg:w-3/12 my-2">
         <span className="font-medium">Căn hộ: {item?.apartment?.name}</span>
       </div>
-      <div className="w-full md:w-6/12 lg:w-4/12 my-2">
+      <div className="w-full md:w-6/12 lg:w-3/12 my-2">
         <span className="font-medium">Kỳ tháng: {item?.month}</span>
       </div>
-      <div className="w-full md:w-6/12 lg:w-4/12 my-2">
+      <div className="w-full md:w-6/12 lg:w-3/12 my-2">
         <span className="font-medium">Hạn thanh toán: {moment(item?.deadline).format('DD/MM/YYYY')}</span>
       </div>
-      <div className="w-full md:w-6/12 lg:w-4/12 my-2">
+      <div className="w-full md:w-6/12 lg:w-3/12 my-2">
+        <span className="font-medium">Ngày duyệt: {item?.confirmDate ? moment(item?.confirmDate).format('DD/MM/YYYY') : '--/--/----'}</span>
+      </div>
+      <div className="w-full md:w-6/12 lg:w-3/12 my-2">
         <div className="w-full flex justify-center">{Body(billStatus, item?.status)}</div>
       </div>
-      <div className="w-full md:w-6/12 lg:w-4/12 my-2">
+      <div className="w-full md:w-6/12 lg:w-3/12 my-2">
         <span className="font-medium">
-          Tổng thanh toán: <span className="text-red-600 text-xl font-semibold">{formatNumber(item?.amount - item?.paid)}</span>
+          Số tiền: <span className="text-red-600 text-xl font-semibold">{formatNumber(item?.amount)}</span>
         </span>
       </div>
-      <div className="w-full md:w-6/12 lg:w-4/12 my-2">
-        <span className="font-medium">Ngày duyệt: {item?.confirmDate ? moment(item?.confirmDate).format('DD/MM/YYYY') : '--/--/----'}</span>
+      <div className="w-full md:w-6/12 lg:w-3/12 my-2">
+        <span className="font-medium">
+          Đã thanh toán: <span className="text-red-600 text-xl font-semibold">{formatNumber(item?.paid)}</span>
+        </span>
+      </div>
+      <div className="w-full md:w-6/12 lg:w-3/12 my-2">
+        <span className="font-medium">
+          Còn nợ: <span className="text-red-600 text-xl font-semibold">{formatNumber(item?.amount - item?.paid)}</span>
+        </span>
       </div>
     </div>
   );
@@ -41,7 +51,26 @@ const DetaiBill = (props) => {
   const columns = [
     { label: 'Loại dịch vụ', body: (e) => Body(serviceType, e.serviceType) },
     { label: 'Dịch vụ', field: 'serviceName' },
-    { label: 'Đơn giá', body: (e) => NumberBody(e.price) },
+    {
+      label: 'Đơn giá',
+      body: (e) => {
+        const prices = e.prices;
+        if (prices.length === 1 && prices[0].from === 0 && prices[0].to === 0) return formatNumber(prices[0]?.amount);
+        else if (prices.length > 1)
+          return (
+            <div className="flex flex-col gap-2">
+              {prices.map((p, index) => (
+                <div key={index} className="flex justify-between gap-2">
+                  <span>Từ: {p.from}</span>
+                  <span>Đến: {p.to}</span>
+                  <span>Giá: {formatNumber(p.amount)}</span>
+                </div>
+              ))}
+            </div>
+          );
+        else return formatNumber(e.price);
+      }
+    },
     { label: 'Số lượng', body: (e) => NumberBody(e.quantity) },
     { label: 'Giảm trừ', body: (e) => NumberBody(e.discount) },
     { label: 'Thành tiền', body: (e) => NumberBody(e.summary) },

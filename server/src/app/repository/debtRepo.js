@@ -75,24 +75,23 @@ export class Debt {
       type
     });
     if (!electricWater) return { mess: `Căn hộ chưa chốt ${type === 1 ? 'điện' : 'nước'} tháng ${this.month}` };
-    const quantity = electricWater.afterNumber - electricWater.beforeNumber;
-    if (this.service.price?.recipe === 1) {
+    const quantity = electricWater.afterNumber - electricWater.beforeNumber + 1;
+    if (this.service.recipe === 1) {
       const price = this.prices[0]?.amount;
       const cost = price * quantity;
       return { quantity, price, cost };
     } else {
       let cost = 0;
-      const number = electricWater.afterNumber - electricWater.beforeNumber + 1;
       const prices = [];
       let check = false;
       this.prices.forEach((p, index) => {
         if (!check) {
           let total = 0;
-          if (number > p.to) {
-            if (index === this.prices.length - 1) total = p.amount * (number - p.from);
-            else total = p.amount * (p.to - p.from);
+          if (quantity > p.to) {
+            if (index === this.prices.length - 1) total = p.amount * quantity
+            else total = p.amount * (p.to - p.from + 1);
           } else {
-            total = p.amount * (number - p.from + 1);
+            total = p.amount * (quantity - p.from + 1);
             check = true;
           }
           cost += total;
@@ -100,7 +99,7 @@ export class Debt {
         }
       });
       const data = { beforeNumber: electricWater.beforeNumber, afterNumber: electricWater.afterNumber, prices };
-      return { quantity, price: cost, cost, data };
+      return { quantity, price: 0, cost, data };
     }
   }
 
@@ -169,7 +168,7 @@ export class Debt {
         apartment: this.apartment._id,
         month: this.month,
         amount: summary,
-        code: `${project?.code}_${this.apartment?.code}_${this.month}}`,
+        code: `${project?.code}_${this.apartment?.code}_${this.month}`,
         deadline: moment(this.deadline).format('YYYY-MM-DD'),
         status: 1,
         customerInfo: { name: this.apartment.owner?.fullName }

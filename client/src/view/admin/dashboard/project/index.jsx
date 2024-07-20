@@ -28,9 +28,11 @@ const Project = () => {
         </div>
         <div className="w-full lg:w-5/12">
           <div className="flex flex-col gap-2 p-4">
-            <h2 className="font-semibold uppercase leading-normal mb-2">Hình ảnh dự án</h2>
+            <h2 className="font-semibold uppercase leading-normal mb-2">Logo</h2>
             <Hrz />
-            <Imagez src={project?.avatar} isZoom className="w-full" />
+            <Imagez src={project?.avatar} className="w-full" />
+            <h2 className="font-semibold uppercase leading-normal mb-2 mt-8">Hình ảnh dự án</h2>
+            <Hrz />
             {project?.images?.length > 0 && (
               <Carousel
                 loop={true}

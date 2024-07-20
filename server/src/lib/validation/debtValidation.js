@@ -26,5 +26,4 @@ export const listDebitValid = {
 
 export const listDebtValid = {
   apartment: { type: 'string', allowNull: true },
-  month: { type: 'number', allowNull: true },
 };

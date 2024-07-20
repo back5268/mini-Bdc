@@ -1,6 +1,19 @@
 import { debtQueue } from '@lib/node-cron';
 import { calculatorDebtValid, listDebtLogValid, listDebitValid, listDebtValid } from '@lib/validation';
-import { countDebitMd, countDebtLogMd, createDebtLogMd, deleteBillMd, deleteDebitMd, detailBillMd, detailDebitMd, listBillMd, listDebitMd, listDebtLogMd, updateBillMd } from '@models';
+import {
+  countDebitMd,
+  countDebtLogMd,
+  createDebtLogMd,
+  deleteBillMd,
+  deleteDebitMd,
+  detailBillMd,
+  detailDebitMd,
+  listApartmentMd,
+  listBillMd,
+  listDebitMd,
+  listDebtLogMd,
+  updateBillMd
+} from '@models';
 import { validateData } from '@utils';
 import moment from 'moment';
 
@@ -59,9 +72,7 @@ export const getListDebit = async (req, res) => {
     if (to) {
       if (!where.createdAt) where.createdAt.$lte = to;
     }
-    const documents = await listDebitMd(where, page, limit, [
-      { path: 'apartment', select: 'name owner' }
-    ]);
+    const documents = await listDebitMd(where, page, limit, [{ path: 'apartment', select: 'name owner' }]);
     const total = await countDebitMd(where);
     res.json({ status: true, data: { documents, total } });
   } catch (error) {
@@ -74,13 +85,13 @@ export const deleteDebit = async (req, res) => {
     const { error, value } = validateData({ _id: 'string' }, req.body);
     if (error) return res.status(400).json({ status: false, mess: error });
     const { _id } = value;
-    const debit = await detailDebitMd({ _id })
+    const debit = await detailDebitMd({ _id });
     if (!debit) return res.status(404).json({ status: false, mess: 'Không tìm thấy bảng kê dịch vụ' });
-    const bill = await detailBillMd({ _id: debit.bill })
-    if (!(bill && [1,2].includes(bill.status))) return res.status(404).json({ status: false, mess: 'Bảng kê đã được gửi không thể xóa' });
-    const newAmount = bill.amount - debit.summary
-    if (newAmount <= 0) await deleteBillMd({ _id: bill._id })
-    else await updateBillMd({ _id: bill._id }, { amount: newAmount })
+    const bill = await detailBillMd({ _id: debit.bill });
+    if (!(bill && [1, 2].includes(bill.status))) return res.status(404).json({ status: false, mess: 'Bảng kê đã được gửi không thể xóa' });
+    const newAmount = bill.amount - debit.summary;
+    if (newAmount <= 0) await deleteBillMd({ _id: bill._id });
+    else await updateBillMd({ _id: bill._id }, { amount: newAmount });
 
     res.json({ status: true, data: await deleteDebitMd({ _id }) });
   } catch (error) {
@@ -92,26 +103,25 @@ export const getListDebt = async (req, res) => {
   try {
     const { error, value } = validateData(listDebtValid, req.query);
     if (error) return res.status(400).json({ status: false, mess: error });
-    const { month, apartment } = value;
-    const where = { project: req.project?._id, status: { $in: [3, 4, 5] } };
+    const { apartment } = value;
+    const where = { project: req.project?._id };
     if (apartment) where.apartment = apartment;
-    if (month) where.month = { $lte: month };
+    const whereApartment = { project: req.project?._id };
+    if (apartment) whereApartment._id = apartment;
 
     const data = await listBillMd(where);
+    const apartments = await listApartmentMd(whereApartment);
+
     const newData = [];
-    data.forEach((d) => {
-      const index = newData.findIndex((n) => n.apartment === d.apartment);
-      if (index >= 0) {
-        if (data.month === month) {
-          newData[index].amount += d.amount;
-          newData[index].paid += d.paid;
-        } else {
-          newData[index].before += d.paid - d.amount;
-        }
-      } else {
-        if (data.month === month) newData.push({ apartment: d.apartment, month: month, before: 0, amount: d.amount, paid: d.paid });
-        else newData.push({ apartment: d.apartment, month: month, before: d.paid - d.amount, amount: 0, paid: 0 });
-      }
+    apartments.forEach((a) => {
+      const dataz = data.filter((d) => String(d.apartment) === String(a._id));
+      if (dataz.length > 0) {
+        let amount = 0;
+        dataz.forEach((d) => {
+          amount += d.amount - d.paid;
+        });
+        newData.push({ _id: a._id, name: a.name, code: a.code, amount });
+      } else newData.push({ _id: a._id, name: a.name, code: a.code, amount: 0 });
     });
 
     res.json({ status: true, data: newData });

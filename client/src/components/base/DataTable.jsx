@@ -94,7 +94,7 @@ const DataTable = (props) => {
     callback();
   };
 
-  const isActions = baseActions.includes('detail') || baseActions.includes('delete') || moreActions;
+  const isActions = baseActions.includes('detail') || baseActions.includes('delete') || Boolean(moreActions);
   const isHeader =
     baseActions.includes('create') || baseActions.includes('import') || baseActions.includes('export') || moreHeader || items;
   const isStatus = Boolean(statusInfo.changeStatusApi);

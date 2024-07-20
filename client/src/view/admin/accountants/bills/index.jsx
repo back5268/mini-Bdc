@@ -42,16 +42,19 @@ const Billz = ({ type = 'bill', apartment }) => {
     { label: 'Chủ hộ', body: (e) => e.customerInfo?.name },
     { label: 'Số tiền', body: (e) => NumberBody(e.amount) },
     { label: 'Đã thanh toán', body: (e) => NumberBody(e.paid) },
+    { label: 'Còn nợ', body: (e) => NumberBody(e.amount - e.paid) },
     { label: 'Hạn thanh toán', body: (e) => TimeBody(e.deadline, 'date') },
-    { label: 'Thời gian tạo', body: (e) => TimeBody(e.createdAt) },
     { label: 'Trạng thái', body: (e) => Body(billStatus, e.status) }
   ];
 
   const onUpdate = async (status) => {
+    setLoading(true);
     const response = await updateStatusBillApi({ _ids: select, status });
     if (response) {
       showToast({ title: 'Đổi trạng thái bảng kê thành công', severity: 'success' });
       setParams((pre) => ({ ...pre, render: !pre.render }));
+      setLoading(false);
+      setSelect([]);
     }
   };
 
@@ -124,7 +127,7 @@ const Billz = ({ type = 'bill', apartment }) => {
         columns={columns}
         params={params}
         setParams={setParams}
-        baseActions={['detail', 'delete']}
+        baseActions={type === 'bill' ? ['detail'] : ['detail', 'delete']}
         headerInfo={{ items: type ? (type === 'bill' ? billItems : type === 'dataBrowses' ? dataBrowsItems : notificationItems) : [] }}
         actionsInfo={{
           deleteApi: deleteBillApi,
@@ -136,7 +139,7 @@ const Billz = ({ type = 'bill', apartment }) => {
             },
             {
               icon: PaperAirplaneIcon,
-              isHide: () => type === 'notifications' ? false : true,
+              isHide: () => (type === 'notifications' ? false : true),
               onClick: (item) => onSendBill(item)
             }
           ]

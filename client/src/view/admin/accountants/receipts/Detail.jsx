@@ -59,6 +59,12 @@ const DetailReceipt = (props) => {
     else return newData;
   };
 
+  useEffect(() => {
+    if (coin && type === 3) {
+      setValue('amount', coin > bill?.amount - bill?.paid ? bill?.amount - bill?.paid : coin);
+    }
+  }, [coin, bill?.amount, bill?.paid]);
+
   return (
     <FormDetail
       title={title}
@@ -125,12 +131,20 @@ const DetailReceipt = (props) => {
           id="paymentType"
           label="Hình thức (*)"
           disabled={isUpdate}
-          options={paymentType}
+          options={paymentType.filter(p => p.key !== 3)}
           errors={errors}
           watch={watch}
           setValue={setValue}
         />
-        <InputForm min="1" id="amount" type="number" label="Số tiền (*)" disabled={isUpdate} errors={errors} register={register} />
+        <InputForm
+          min="1"
+          id="amount"
+          type="number"
+          label="Số tiền (*)"
+          disabled={isUpdate || type === 3}
+          errors={errors}
+          register={register}
+        />
         <TextAreaz id="note" label="Ghi chú" value={watch('note')} setValue={(e) => setValue('note', e)} disabled={isUpdate} />
       </div>
     </FormDetail>

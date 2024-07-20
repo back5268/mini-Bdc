@@ -30,10 +30,11 @@ class ModelBase {
     return this.model.countDocuments(where);
   }
 
-  static findOne({ where = {}, populates = [], attr }) {
+  static findOne({ where = {}, populates = [], attr, sort = { createdAt: -1 } }) {
     if (!where.deletedAt) where.deletedAt = null;
     const query = this.model.findOne(where);
     if (attr) query.select(attr);
+    if (sort) query.sort(sort);
     if (populates && populates.length > 0) {
       populates.forEach((p) => query.populate(p));
     }

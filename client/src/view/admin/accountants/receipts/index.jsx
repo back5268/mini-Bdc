@@ -90,7 +90,7 @@ const Receipts = () => {
         columns={columns}
         params={params}
         setParams={setParams}
-        baseActions={['detail']}
+        baseActions={[]}
         actionsInfo={{
           onViewDetail: (e) => onOpen(e.type, e._id),
           moreActions: [
