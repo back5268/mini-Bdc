@@ -90,6 +90,11 @@ const DetailService = () => {
     }
   }, [item]);
 
+  useEffect(() => {
+    if (Number(watch('recipe')) === 1) setValue('prices', undefined);
+    else setValue('prices', 0);
+  }, [watch('recipe')]);
+
   const handleData = (data) => {
     let newData = { ...data };
     if (apartments?.length > 0) newData.apartments = apartments;
@@ -126,7 +131,7 @@ const DetailService = () => {
           setValue={setValue}
           onChange={(e) => {
             setValue('type', e);
-            setValue('price', undefined);
+            setValue('recipe', 1);
           }}
         />
         {Number(watch('type')) === 4 && (

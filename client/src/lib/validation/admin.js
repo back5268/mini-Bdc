@@ -42,20 +42,21 @@ export const ApartmentGroupValidation = yup.object({
 export const ApartmentValidation = yup.object({
   name: yup.string().required('Tên căn hộ không được bỏ trống!'),
   code: yup.string().required('Mã căn hộ không được bỏ trống!'),
-  area: yup.number().required('Diện tích căn hộ không được bỏ trống!'),
-  status: yup.number().required('Trạng thái căn hộ không được bỏ trống!'),
-  floor: yup.number().required('Tầng không được bỏ trống!')
+  area: yup.number().required('Diện tích căn hộ không được bỏ trống!').typeError('Vui lòng chỉ nhập số!'),
+  status: yup.number().required('Trạng thái căn hộ không được bỏ trống!').typeError('Vui lòng chỉ nhập số!'),
+  floor: yup.number().required('Tầng không được bỏ trống!').typeError('Vui lòng chỉ nhập số!')
 });
 export const ServiceValidation = yup.object({
   type: yup.string().required('Loại dịch vụ không được bỏ trống!'),
-  recipe: yup.string().required('Loại bảng giá không được bỏ trống!')
+  recipe: yup.string().required('Loại bảng giá không được bỏ trống!'),
+  prices: yup.number().required('Giá tiền không được bỏ trống!').typeError('Vui lòng chỉ nhập số!'),
 });
 
 export const VehicleValidation = yup.object({
   name: yup.string().required('Tên phương tiện không được bỏ trống!'),
   licensePlate: yup.string().required('Biển số xe không được bỏ trống!'),
   apartment: yup.string().required('Căn hộ không được bỏ trống!'),
-  type: yup.number().required('Loại phương tiện không được bỏ trống!')
+  type: yup.number().required('Loại phương tiện không được bỏ trống!').typeError('Vui lòng chỉ nhập số!')
 });
 
 export const DebtValidation = yup.object({
@@ -87,14 +88,14 @@ export const TemplateValidation = yup.object({
   subject: yup.string().required('Tiêu đề không được bỏ trống!'),
   code: yup.string().required('Mã mẫu thông báo không được bỏ trống!'),
   content: yup.string().required('Nội dung không được bỏ trống!'),
-  type: yup.number().required('Loại thông báo không được bỏ trống!')
+  type: yup.number().required('Loại thông báo không được bỏ trống!').typeError('Vui lòng chỉ nhập số!')
 });
 
 export const ProductValidation = yup.object({
   name: yup.string().required('Tên sản phẩm không được bỏ trống!'),
   code: yup.string().required('Mã sản phẩm không được bỏ trống!'),
   type: yup.string().required('Loại sản phẩm không được bỏ trống!'),
-  price: yup.number().required('Giá bán ra không được bỏ trống!')
+  price: yup.number().required('Giá bán ra không được bỏ trống!').typeError('Vui lòng chỉ nhập số!')
 });
 
 export const PaymentValidation = yup.object({
