@@ -17,7 +17,7 @@ export const getListUser = async (req, res) => {
     if (error) return res.status(400).json({ status: false, mess: error });
     const { page, limit, keySearch, email, type, status } = value;
     const where = {};
-    if (keySearch) where.$or = [{ name: { $regex: keySearch, $options: 'i' } }];
+    if (keySearch) where.$or = [{ fullName: { $regex: keySearch, $options: 'i' } }];
     if (email) where.$or = [{ email: { $regex: email, $options: 'i' } }, { username: { $regex: email, $options: 'i' } }];
     if (type) {
       if (type === 'resident') where.type = 'resident';
