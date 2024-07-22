@@ -53,7 +53,7 @@ const Users = () => {
 
   return (
     <FormList title="Danh sách nhân viên">
-      <Dialogz title="Decor Shop" open={Boolean(password)} setOpen={setPassword} className="w-[500px]">
+      <Dialogz title="Mini BDC" open={Boolean(password)} setOpen={setPassword} className="w-[500px]">
         <div className="p-6 text-left">
           Đổi mật khẩu thành công, mật khẩu mới là <b>{password}</b>
         </div>
