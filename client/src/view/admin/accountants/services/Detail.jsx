@@ -82,7 +82,7 @@ const DetailService = () => {
   useEffect(() => {
     if (isUpdate && item) {
       if (item.recipe === 1) item.prices = Number(item.prices?.[0]?.amount);
-      if (item.prices) setPrices(item.prices);
+      if (item.prices) setPrices(item.prices?.map((i, index) => ({ ...i, key: index })));
       if (item.apartments?.length > 0) setApartments(item.apartments);
       for (const key in defaultValues) {
         setValue(key, item[key]);
